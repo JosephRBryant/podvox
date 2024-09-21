@@ -33,7 +33,7 @@ ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
 
 # Fill out this out (or change node_env to development if running local docker testing) on render/docker
-ARG SCHEMA=skely
+ARG SCHEMA=podvox_schema
 ENV SCHEMA=${SCHEMA}
 
 # Fill this out on render using internal db url, or external url if running locally on docker
