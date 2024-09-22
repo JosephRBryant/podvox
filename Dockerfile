@@ -38,7 +38,7 @@ ENV SCHEMA=${SCHEMA}
 
 # Fill this out on render using internal db url, or external url if running locally on docker
 #schema for render
-ENV DATABASE_URL=${DATABASE_URL}
+ENV DATABASE_URL=postgresql://josephrbryant:LHFI74R9vMTHBsMPzyG9D9C7wX4CvNMG@dpg-crnh4ug8fa8c738gb2c0-a.oregon-postgres.render.com/podvox_postgres_db
 
 # Fill this out on render/docker
 ARG JWT_SECRET=secretkey

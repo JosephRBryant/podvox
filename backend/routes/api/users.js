@@ -4,6 +4,7 @@ const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
 const { User } = require('../../db/models');
+const { singleMulterUpload, singlePublicFileUpload } = require('../../awsS3')
 
 const router = express.Router();
 
@@ -48,6 +49,32 @@ router.post('/', validateSignup, async (req, res) => {
         user: safeUser
     });
 });
+
+router.put('/:id/update', singleMulterUpload('image'), async (req, res, next) => {
+    try{
+        const {userId} = req.body;
+        let user;
+
+        if(userId){
+            user = await User.findByPk(userId);
+        } else{
+            throw new Error("No user founder with that id")
+        }
+
+        let imgUrl;
+
+        if(req.file){
+            imgUrl = await singlePublicFileUpload(req.file); //converts data from form
+        }
+        user.profileImg = imgUrl;
+        await user.save();
+        return res.json(user)
+
+    }catch(e){
+        next(e)
+    }
+
+})
 
 // Restore session user
 router.get('/', (req, res) => {
