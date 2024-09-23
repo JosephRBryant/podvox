@@ -20,6 +20,10 @@ module.exports = (sequelize, DataTypes) => {
       Show.hasMany(
         models.Episode,
         { foreignKey: 'showId', onDelete: 'CASCADE'}
+      ),
+      Show.hasOne(
+        models.Chatroom,
+        { foreignKey: 'showId', onDelete: 'CASCADE'}
       )
     }
   }
