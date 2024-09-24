@@ -1,0 +1,648 @@
+'use strict';
+
+const { Episode } = require('../models');
+
+let options = {};
+options.tableName = "Episodes"
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA;
+}
+
+/** @type {import('sequelize-cli').Migration} */
+module.exports = {
+  async up (queryInterface, Sequelize) {
+    try {
+      await Episode.bulkCreate([
+        {
+          userId: 1,
+          showId: 1,
+          episodeTitle: 'The Rise of AI',
+          episodeDesc: 'An in-depth look at how artificial intelligence is shaping the tech industry and our daily lives.',
+          pubDate: null,
+          duration: null,
+          size: null,
+          tags: 'tech, AI, artificial intelligence',
+          episodeImage: 'https://website.com/image1a.png',
+          explicit: false,
+          published: false,
+          prefix: null,
+          downloads: 0
+        },
+        {
+          userId: 1,
+          showId: 1,
+          episodeTitle: 'Blockchain Beyond Bitcoin',
+          episodeDesc: 'Exploring the many uses of blockchain technology beyond cryptocurrency.',
+          pubDate: null,
+          duration: null,
+          size: null,
+          tags: 'blockchain, tech, cryptocurrency',
+          episodeImage: 'https://website.com/image1b.png',
+          explicit: false,
+          published: false,
+          prefix: null,
+          downloads: 0
+        },
+        {
+          userId: 1,
+          showId: 1,
+          episodeTitle: 'The Future of Wearable Tech',
+          episodeDesc: 'How wearable technology is changing fitness, health, and entertainment.',
+          pubDate: null,
+          duration: null,
+          size: null,
+          tags: 'wearable tech, fitness, gadgets',
+          episodeImage: 'https://website.com/image1c.png',
+          explicit: false,
+          published: false,
+          prefix: null,
+          downloads: 0
+        },
+        {
+          userId: 1,
+          showId: 1,
+          episodeTitle: 'Cybersecurity in 2024',
+          episodeDesc: 'A discussion about the evolving challenges in cybersecurity and how to stay protected.',
+          pubDate: null,
+          duration: null,
+          size: null,
+          tags: 'cybersecurity, tech, data privacy',
+          episodeImage: 'https://website.com/image1d.png',
+          explicit: false,
+          published: false,
+          prefix: null,
+          downloads: 0
+        },
+
+        // Fitness Fanatics Episodes
+        {
+          userId: 2,
+          showId: 2,
+          episodeTitle: '10 Tips for Building Muscle',
+          episodeDesc: 'A complete guide to building muscle through weight training and proper nutrition.',
+          pubDate: null,
+          duration: null,
+          size: null,
+          tags: 'fitness, muscle building, health',
+          episodeImage: 'https://website.com/image2a.png',
+          explicit: false,
+          published: false,
+          prefix: null,
+          downloads: 0
+        },
+        {
+          userId: 2,
+          showId: 2,
+          episodeTitle: 'The Best Cardio Workouts',
+          episodeDesc: 'Different types of cardio workouts and how to incorporate them into your routine for maximum fat burn.',
+          pubDate: null,
+          duration: null,
+          size: null,
+          tags: 'cardio, fitness, health',
+          episodeImage: 'https://website.com/image2b.png',
+          explicit: false,
+          published: false,
+          prefix: null,
+          downloads: 0
+        },
+        {
+          userId: 2,
+          showId: 2,
+          episodeTitle: 'Staying Motivated on Your Fitness Journey',
+          episodeDesc: 'How to stay consistent and motivated as you work toward your fitness goals.',
+          pubDate: null,
+          duration: null,
+          size: null,
+          tags: 'motivation, fitness, health',
+          episodeImage: 'https://website.com/image2c.png',
+          explicit: false,
+          published: false,
+          prefix: null,
+          downloads: 0
+        },
+        {
+          userId: 2,
+          showId: 2,
+          episodeTitle: 'Nutrition for Athletes',
+          episodeDesc: 'The best dietary choices for athletes to fuel performance and recovery.',
+          pubDate: null,
+          duration: null,
+          size: null,
+          tags: 'nutrition, fitness, health',
+          episodeImage: 'https://website.com/image2d.png',
+          explicit: false,
+          published: false,
+          prefix: null,
+          downloads: 0
+        },
+
+        // Culinary Creations Episodes
+        {
+          userId: 3,
+          showId: 3,
+          episodeTitle: 'Mastering the Art of Italian Cooking',
+          episodeDesc: 'A guide to classic Italian dishes and cooking techniques.',
+          pubDate: null,
+          duration: null,
+          size: null,
+          tags: 'Italian cuisine, cooking, food',
+          episodeImage: 'https://website.com/image3a.png',
+          explicit: false,
+          published: false,
+          prefix: null,
+          downloads: 0
+        },
+        {
+          userId: 3,
+          showId: 3,
+          episodeTitle: 'Exploring the Flavors of Thailand',
+          episodeDesc: 'A journey through the rich and vibrant flavors of Thai cuisine.',
+          pubDate: null,
+          duration: null,
+          size: null,
+          tags: 'Thai cuisine, cooking, food',
+          episodeImage: 'https://website.com/image3b.png',
+          explicit: false,
+          published: false,
+          prefix: null,
+          downloads: 0
+        },
+        {
+          userId: 3,
+          showId: 3,
+          episodeTitle: 'Baking Like a Pro',
+          episodeDesc: 'Tips and tricks for perfect baking, from cakes to cookies.',
+          pubDate: null,
+          duration: null,
+          size: null,
+          tags: 'baking, cooking, desserts',
+          episodeImage: 'https://website.com/image3c.png',
+          explicit: false,
+          published: false,
+          prefix: null,
+          downloads: 0
+        },
+        {
+          userId: 3,
+          showId: 3,
+          episodeTitle: 'Vegan Cooking Made Easy',
+          episodeDesc: 'Delicious and easy vegan recipes for every occasion.',
+          pubDate: null,
+          duration: null,
+          size: null,
+          tags: 'vegan, cooking, food',
+          episodeImage: 'https://website.com/image3d.png',
+          explicit: false,
+          published: false,
+          prefix: null,
+          downloads: 0
+        },
+
+        // History Uncovered Episodes
+        {
+          userId: 4,
+          showId: 4,
+          episodeTitle: 'The Fall of the Roman Empire',
+          episodeDesc: 'An exploration of the factors that led to the collapse of one of history’s greatest empires.',
+          pubDate: null,
+          duration: null,
+          size: null,
+          tags: 'history, Roman Empire, ancient history',
+          episodeImage: 'https://website.com/image4a.png',
+          explicit: false,
+          published: false,
+          prefix: null,
+          downloads: 0
+        },
+        {
+          userId: 4,
+          showId: 4,
+          episodeTitle: 'World War II: Turning Points',
+          episodeDesc: 'Key events that shifted the course of World War II.',
+          pubDate: null,
+          duration: null,
+          size: null,
+          tags: 'history, World War II, military history',
+          episodeImage: 'https://website.com/image4b.png',
+          explicit: false,
+          published: false,
+          prefix: null,
+          downloads: 0
+        },
+        {
+          userId: 4,
+          showId: 4,
+          episodeTitle: 'The Industrial Revolution',
+          episodeDesc: 'How the Industrial Revolution transformed societies around the world.',
+          pubDate: null,
+          duration: null,
+          size: null,
+          tags: 'history, Industrial Revolution, technology',
+          episodeImage: 'https://website.com/image4c.png',
+          explicit: false,
+          published: false,
+          prefix: null,
+          downloads: 0
+        },
+        {
+          userId: 4,
+          showId: 4,
+          episodeTitle: 'Ancient Egypt: Pharaohs and Pyramids',
+          episodeDesc: 'A look into the fascinating world of ancient Egypt and its incredible achievements.',
+          pubDate: null,
+          duration: null,
+          size: null,
+          tags: 'history, ancient Egypt, pharaohs',
+          episodeImage: 'https://website.com/image4d.png',
+          explicit: false,
+          published: false,
+          prefix: null,
+          downloads: 0
+        },
+
+        // Health & Wellness Today Episodes
+        {
+          userId: 5,
+          showId: 5,
+          episodeTitle: 'The Importance of Mental Health',
+          episodeDesc: 'Discussing the importance of mental well-being and how to maintain it.',
+          pubDate: null,
+          duration: null,
+          size: null,
+          tags: 'mental health, wellness, health',
+          episodeImage: 'https://website.com/image5a.png',
+          explicit: false,
+          published: false,
+          prefix: null,
+          downloads: 0
+        },
+        {
+          userId: 5,
+          showId: 5,
+          episodeTitle: 'Healthy Eating for a Busy Lifestyle',
+          episodeDesc: 'Tips for maintaining a balanced diet while juggling a busy life.',
+          pubDate: null,
+          duration: null,
+          size: null,
+          tags: 'healthy eating, wellness, health',
+          episodeImage: 'https://website.com/image5b.png',
+          explicit: false,
+          published: false,
+          prefix: null,
+          downloads: 0
+        },
+        {
+          userId: 5,
+          showId: 5,
+          episodeTitle: 'Exercise for Stress Relief',
+          episodeDesc: 'How physical activity can help relieve stress and improve overall well-being.',
+          pubDate: null,
+          duration: null,
+          size: null,
+          tags: 'exercise, stress relief, wellness',
+          episodeImage: 'https://website.com/image5c.png',
+          explicit: false,
+          published: false,
+          prefix: null,
+          downloads: 0
+        },
+        {
+          userId: 5,
+          showId: 5,
+          episodeTitle: 'Sleep: The Key to Health',
+          episodeDesc: 'The importance of sleep for physical and mental health, and how to improve your sleep habits.',
+          pubDate: null,
+          duration: null,
+          size: null,
+          tags: 'sleep, health, wellness',
+          episodeImage: 'https://website.com/image5d.png',
+          explicit: false,
+          published: false,
+          prefix: null,
+          downloads: 0
+        },
+        // True Crime Stories Episodes
+        {
+          userId: 6,
+          showId: 6,
+          episodeTitle: 'The Mystery of the Missing Heiress',
+          episodeDesc: 'A deep dive into the disappearance of a wealthy heiress that shocked the nation.',
+          pubDate: null,
+          duration: null,
+          size: null,
+          tags: 'true crime, mystery, missing person',
+          episodeImage: 'https://website.com/image6a.png',
+          explicit: false,
+          published: false,
+          prefix: null,
+          downloads: 0
+        },
+        {
+          userId: 6,
+          showId: 6,
+          episodeTitle: 'The Serial Killer Next Door',
+          episodeDesc: 'A chilling look at the double life of a man who turned out to be a serial killer.',
+          pubDate: null,
+          duration: null,
+          size: null,
+          tags: 'serial killer, crime, mystery',
+          episodeImage: 'https://website.com/image6b.png',
+          explicit: false,
+          published: false,
+          prefix: null,
+          downloads: 0
+        },
+        {
+          userId: 6,
+          showId: 6,
+          episodeTitle: 'The Unsolved Case of Jon Doe',
+          episodeDesc: 'An exploration of a cold case that has baffled investigators for decades.',
+          pubDate: null,
+          duration: null,
+          size: null,
+          tags: 'cold case, unsolved mystery, crime',
+          episodeImage: 'https://website.com/image6c.png',
+          explicit: false,
+          published: false,
+          prefix: null,
+          downloads: 0
+        },
+        {
+          userId: 6,
+          showId: 6,
+          episodeTitle: 'Forensic Breakthroughs That Caught Killers',
+          episodeDesc: 'How forensic science has been used to solve some of the most infamous crimes.',
+          pubDate: null,
+          duration: null,
+          size: null,
+          tags: 'forensics, true crime, investigation',
+          episodeImage: 'https://website.com/image6d.png',
+          explicit: false,
+          published: false,
+          prefix: null,
+          downloads: 0
+        },
+
+        // Mindful Living Episodes
+        {
+          userId: 7,
+          showId: 7,
+          episodeTitle: 'The Power of Meditation',
+          episodeDesc: 'How meditation can improve mental and physical health.',
+          pubDate: null,
+          duration: null,
+          size: null,
+          tags: 'meditation, mindfulness, wellness',
+          episodeImage: 'https://website.com/image7a.png',
+          explicit: false,
+          published: false,
+          prefix: null,
+          downloads: 0
+        },
+        {
+          userId: 7,
+          showId: 7,
+          episodeTitle: 'Living in the Present Moment',
+          episodeDesc: 'Tips and techniques for practicing mindfulness in everyday life.',
+          pubDate: null,
+          duration: null,
+          size: null,
+          tags: 'mindfulness, wellness, self-help',
+          episodeImage: 'https://website.com/image7b.png',
+          explicit: false,
+          published: false,
+          prefix: null,
+          downloads: 0
+        },
+        {
+          userId: 7,
+          showId: 7,
+          episodeTitle: 'The Benefits of Yoga',
+          episodeDesc: 'How yoga can enhance both physical and mental well-being.',
+          pubDate: null,
+          duration: null,
+          size: null,
+          tags: 'yoga, wellness, mindfulness',
+          episodeImage: 'https://website.com/image7c.png',
+          explicit: false,
+          published: false,
+          prefix: null,
+          downloads: 0
+        },
+        {
+          userId: 7,
+          showId: 7,
+          episodeTitle: 'Gratitude Practices for a Happier Life',
+          episodeDesc: 'Exploring how practicing gratitude can transform your outlook and improve mental health.',
+          pubDate: null,
+          duration: null,
+          size: null,
+          tags: 'gratitude, mindfulness, self-improvement',
+          episodeImage: 'https://website.com/image7d.png',
+          explicit: false,
+          published: false,
+          prefix: null,
+          downloads: 0
+        },
+
+        // The Movie Buff Episodes
+        {
+          userId: 8,
+          showId: 8,
+          episodeTitle: 'The Best Films of the 21st Century',
+          episodeDesc: 'A countdown of the top films released since the year 2000.',
+          pubDate: null,
+          duration: null,
+          size: null,
+          tags: 'movies, best films, cinema',
+          episodeImage: 'https://website.com/image8a.png',
+          explicit: false,
+          published: false,
+          prefix: null,
+          downloads: 0
+        },
+        {
+          userId: 8,
+          showId: 8,
+          episodeTitle: 'Underrated Movies You Need to Watch',
+          episodeDesc: 'A list of movies that flew under the radar but are absolute must-watches.',
+          pubDate: null,
+          duration: null,
+          size: null,
+          tags: 'movies, underrated films, cinema',
+          episodeImage: 'https://website.com/image8b.png',
+          explicit: false,
+          published: false,
+          prefix: null,
+          downloads: 0
+        },
+        {
+          userId: 8,
+          showId: 8,
+          episodeTitle: 'The Rise of Superhero Films',
+          episodeDesc: 'How superhero movies have dominated the box office and pop culture in the 21st century.',
+          pubDate: null,
+          duration: null,
+          size: null,
+          tags: 'superheroes, movies, cinema',
+          episodeImage: 'https://website.com/image8c.png',
+          explicit: false,
+          published: false,
+          prefix: null,
+          downloads: 0
+        },
+        {
+          userId: 8,
+          showId: 8,
+          episodeTitle: 'Directors Who Defined the Decade',
+          episodeDesc: 'Highlighting directors whose work shaped cinema in the 2010s.',
+          pubDate: null,
+          duration: null,
+          size: null,
+          tags: 'directors, movies, cinema',
+          episodeImage: 'https://website.com/image8d.png',
+          explicit: false,
+          published: false,
+          prefix: null,
+          downloads: 0
+        },
+
+        // The Entrepreneur's Corner Episodes
+        {
+          userId: 9,
+          showId: 9,
+          episodeTitle: 'How to Start a Successful Business',
+          episodeDesc: 'A guide for aspiring entrepreneurs looking to turn their ideas into profitable ventures.',
+          pubDate: null,
+          duration: null,
+          size: null,
+          tags: 'entrepreneurship, business, startups',
+          episodeImage: 'https://website.com/image9a.png',
+          explicit: false,
+          published: false,
+          prefix: null,
+          downloads: 0
+        },
+        {
+          userId: 9,
+          showId: 9,
+          episodeTitle: 'Marketing Tips for Entrepreneurs',
+          episodeDesc: 'Proven strategies for promoting your business and attracting customers.',
+          pubDate: null,
+          duration: null,
+          size: null,
+          tags: 'marketing, business, entrepreneurship',
+          episodeImage: 'https://website.com/image9b.png',
+          explicit: false,
+          published: false,
+          prefix: null,
+          downloads: 0
+        },
+        {
+          userId: 9,
+          showId: 9,
+          episodeTitle: 'How to Scale Your Business',
+          episodeDesc: 'Tips for growing your business beyond its initial phase and expanding your reach.',
+          pubDate: null,
+          duration: null,
+          size: null,
+          tags: 'scaling, business, entrepreneurship',
+          episodeImage: 'https://website.com/image9c.png',
+          explicit: false,
+          published: false,
+          prefix: null,
+          downloads: 0
+        },
+        {
+          userId: 9,
+          showId: 9,
+          episodeTitle: 'Entrepreneurs Who Changed the World',
+          episodeDesc: 'A look at some of the most influential entrepreneurs in history and their legacies.',
+          pubDate: null,
+          duration: null,
+          size: null,
+          tags: 'entrepreneurs, business, success',
+          episodeImage: 'https://website.com/image9d.png',
+          explicit: false,
+          published: false,
+          prefix: null,
+          downloads: 0
+        },
+
+        // Travel Tales Episodes
+        {
+          userId: 10,
+          showId: 10,
+          episodeTitle: 'Backpacking Across Europe',
+          episodeDesc: 'Stories and tips from a backpacking trip across Europe, exploring its diverse cultures.',
+          pubDate: null,
+          duration: null,
+          size: null,
+          tags: 'travel, backpacking, Europe',
+          episodeImage: 'https://website.com/image10a.png',
+          explicit: false,
+          published: false,
+          prefix: null,
+          downloads: 0
+        },
+        {
+          userId: 10,
+          showId: 10,
+          episodeTitle: 'Exploring Southeast Asia',
+          episodeDesc: 'An adventure through the rich landscapes and cultures of Southeast Asia.',
+          pubDate: null,
+          duration: null,
+          size: null,
+          tags: 'travel, Southeast Asia, adventure',
+          episodeImage: 'https://website.com/image10b.png',
+          explicit: false,
+          published: false,
+          prefix: null,
+          downloads: 0
+        },
+        {
+          userId: 10,
+          showId: 10,
+          episodeTitle: 'The Best Hidden Gems in South America',
+          episodeDesc: 'Discovering the most breathtaking but lesser-known destinations in South America.',
+          pubDate: null,
+          duration: null,
+          size: null,
+          tags: 'travel, South America, hidden gems',
+          episodeImage: 'https://website.com/image10c.png',
+          explicit: false,
+          published: false,
+          prefix: null,
+          downloads: 0
+        },
+        {
+          userId: 10,
+          showId: 10,
+          episodeTitle: 'Solo Travel: Pros and Cons',
+          episodeDesc: 'Exploring the joys and challenges of traveling solo around the world.',
+          pubDate: null,
+          duration: null,
+          size: null,
+          tags: 'travel, solo travel, adventure',
+          episodeImage: 'https://website.com/image10d.png',
+          explicit: false,
+          published: false,
+          prefix: null,
+          downloads: 0
+        }
+      ])
+    } catch(error) {
+      console.error('Error during seeding episodes: ', error);
+      throw error;
+    }
+  },
+
+  async down (queryInterface, Sequelize) {
+    options.tableName = 'Episodes';
+    let episodes = await Episode.findAll();
+
+    return queryInterface.bulkDelete(options, {
+      where: { ...episodes }
+    }, {})
+  }
+};

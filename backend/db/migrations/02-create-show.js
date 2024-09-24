@@ -46,8 +46,7 @@ module.exports = {
         unique: true
       },
       category: {
-        type: Sequelize.STRING(150),
-        allowNull: false
+        type: Sequelize.STRING(150)
       },
       showImage: {
         type: Sequelize.STRING,

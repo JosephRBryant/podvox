@@ -18,21 +18,63 @@ module.exports = {
       options.tableName = "Users";
       return queryInterface.bulkInsert(options, [
         {
-          email: 'demo@user.io',
-          username: 'Demo-lition',
+          email: 'alice@user.io',
+          username: 'AliceSmith',
           hashedPassword: bcrypt.hashSync('password'),
           profileImg: ''
         },
         {
-          email: 'user1@user.io',
-          username: 'FakeUser1',
-          hashedPassword: bcrypt.hashSync('password2'),
+          email: 'bob@user.io',
+          username: 'BobJohnson',
+          hashedPassword: bcrypt.hashSync('password'),
           profileImg: ''
         },
         {
-          email: 'user2@user.io',
-          username: 'FakeUser2',
-          hashedPassword: bcrypt.hashSync('password3'),
+          email: 'emma@user.io',
+          username: 'EmmaBrown',
+          hashedPassword: bcrypt.hashSync('password'),
+          profileImg: ''
+        },
+        {
+          email: 'david@user.io',
+          username: 'DavidLee',
+          hashedPassword: bcrypt.hashSync('password'),
+          profileImg: ''
+        },
+        {
+          email: 'sophia@user.io',
+          username: 'SophiaWhite',
+          hashedPassword: bcrypt.hashSync('password'),
+          profileImg: ''
+        },
+        {
+          email: 'tom@user.io',
+          username: 'TomBlack',
+          hashedPassword: bcrypt.hashSync('password'),
+          profileImg: ''
+        },
+        {
+          email: 'olivia@user.io',
+          username: 'OliviaGreen',
+          hashedPassword: bcrypt.hashSync('password'),
+          profileImg: ''
+        },
+        {
+          email: 'liam@user.io',
+          username: 'LiamClark',
+          hashedPassword: bcrypt.hashSync('password'),
+          profileImg: ''
+        },
+        {
+          email: 'mia@user.io',
+          username: 'MiaMartinez',
+          hashedPassword: bcrypt.hashSync('password'),
+          profileImg: ''
+        },
+        {
+          email: 'noah@user.io',
+          username: 'NoahHarris',
+          hashedPassword: bcrypt.hashSync('password'),
           profileImg: ''
         }
       ], {})

@@ -46,10 +46,10 @@ module.exports = (sequelize, DataTypes) => {
           args: [3, 150],
           msg: 'Episode title must be between 3 and 150 characters'
         },
-        is: {
-          args: /^[a-zA-Z\s]+$/,
-          msg: 'Episode title must be only letters and spaces'
-        }
+        // is: {
+        //   args: /^[a-zA-Z\s]+$/,
+        //   msg: 'Episode title must be only letters and spaces'
+        // }
       }
     },
     episodeDesc: {
@@ -63,10 +63,10 @@ module.exports = (sequelize, DataTypes) => {
           args: [50, 4000],
           msg: 'Episode description must be between 50 and 4000 characters'
         },
-        is: {
-          args: /^[a-zA-Z\s]+$/,
-          msg: 'Episode description must be only letters and spaces'
-        }
+        // is: {
+        //   args: /^[a-zA-Z\s]+$/,
+        //   msg: 'Episode description must be only letters and spaces'
+        // }
       }
     },
     pubDate: {
@@ -89,10 +89,10 @@ module.exports = (sequelize, DataTypes) => {
           args: [3, 300],
           msg: 'Tags must be between 3 and 300 characters'
         },
-        is: {
-          args: /^[a-zA-Z\s]+$/,
-          msg: 'Tags must be only letters and spaces'
-        }
+        // is: {
+        //   args: /^[a-zA-Z\s]+$/,
+        //   msg: 'Tags must be only letters and spaces'
+        // }
       }
     },
     episodeImage: {
