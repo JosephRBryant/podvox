@@ -21,7 +21,7 @@ module.exports = {
           author: 'Alice Smith',
           showLink: null,
           category: null,
-          showImage: "https://website.com/image1.png",
+          showImage: "https://toginet.com/images/podvox/tech-talk-weekly.png",
           language: 'english',
           explicit: false
         },
@@ -33,7 +33,7 @@ module.exports = {
           author: 'Bob Johnson',
           showLink: null,
           category: null,
-          showImage: "https://website.com/image2.png",
+          showImage: "https://toginet.com/images/podvox/fitness-fanatic.png",
           language: 'english',
           explicit: false
         },
@@ -45,7 +45,7 @@ module.exports = {
           author: 'Emma Brown',
           showLink: null,
           category: null,
-          showImage: "https://website.com/image3.png",
+          showImage: "https://toginet.com/images/podvox/culinary-creations.png",
           language: 'english',
           explicit: false
         },
@@ -57,7 +57,7 @@ module.exports = {
           author: 'David Lee',
           showLink: null,
           category: null,
-          showImage: "https://website.com/image4.png",
+          showImage: "https://toginet.com/images/podvox/history-uncovered.png",
           language: 'english',
           explicit: false
         },
@@ -69,7 +69,7 @@ module.exports = {
           author: 'Sophia White',
           showLink: null,
           category: null,
-          showImage: "https://website.com/image5.png",
+          showImage: "https://toginet.com/images/podvox/mindful-moments.png",
           language: 'english',
           explicit: false
         },
@@ -81,7 +81,7 @@ module.exports = {
           author: 'Tom Black',
           showLink: null,
           category: null,
-          showImage: "https://website.com/image6.png",
+          showImage: "https://toginet.com/images/podvox/sports-central.png",
           language: 'english',
           explicit: false
         },
@@ -93,7 +93,7 @@ module.exports = {
           author: 'Olivia Green',
           showLink: null,
           category: null,
-          showImage: "https://website.com/image7.png",
+          showImage: "https://toginet.com/images/podvox/bookworm-chronicles.png",
           language: 'english',
           explicit: false
         },
@@ -105,7 +105,7 @@ module.exports = {
           author: 'Liam Clark',
           showLink: null,
           category: null,
-          showImage: "https://website.com/image8.png",
+          showImage: "https://toginet.com/images/podvox/business-insights.png",
           language: 'english',
           explicit: false
         },
@@ -117,19 +117,19 @@ module.exports = {
           author: 'Mia Martinez',
           showLink: null,
           category: null,
-          showImage: "https://website.com/image9.png",
+          showImage: "https://toginet.com/images/podvox/pop-culture-breakdown.png",
           language: 'english',
           explicit: false
         },
         {
           userId: 10,
-          showTitle: 'Travel Diaries',
+          showTitle: 'The Travel Diaries',
           showSubtitle: 'Adventures from around the globe',
-          showDesc: 'Travel Diaries takes you on a journey through the world’s most exciting destinations, sharing travel tips and unforgettable experiences.',
+          showDesc: 'The Travel Diaries takes you on a journey through the world’s most exciting destinations, sharing travel tips and unforgettable experiences.',
           author: 'Noah Harris',
           showLink: null,
           category: null,
-          showImage: "https://website.com/image10.png",
+          showImage: "https://toginet.com/images/podvox/the-travel-diaries.png",
           language: 'english',
           explicit: false
         }
