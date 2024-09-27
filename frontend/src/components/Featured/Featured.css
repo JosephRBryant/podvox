@@ -1,0 +1,16 @@
+.featured-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: 1fr 1fr;
+  color: red;
+  gap: 1rem;
+  width: 100%;
+  height: 574px;
+  margin-bottom: 3rem;
+}
+
+.show-tile {
+  border-radius: .5rem;
+  background-size: contain;
+  background-position: center;
+}

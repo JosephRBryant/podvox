@@ -1,6 +1,8 @@
 const { sequelize } = require('./db/models');
 require('dotenv').config();
 console.log('Running psql-setup-script.js');
+console.log(typeof process.env.DB_PASSWORD); // should log 'string'
+
 console.log('Loaded Environment Variables:', {
     DB_USERNAME: process.env.DB_USERNAME,
     DB_PASSWORD: process.env.DB_PASSWORD,

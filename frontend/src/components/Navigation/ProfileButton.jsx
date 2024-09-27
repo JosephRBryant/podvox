@@ -4,6 +4,7 @@ import { thunkLogout } from "../../redux/session";
 import OpenModalMenuItem from "./OpenModalMenuItem";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
+import "./ProfileButton.css";
 
 function ProfileButton() {
   const dispatch = useDispatch();
@@ -40,8 +41,10 @@ function ProfileButton() {
 
   return (
     <>
-      <button onClick={toggleMenu}>
-        <i className="fas fa-user-circle" />
+      <button className="profile-btn" onClick={toggleMenu}>
+        AliceCarter
+        {/* {user.username} */}
+        {/* <i className="fas fa-user-circle" /> */}
       </button>
       {showMenu && (
         <ul className={"profile-dropdown"} ref={ulRef}>
