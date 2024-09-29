@@ -640,9 +640,6 @@ module.exports = {
   async down (queryInterface, Sequelize) {
     options.tableName = 'Episodes';
     let episodes = await Episode.findAll();
-
-    return queryInterface.bulkDelete(options, {
-      where: { ...episodes }
-    }, {})
+    return queryInterface.bulkDelete(options, null, {})
   }
 };

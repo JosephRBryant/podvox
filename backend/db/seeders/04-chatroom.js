@@ -73,9 +73,6 @@ module.exports = {
   async down (queryInterface, Sequelize) {
     options.tableName = 'Chatrooms';
     let chatrooms = await Chatroom.findAll();
-
-    return queryInterface.bulkDelete(options, {
-      where: { ...chatrooms }
-    }, {})
+    return queryInterface.bulkDelete(options, null, {})
   }
 };

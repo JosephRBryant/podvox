@@ -1,6 +1,6 @@
 const express = require('express');
 const { check } = require('express-validator');
-const { Show } = require('../../db/models');
+const { Show, User, Episode, Sequelize } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
 const { handleValidationErrors } = require('../../utils/validation');
 
@@ -20,8 +20,18 @@ router.get('/', async (req, res, next) => {
 router.get('/:id', async (req, res, next) => {
   try {
     let id = req.params.id;
+    let show = await Show.findOne({
+      where: { id: id},
+      include: [
+        { model: User,
+          attributes: ['username', 'profileImg']
+        },
+        { model: Episode,
+          attributes: ['id', 'episodeTitle', 'episodeDesc', 'pubDate', 'duration', 'episodeImage', 'downloads']
+        }
+      ]
+    });
 
-    let show = await Show.findByPk(id);
     if (!show) {
       return res.status(404).json({ message: "Show couldn't be found"})
     };
