@@ -9,8 +9,29 @@ const router = express.Router();
 // Get all Shows
 router.get('/', async (req, res, next) => {
   try {
-    let shows = await Show.findAll();
-    res.json(shows)
+    let shows = await Show.findAll({
+      include: [
+        {
+          model: User,
+          attributes: ['username', 'profileImg']
+        },
+        {
+          model: Episode,
+          attributes: ['id', 'downloads']
+        }
+      ]
+    });
+
+    let showsWithDownloads = await Promise.all(shows.map(async show => {
+      let totalDownloads = await Episode.sum('downloads', { where: { showId: show.id}});
+
+      return {
+        ...show.toJSON(),
+        showDownloadTotal: totalDownloads || 0
+      };
+    }));
+
+    res.json(showsWithDownloads)
   } catch(error) {
     next(error)
   }
@@ -27,7 +48,7 @@ router.get('/:id', async (req, res, next) => {
           attributes: ['username', 'profileImg']
         },
         { model: Episode,
-          attributes: ['id', 'episodeTitle', 'episodeDesc', 'pubDate', 'duration', 'episodeImage', 'downloads']
+          attributes: ['id', 'episodeTitle', 'episodeDesc', 'guestInfo', 'pubDate', 'duration', 'episodeUrl', 'episodeImage', 'downloads']
         }
       ]
     });
@@ -35,7 +56,15 @@ router.get('/:id', async (req, res, next) => {
     if (!show) {
       return res.status(404).json({ message: "Show couldn't be found"})
     };
-    return res.json(show)
+
+    let showDowloadTotal = await Episode.sum('downloads', { where: { showId: id }});
+
+    let response = {
+      ...show.toJSON(),
+      showDowloadTotal
+    }
+
+    return res.json(response)
   } catch(error) {
     next(error)
   }

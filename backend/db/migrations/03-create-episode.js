@@ -42,6 +42,9 @@ module.exports = {
         type: Sequelize.STRING(4000),
         allowNull: false
       },
+      guestInfo: {
+        type: Sequelize.STRING(150)
+      },
       pubDate: {
         type: Sequelize.DATE
       },
@@ -55,10 +58,11 @@ module.exports = {
         type: Sequelize.STRING(300),
         allowNull: false
       },
+      episodeUrl: {
+        type: Sequelize.STRING
+      },
       episodeImage: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true
+        type: Sequelize.STRING
       },
       explicit: {
         type: Sequelize.BOOLEAN

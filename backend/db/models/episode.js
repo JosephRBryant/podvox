@@ -69,6 +69,9 @@ module.exports = (sequelize, DataTypes) => {
         // }
       }
     },
+    guestInfo: {
+      type: DataTypes.STRING
+    },
     pubDate: {
       type:DataTypes.DATE
     },
@@ -95,16 +98,17 @@ module.exports = (sequelize, DataTypes) => {
         // }
       }
     },
+    episodeUrl: {
+      type: DataTypes.STRING,
+      validate: {
+        isUrl: {
+          msg: 'Episode URL must be a URL'
+        }
+      }
+    },
     episodeImage: {
       type: DataTypes.STRING,
-      allowNull: false,
-      unique: {
-        msg: 'Episode image is required'
-      },
       validate: {
-        notNull: {
-          msg: 'Episode image is required'
-        },
         isUrl: {
           msg: 'Episode image must but a URL'
         }
