@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
-const { User } = require('../../db/models');
+const { User, Show } = require('../../db/models');
 const { singleMulterUpload, singlePublicFileUpload } = require('../../awsS3')
 
 const router = express.Router();
@@ -84,12 +84,35 @@ router.get('/', (req, res) => {
             id: user.id,
             email: user.email,
             username: user.username,
+            profileImg: user.profileImg
         };
-        return res.json({
-            user: safeUser
-        });
+
+        return res.json(safeUser
+        );
     } else return res.json({ user: null });
 });
+
+// Get User Shows
+
+router.get('/:userId/shows', requireAuth, handleValidationErrors, async (req, res, next) => {
+    try {
+      const { user } = req;
+      let usId = req.params.userId;
+
+      let userShows = await Show.findAll({
+        where: {
+          userId: user.id
+        }
+      });
+      console.log('get user shows api', userShows[0])
+
+      res.json(userShows[0])
+    } catch(error) {
+      error.message = "Bad Request";
+      error.status = 400;
+      next(error)
+    }
+  })
 
 
 module.exports = router;

@@ -37,6 +37,27 @@ router.get('/', async (req, res, next) => {
   }
 })
 
+// // Get User Shows
+
+// router.get('/:userId', requireAuth, handleValidationErrors, async (req, res, next) => {
+//   try {
+//     const { user } = req;
+//     let usId = req.params.id;
+
+//     let userShows = await Show.findAll({
+//       where: {
+//         userId: user.id
+//       }
+//     });
+
+//     res.json(userShows)
+//   } catch(error) {
+//     error.message = "Bad Request";
+//     error.status = 400;
+//     next(error)
+//   }
+// })
+
 // Get one Show by Id
 router.get('/:id', async (req, res, next) => {
   try {
@@ -69,6 +90,7 @@ router.get('/:id', async (req, res, next) => {
     next(error)
   }
 })
+
 
 // Create a Show
 router.post('/', requireAuth, handleValidationErrors, async (req, res, next) => {
@@ -133,6 +155,62 @@ router.delete('/:id', requireAuth, handleValidationErrors, async (req, res, next
       return res.json({ message: "Successfully deleted"})
     }
   } catch(error) {
+    next(error)
+  }
+})
+
+// Create an Episode
+router.post('/:id/episodes', requireAuth, handleValidationErrors, async (req, res, next) => {
+  try {
+    let id = req.params.id
+    const { user } = req;
+    if (user) {
+      const {
+        userId,
+        showId,
+        episodeTitle,
+        episodeDesc,
+        guestInfo,
+        pubDate,
+        duration,
+        size,
+        tags,
+        episodeImage,
+        explicit,
+        published,
+        prefix,
+        downloads
+      } = req.body;
+
+      let episode = await Episode.create({
+        userId,
+        showId,
+        episodeTitle,
+        episodeDesc,
+        guestInfo,
+        pubDate,
+        duration,
+        size,
+        tags,
+        episodeImage,
+        explicit,
+        published,
+        prefix,
+        downloads,
+
+      });
+
+      // episode.createdAt = formatDataTime(episode.createdAt);
+      // episode.updatedAt = formatDataTime(episode.updatedAt);
+
+      res.status(201);
+      return res.json(episode);
+    } else {
+      res.status(400).json({message: 'You must be logged in to create an Episode!'})
+      }
+  } catch(error) {
+    error.message = "Bad Request";
+    error.status = 400;
     next(error)
   }
 })
