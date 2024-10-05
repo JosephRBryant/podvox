@@ -1,15 +1,16 @@
 import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { thunkLogout } from "../../redux/session";
+import { LuLogOut } from "react-icons/lu";
 import OpenModalMenuItem from "./OpenModalMenuItem";
 import LoginFormModal from "../LoginFormModal";
-import SignupFormModal from "../SignupFormModal";
 import "./ProfileButton.css";
 
 function ProfileButton() {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
-  const user = useSelector((store) => store.session.user);
+  const [isUserLoaded, setIsUserLoaded] = useState(false);
+  let user = useSelector((store) => store.session.user);
   const ulRef = useRef();
 
   const toggleMenu = (e) => {
@@ -31,6 +32,13 @@ function ProfileButton() {
     return () => document.removeEventListener("click", closeMenu);
   }, [showMenu]);
 
+  useEffect(() => {
+    if (user) {
+      console.log('user is loaded', user.username)
+      setIsUserLoaded(true)
+    }
+  },[user])
+
   const closeMenu = () => setShowMenu(false);
 
   const logout = (e) => {
@@ -41,11 +49,17 @@ function ProfileButton() {
 
   return (
     <>
-      <button className="profile-btn" onClick={toggleMenu}>
-        AliceCarter
-        {/* {user.username} */}
-        {/* <i className="fas fa-user-circle" /> */}
-      </button>
+      {user ? (
+        <button className="profile-btn" onClick={toggleMenu}>
+          {user.username}
+        </button>
+      ) : (
+        <OpenModalMenuItem
+                className="log-in-btn"
+                itemText="Log In"
+                modalComponent={<LoginFormModal />}
+              />
+      )}
       {showMenu && (
         <ul className={"profile-dropdown"} ref={ulRef}>
           {user ? (
@@ -53,22 +67,21 @@ function ProfileButton() {
               <li>{user.username}</li>
               <li>{user.email}</li>
               <li>
-                <button onClick={logout}>Log Out</button>
+                <button className="sign-out" onClick={logout}>
+                  <LuLogOut />
+                  Sign out
+                </button>
               </li>
             </>
           ) : (
-            <>
-              <OpenModalMenuItem
-                itemText="Log In"
-                onItemClick={closeMenu}
-                modalComponent={<LoginFormModal />}
-              />
-              <OpenModalMenuItem
-                itemText="Sign Up"
-                onItemClick={closeMenu}
-                modalComponent={<SignupFormModal />}
-              />
-            </>
+            null
+            // <>
+            //   <OpenModalMenuItem
+            //     itemText="Log In"
+            //     onItemClick={closeMenu}
+            //     modalComponent={<LoginFormModal />}
+            //   />
+            // </>
           )}
         </ul>
       )}

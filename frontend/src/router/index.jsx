@@ -3,6 +3,8 @@ import LoginFormPage from '../components/LoginFormPage';
 import SignupFormPage from '../components/SignupFormPage';
 import Layout from './Layout';
 import Splash from '../components/Splash';
+import Browse from '../components/Browse';
+import Showpage from '../components/ShowPage';
 
 export const router = createBrowserRouter([
   {
@@ -20,6 +22,14 @@ export const router = createBrowserRouter([
         path: "signup",
         element: <SignupFormPage />,
       },
+      {
+        path: "browse",
+        element: <Browse />,
+      },
+      {
+        path: "/shows/:showId",
+        element: <Showpage />
+      }
     ],
   },
 

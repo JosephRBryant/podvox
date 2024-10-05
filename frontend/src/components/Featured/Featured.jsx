@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import "./Featured.css";
 import { useDispatch, useSelector } from "react-redux"
 import { getAllShowsThunk } from "../../redux/show";
+import ShowTile from "../ShowTile";
 
 const Featured = () => {
-  const dispatch =useDispatch();
+  const dispatch = useDispatch();
   const [loaded, setLoaded] = useState(false);
   let shows = useSelector(state => state.showState.allShows);
 
@@ -25,7 +26,8 @@ const Featured = () => {
   return (
     <div className="featured-grid">
       {shows.map((show, idx) => (
-        <div key={`${show.id}-${show.title}`} className="show-tile" style={{backgroundImage: `url(${show.showImage})`}}>
+        <div key={`${show.id}-${show.title}`} className="show-tile-container">
+          <ShowTile show={show}/>
         </div>
       ))}
     </div>

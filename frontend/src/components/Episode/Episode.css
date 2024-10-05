@@ -1,0 +1,39 @@
+.episode-block-container {
+  display: flex;
+  margin-bottom: 4rem;
+  width: 100%;
+}
+
+.episode-image {
+  width: 250px;
+  border-radius: .5rem;
+  filter: drop-shadow(0px 0px 7px rgba(0, 0, 0, .1));
+}
+
+.episode-text-block {
+  margin: 1rem;
+  width: 100%;
+}
+
+.episode-play-guest {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  font-size: 2rem;
+  font-family: sans-serif;
+  border-bottom: 2px solid #F15A29;
+}
+
+.play-button {
+  border: none;
+  background-color: rgba(0, 0, 0, 0);
+  color: #F15A29;
+  font-size: 4rem;
+  margin-right: 2rem;
+  cursor: pointer;
+}
+
+.episode-description {
+  font-size: 1.5rem;
+}

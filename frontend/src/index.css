@@ -55,14 +55,9 @@ p, h1, h2, h3, h4, h5, h6 {
 
 h1 {
   font-family: sans-serif;
-  color: #F15A29;
-  font-size: 4rem;
-  font-style: italic;
+  font-size: 3rem;
 }
 
 h2 {
-  color: white;
-  font-family: sans-serif;
-  font-weight: 100;
-  font-size: 2rem;
+  font-size: 1.5rem;
 }
