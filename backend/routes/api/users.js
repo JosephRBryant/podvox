@@ -50,6 +50,7 @@ router.post('/', validateSignup, async (req, res) => {
     });
 });
 
+// Update user with image
 router.put('/:id/update', singleMulterUpload('image'), async (req, res, next) => {
     try{
         const {userId} = req.body;

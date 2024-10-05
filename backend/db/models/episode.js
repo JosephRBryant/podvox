@@ -108,11 +108,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     episodeImage: {
       type: DataTypes.STRING,
-      validate: {
-        isUrl: {
-          msg: 'Episode image must but a URL'
-        }
-      }
+      // validate: {
+      //   isUrl: {
+      //     msg: 'Episode image must but a URL'
+      //   }
+      // }
     },
     explicit: {
       type: DataTypes.BOOLEAN,
