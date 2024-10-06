@@ -34,7 +34,6 @@ function ProfileButton() {
 
   useEffect(() => {
     if (user) {
-      console.log('user is loaded', user.username)
       setIsUserLoaded(true)
     }
   },[user])

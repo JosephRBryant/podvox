@@ -59,7 +59,6 @@ export const getUserShowsThunk = (userId) => async (dispatch) => {
     const res = await csrfFetch(`/api/users/${userId}/shows`);
     if (res.ok) {
       const data = await res.json();
-      console.log('get user show thunk', data)
       await dispatch(getUserShows(data))
     } else {
       throw res

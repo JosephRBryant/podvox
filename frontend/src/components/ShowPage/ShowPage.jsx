@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import Episode from '../Episode';
 import { sortEpisodes } from '../../helpers/sort-array';
 import './ShowPage.css';
+import React from 'react';
 
 const ShowPage = () => {
   const dispatch = useDispatch();

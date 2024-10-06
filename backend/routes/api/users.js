@@ -105,7 +105,6 @@ router.get('/:userId/shows', requireAuth, handleValidationErrors, async (req, re
           userId: user.id
         }
       });
-      console.log('get user shows api', userShows[0])
 
       res.json(userShows[0])
     } catch(error) {

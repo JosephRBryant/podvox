@@ -3,11 +3,12 @@ const { check } = require('express-validator');
 const { Show, User, Episode, Sequelize } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
 const { handleValidationErrors } = require('../../utils/validation');
+const { singleMulterUpload, singlePublicFileUpload } = require('../../awsS3');
 
 const router = express.Router();
 
 // Get all Shows
-router.get('/', async (req, res, next) => {
+router.get('/', async (_req, res, next) => {
   try {
     let shows = await Show.findAll({
       include: [
@@ -37,26 +38,6 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-// // Get User Shows
-
-// router.get('/:userId', requireAuth, handleValidationErrors, async (req, res, next) => {
-//   try {
-//     const { user } = req;
-//     let usId = req.params.id;
-
-//     let userShows = await Show.findAll({
-//       where: {
-//         userId: user.id
-//       }
-//     });
-
-//     res.json(userShows)
-//   } catch(error) {
-//     error.message = "Bad Request";
-//     error.status = 400;
-//     next(error)
-//   }
-// })
 
 // Get one Show by Id
 router.get('/:id', async (req, res, next) => {
@@ -160,10 +141,10 @@ router.delete('/:id', requireAuth, handleValidationErrors, async (req, res, next
 })
 
 // Create an Episode
-router.post('/:id/episodes', requireAuth, handleValidationErrors, async (req, res, next) => {
+router.post('/:id/episodes', requireAuth, handleValidationErrors, singleMulterUpload('image'), async (req, res, next) => {
   try {
-    let id = req.params.id
     const { user } = req;
+
     if (user) {
       const {
         userId,
@@ -171,37 +152,40 @@ router.post('/:id/episodes', requireAuth, handleValidationErrors, async (req, re
         episodeTitle,
         episodeDesc,
         guestInfo,
-        pubDate,
+        // pubDate,
         duration,
         size,
         tags,
-        episodeImage,
+        // episodeUrl,
         explicit,
         published,
-        prefix,
+        // prefix,
         downloads
       } = req.body;
 
-      let episode = await Episode.create({
+      let imgUrl;
+
+      if(req.file) {
+        imgUrl = await singlePublicFileUpload(req.file);
+      }
+
+      const episode = await Episode.create({
         userId,
         showId,
         episodeTitle,
         episodeDesc,
         guestInfo,
-        pubDate,
+        // pubDate,
         duration,
         size,
         tags,
-        episodeImage,
+        // episodeUrl,
+        episodeImage: imgUrl || null,
         explicit,
         published,
-        prefix,
+        // prefix,
         downloads,
-
       });
-
-      // episode.createdAt = formatDataTime(episode.createdAt);
-      // episode.updatedAt = formatDataTime(episode.updatedAt);
 
       res.status(201);
       return res.json(episode);

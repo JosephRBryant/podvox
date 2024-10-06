@@ -31,85 +31,56 @@ export const getShowEpisodesThunk = (showId) => async (dispatch) => {
   }
 }
 
-export const createEpisodeThunk = (episodeForm) => async (dispatch) => {
+export const createEpisodeThunk = (episodeForm, form) => async (dispatch) => {
   try {
     const {userId, showId, episodeTitle, episodeDesc, guestInfo, pubDate, duration, size, tags, episodeUrl, episodeImage, explicit, published, prefix, downloads} = episodeForm;
+    const { img_url } = form;
+    const formData = new FormData();
 
-    const episodeData = {
-      userId,
-      showId,
-      episodeTitle,
-      episodeDesc,
-      guestInfo,
-      pubDate,
-      duration,
-      size,
-      tags,
-      episodeUrl,
-      episodeImage,
-      explicit,
-      published,
-      prefix,
-      downloads
-    }
+    formData.append('userId', userId)
+    formData.append('showId', showId)
+    formData.append('episodeTitle', episodeTitle)
+    formData.append('episodeDesc', episodeDesc)
+    formData.append('guestInfo', guestInfo)
+    // formData.append('pubDate', pubDate)
+    // formData.append('duration', duration)
+    // formData.append('size', size)
+    formData.append('tags', tags)
+    // formData.append('episodeUrl', episodeUrl)
+    formData.append('explicit', explicit)
+    formData.append('published', published)
+    // formData.append('prefix', prefix)
+    // formData.append('downloads', downloads)
+    formData.append('image', img_url)
 
-    const options = {
+    const option = {
       method: 'POST',
-      headers: {'Content-Type': 'multipart/form-data'},
-      body: JSON.stringify(episodeData)
+      headers: { 'Content-Type': 'multipart/form-data' },
+      body: formData
     }
 
-    const res = await csrfFetch(`/api/shows/${showId}/episodes`, options)
+    const res = await csrfFetch(`/api/shows/${showId}/episodes`, option)
 
     if (res.ok) {
+      const episode = await res.json();
+      await dispatch(createEpisode(episode));
+      return episode;
+    } else if (res.status < 500) {
       const data = await res.json();
-      await dispatch(createEpisode(data));
-      return data;
-    } else {
-      throw res;
+      if (data.errors) {
+        return data
+      } else {
+        throw new Error('An error occured. Please try again.')
+      }
     }
   } catch(error) {
     return error;
   }
 }
 
-// export const updateUserThunk = (userId, form) => async (dispatch) => {
-//   const { img_url } = form
-//   try{
-
-//       const formData = new FormData();
-
-//       formData.append('userId', userId)
-//       formData.append("image", img_url);
-
-//       const option = {
-//           method: "PUT",
-//           headers: { 'Content-Type': 'multipart/form-data' },
-//           body: formData
-//       }
-
-//       const response = await csrfFetch(`/api/users/${userId}/update`, option);
-//       if (response.ok) {
-//           const user = await response.json();
-//           dispatch(editUser(user));
-
-//       } else if (response.status < 500) {
-//           const data = await response.json();
-//           if (data.errors) {
-//               return data
-//           } else {
-//               throw new Error('An error occured. Please try again.')
-//           }
-//       }
-//       return response;
-//   } catch(e){
-//       return e
-//   }
-// }
-
 const initialState = {
   showEpisodes: [],
-  byId: {}
+  byId: {},
 }
 
 const episodesReducer = (state = initialState, action) => {

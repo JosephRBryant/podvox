@@ -3,7 +3,7 @@ import { csrfFetch } from './csrf';
 //Constants
 const SET_USER = 'session/setUser';
 const REMOVE_USER = 'session/removeUser';
-const EDIT_USER = 'session/editUser'
+const EDIT_USER = 'session/editUser';
 
 const setUser = (user) => ({
     type: SET_USER,
@@ -17,14 +17,13 @@ const removeUser = () => ({
 const editUser = (user) => ({
     type: EDIT_USER,
     payload: user
-})
+});
 
 export const thunkAuthenticate = () => async (dispatch) => {
     try{
         const response = await csrfFetch("/api/restore-user");
         if (response.ok) {
             const user = await response.json();
-            console.log('user data in auth thunk', user)
             dispatch(setUser(user));
         }
     } catch (e){
@@ -41,7 +40,6 @@ export const thunkLogin = (credentials) => async dispatch => {
 
     if (response.ok) {
         const user = await response.json();
-        console.log('user data from thunkLogin', user)
         dispatch(setUser(user));
     } else if (response.status < 500) {
         const errorMessages = await response.json();

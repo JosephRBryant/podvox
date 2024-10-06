@@ -3,9 +3,8 @@ import { useModal } from '../../context/Modal';
 import "./AddEpisode.css";
 import { createEpisodeThunk } from "../../redux/episode";
 import { getUserShowsThunk } from "../../redux/show";
-import { Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-// import { singlePublicFileUpload } from "../../../../backend/awsS3";
+import React from "react";
 
 function AddEpisodeModal() {
   const dispatch = useDispatch();
@@ -14,10 +13,7 @@ function AddEpisodeModal() {
   const { closeModal } = useModal();
   const [loaded, setLoaded] = useState(false);
   const [errors, setErrors] = useState({});
-
   const [imgUrl, setImgUrl] = useState('');
-  const [showUpload, setShowUpload] = useState(true);
-  const [previewUrl, setPreviewUrl] = useState('');
 
   useEffect(() => {
     const getData = async () => {
@@ -43,7 +39,6 @@ function AddEpisodeModal() {
           duration: null,
           size: null,
           tags: '',
-          // episodeUrl: '',
           episodeImage: '',
           explicit: false,
           published: false,
@@ -52,103 +47,24 @@ function AddEpisodeModal() {
   });
 
   episodeForm.showId = userShows.id;
-  // function AddEpisodeModal() {
-  //   const dispatch = useDispatch();
-  //   const [episodeForm, setEpisodeForm] = useState({
-  //     userId: user.id,
-  //     showId: null,
-  //     episodeTitle: '',
-  //     episodeDesc: '',
-  //     guestInfo: '',
-  //     pubDate: null,
-  //     duration: null,
-  //     size: null,
-  //     tags: '',
-  //     // episodeUrl: '',
-  //     episodeImage: '',
-  //     explicit: false,
-  //     published: false,
-  //     prefix: null,
-  //     downloads: null
-  //   });
-  //   const [imgFile, setImgFile] = useState(null);
-  //   const [uploading, setUploading] = useState(false);
-  //   const [errors, setErrors] = useState({});
-
-  //   const handleFileChange = (e) => {
-  //     const file = e.target.files[0];
-  //     if (file) {
-  //       setMp3File(file);
-  //     }
-  //   };
-
-  //   const handleSubmit = async (e) => {
-  //     e.preventDefault();
-  //     if (!mp3File) return;
-
-  //     setUploading(true);
-
-  //     try {
-  //       const fileUrl = await singlePublicFileUpload(mp3File);
-  //       setEpisodeForm((prev) => ({
-  //         ...prev,
-  //         episodeImage: fileUrl,
-  //       }));
-
-  //       const result = await dispatch(createEpisodeThunk({ ...episodeForm, episodeImage: fileUrl }));
-  //       if (result.errors) {
-  //         setErrors(result.errors);
-  //       } else {
-  //         closeModal();
-  //       }
-  //     } catch (error) {
-  //       console.error('Error uploading file:', error);
-  //       setErrors({ upload: 'Error uploading file, Please try again.'});
-  //     } finally {
-  //       setUploading(false);
-  //     }
-  //   };
-
-  //   const updateEpisodeForm = (e) => {
-  //     const { name, value } = e.target;
-  //     setEpisodeForm((prev) => ({
-  //       ...prev,
-  //       [name]: value,
-  //     }));
-  //   };
-
 
   const addImage = async (e) => {
     const file = e.target.files[0];
     const reader = new FileReader();
     reader.readAsDataURL(file);
-    reader.onload = () => {
-      console.log('reader data ', reader.result);
-      setPreviewUrl(reader.result)
-    }
     setImgUrl(file);
-    setShowUpload(false);
-    // updateEpisodeForm(e, 'episodeImage')
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault;
-
-    setEpisodeForm(prev => {
-      const newEpForm = {...prev};
-      newEpForm.episodeImage = previewUrl;
-      return newEpForm;
-    })
-
-    console.log('episodeForm-----', episodeForm)
-    const res = await dispatch(createEpisodeThunk(episodeForm));
-    console.log(res, 'res from in add ep handlesub')
+    const img_url = imgUrl;
+    const form = {img_url};
+    const res = await dispatch(createEpisodeThunk(episodeForm, form));
 
     if (res) {
       setErrors(res);
     }
     else {
-      console.log('this handsub not working')
       closeModal();
       // Navigate(`/shows/${res.showId}`)
     }
@@ -167,13 +83,13 @@ function AddEpisodeModal() {
       <h1>Upload an Episode</h1>
       <form form="form-add-episode" onSubmit={handleSubmit}>
         <label htmlFor="episodeTitle">Title</label>
-        <input type="text" name="episodeTitle" id="episodeTitle" onChange={updateEpisodeForm}/>
+        <input type="text" name="episodeTitle" id="episodeTitle" onChange={(e) => updateEpisodeForm(e, 'episodeTitle')} value={episodeForm.episodeTitle} placeholder="Title"/>
         <label htmlFor="episodeDesc">Description</label>
-        <textarea type="text" name="episodeDesc" id="episodeDesc" onChange={updateEpisodeForm}/>
+        <textarea type="text" name="episodeDesc" id="episodeDesc" onChange={(e) => updateEpisodeForm(e, 'episodeDesc')} value={episodeForm.episodeDesc} placeholder="Description"/>
         <label htmlFor="guestInfo">Guests</label>
-        <input type="text" name="guestInfo" id="guestInfo" onChange={updateEpisodeForm}/>
+        <input type="text" name="guestInfo" id="guestInfo" onChange={(e) => updateEpisodeForm(e, 'guestInfo')} value={episodeForm.guestInfo} placeholder="Guest Information"/>
         <label htmlFor="tags">Tags</label>
-        <textarea type="text" name="tags" id="tags" onChange={updateEpisodeForm}/>
+        <textarea type="text" name="tags" id="tags" onChange={(e) => updateEpisodeForm(e, 'tags')} value={episodeForm.tags} placeholder="Tags"/>
         <label>Select an Episode Image
           <input
             type="file"

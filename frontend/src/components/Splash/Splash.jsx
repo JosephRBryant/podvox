@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { updateUserThunk } from '../../redux/session';
 import { useDispatch, useSelector } from 'react-redux';
 import Search from '../Search';
@@ -36,9 +36,6 @@ const Splash = () => {
     e.preventDefault();
     const img_url = imgUrl;
     const form = {img_url};
-    console.log('img url from profile upload', img_url, 'imgUrl', imgUrl)
-    console.log('prevUrl', previewUrl)
-    console.log('form', form)
     const updateUser = await dispatch(updateUserThunk(user.id, form))
   }
 
