@@ -1,5 +1,5 @@
 import { getOneShowThunk } from '../../redux/show';
-import { useParams } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import Episode from '../Episode';
@@ -12,6 +12,7 @@ const ShowPage = () => {
   const { showId } = useParams();
   const [loaded, setLoaded] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [live, setLive] = useState(true);
   const [activeSort, setActiveSort] = useState('newest');
   const show = useSelector(state => state.showState.showDetails);
 
@@ -55,6 +56,12 @@ const ShowPage = () => {
               <div className="show-page-banner-description">
                 <p>{show.showDesc}</p>
                 <br />
+                {live ? (
+                  <NavLink to={`/shows/${showId}/live`} className="show-page-banner-description-live-btn">
+                    Streaming Live
+                    <div className="show-page-banner-description-green-light"></div>
+                  </NavLink>
+                ) : null}
                 <span className='show-page-banner-description-episode-count'>{`${show.Episodes.length} episodes available`}</span>
               </div>
               <img className="show-page-banner-profile-image" src={show.User.profileImg}/>

@@ -1,0 +1,9 @@
+.live-stream-container {
+  border-radius: .5rem;
+  height: 353px;
+  overflow: hidden;
+}
+
+iframe {
+  border: none;
+}

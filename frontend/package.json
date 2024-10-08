@@ -19,6 +19,7 @@
     "react-router-dom": "^6.15.0",
     "redux": "^4.2.1",
     "redux-thunk": "^2.4.2",
+    "socket.io-client": "^4.8.0",
     "vite-plugin-eslint": "^1.8.1"
   },
   "devDependencies": {
