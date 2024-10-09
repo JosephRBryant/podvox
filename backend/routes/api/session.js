@@ -32,7 +32,13 @@ router.post('/', validateLogin, async (req, res, next) => {
                 username: credential,
                 email: credential
             }
-        }
+        },
+        include: [
+            {
+                model: Show,
+                attributes: ['id']
+            }
+        ]
     });
 
     if (!user || !bcrypt.compareSync(password, user.hashedPassword.toString())) {
@@ -43,11 +49,14 @@ router.post('/', validateLogin, async (req, res, next) => {
         return next(err);
     }
 
+    // console.log('000000000000000000', user.Shows[0].id)
+
     const safeUser = {
         id: user.id,
         email: user.email,
         username: user.username,
-        profileImg: user.profileImg
+        profileImg: user.profileImg,
+        showId: user.Shows[0].id
     };
 
     await setTokenCookie(res, safeUser);

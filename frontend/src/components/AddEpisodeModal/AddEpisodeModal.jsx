@@ -5,6 +5,7 @@ import { createEpisodeThunk } from "../../redux/episode";
 import { getUserShowsThunk } from "../../redux/show";
 import { useEffect, useState } from "react";
 import React from "react";
+import { Navigate } from "react-router-dom";
 
 function AddEpisodeModal() {
   const dispatch = useDispatch();
@@ -57,6 +58,7 @@ function AddEpisodeModal() {
 
   const handleSubmit = async (e) => {
     e.preventDefault;
+    console.log('user from addep handsub', user)
     const img_url = imgUrl;
     const form = {img_url};
     const res = await dispatch(createEpisodeThunk(episodeForm, form));
@@ -66,7 +68,7 @@ function AddEpisodeModal() {
     }
     else {
       closeModal();
-      // Navigate(`/shows/${res.showId}`)
+      Navigate(`/shows/${userShows.id}`);
     }
   }
 

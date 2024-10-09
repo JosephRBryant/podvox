@@ -85,7 +85,8 @@ router.get('/', (req, res) => {
             id: user.id,
             email: user.email,
             username: user.username,
-            profileImg: user.profileImg
+            profileImg: user.profileImg,
+            showId: user.showId
         };
 
         return res.json(safeUser

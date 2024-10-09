@@ -5,6 +5,7 @@ import { LuLogOut } from "react-icons/lu";
 import OpenModalMenuItem from "./OpenModalMenuItem";
 import LoginFormModal from "../LoginFormModal";
 import "./ProfileButton.css";
+import { NavLink } from "react-router-dom";
 
 function ProfileButton() {
   const dispatch = useDispatch();
@@ -63,8 +64,12 @@ function ProfileButton() {
         <ul className={"profile-dropdown"} ref={ulRef}>
           {user ? (
             <>
-              <li>{user.username}</li>
-              <li>{user.email}</li>
+              <NavLink to='/'>
+                Manage Account
+              </NavLink>
+              <NavLink to={`/shows/`}>
+                Visit Show Page
+              </NavLink>
               <li>
                 <button className="sign-out" onClick={logout}>
                   <LuLogOut />
