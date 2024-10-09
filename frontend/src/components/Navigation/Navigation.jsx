@@ -1,24 +1,37 @@
 import { NavLink } from "react-router-dom";
 import ProfileButton from "./ProfileButton";
 import "./Navigation.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FaCircleUser } from "react-icons/fa6";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import SignupFormModal from "../SignupFormModal";
 import OpenModalMenuItem from "./OpenModalMenuItem";
-import LoginFormModal from "../LoginFormModal";
 import { LuUpload } from "react-icons/lu";
 import AddEpisodeModal from "../AddEpisodeModal/AddEpisodeModal";
+import { getUserShowsThunk } from "../../redux/show";
+import CreateShowModal from "../CreateShowModal";
+
 
 function Navigation() {
+  const dispatch = useDispatch();
   let user = useSelector((state) => state.session.user);
+  let userShows = useSelector((state) => state.showState.userShows);
   const [isUserLoaded, setIsUserLoaded] = useState(false);
 
+  console.log('userShows', userShows)
+
   useEffect(() => {
-    if (user) {
-      setIsUserLoaded(true)
+    const getData = async () => {
+      if (user) {
+        await dispatch(getUserShowsThunk(user.id));
+        setIsUserLoaded(true)
+      }
     }
-  }, [user])
+    if (user && !isUserLoaded) {
+      getData();
+    }
+  }, [dispatch, user, isUserLoaded])
+
 
   return (
     <ul className="nav-bar">
@@ -36,15 +49,26 @@ function Navigation() {
             modalComponent={<SignupFormModal />}
           />
         ) : (
-          <OpenModalMenuItem
-            className="upload-ep"
-            itemText="Upload"
-            modalComponent={<AddEpisodeModal />}
-          />
-          // <button className="upload-ep">
-          //   <LuUpload />
-          //   Upload
-          // </button>
+          <>
+          {!userShows ? (
+            <OpenModalMenuItem
+              className="create-show-btn"
+              itemText="Create Show"
+              modalComponent={<CreateShowModal />}
+              user={user}
+            />
+          ) : (
+            <OpenModalMenuItem
+              className="upload-ep"
+              itemText={
+                <>
+                  {<LuUpload />} Upload
+                </>
+              }
+              modalComponent={<AddEpisodeModal />}
+            />
+          )}
+          </>
         )}
         <li className="profile-button-container" id="prof-btn-cont">
           <ProfileButton />

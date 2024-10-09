@@ -81,7 +81,7 @@ function AddEpisodeModal() {
   return (
     <div className="add-episode-main">
       <h1>Upload an Episode</h1>
-      <form form="form-add-episode" onSubmit={handleSubmit}>
+      <form className="form-add-episode" onSubmit={handleSubmit}>
         <label htmlFor="episodeTitle">Title</label>
         <input type="text" name="episodeTitle" id="episodeTitle" onChange={(e) => updateEpisodeForm(e, 'episodeTitle')} value={episodeForm.episodeTitle} placeholder="Title"/>
         <label htmlFor="episodeDesc">Description</label>

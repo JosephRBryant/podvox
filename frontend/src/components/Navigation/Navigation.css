@@ -31,7 +31,8 @@
 }
 
 .sign-up-btn,
-.upload-ep {
+.upload-ep,
+.create-show-btn {
     display: flex;
     align-items: center;
     background-color: #fff;

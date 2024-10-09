@@ -1,4 +1,5 @@
 import { csrfFetch } from './csrf';
+import { getUserShowsThunk, clearUserShows } from './show';
 
 //Constants
 const SET_USER = 'session/setUser';
@@ -25,6 +26,7 @@ export const thunkAuthenticate = () => async (dispatch) => {
         if (response.ok) {
             const user = await response.json();
             dispatch(setUser(user));
+            dispatch(getUserShowsThunk(user.id))
         }
     } catch (e){
         return e
@@ -41,6 +43,7 @@ export const thunkLogin = (credentials) => async dispatch => {
     if (response.ok) {
         const user = await response.json();
         dispatch(setUser(user));
+        dispatch(getUserShowsThunk(user.id));
     } else if (response.status < 500) {
         const errorMessages = await response.json();
         return errorMessages
@@ -106,6 +109,7 @@ export const thunkLogout = () => async (dispatch) => {
         method: "DELETE",
     });
     dispatch(removeUser());
+    dispatch(clearUserShows());
 };
 
 

@@ -33,7 +33,23 @@ export const getShowEpisodesThunk = (showId) => async (dispatch) => {
 
 export const createEpisodeThunk = (episodeForm, form) => async (dispatch) => {
   try {
-    const {userId, showId, episodeTitle, episodeDesc, guestInfo, pubDate, duration, size, tags, episodeUrl, episodeImage, explicit, published, prefix, downloads} = episodeForm;
+    const {
+      userId,
+      showId,
+      episodeTitle,
+      episodeDesc,
+      guestInfo,
+      pubDate,
+      duration,
+      size,
+      tags,
+      episodeUrl,
+      episodeImage,
+      explicit,
+      published,
+      prefix,
+      downloads
+    } = episodeForm;
     const { img_url } = form;
     const formData = new FormData();
 

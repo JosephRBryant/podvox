@@ -100,13 +100,13 @@ router.get('/:userId/shows', requireAuth, handleValidationErrors, async (req, re
       const { user } = req;
       let usId = req.params.userId;
 
-      let userShows = await Show.findAll({
+      let userShows = await Show.findOne({
         where: {
           userId: user.id
         }
       });
 
-      res.json(userShows[0])
+      res.json(userShows)
     } catch(error) {
       error.message = "Bad Request";
       error.status = 400;

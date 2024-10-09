@@ -74,14 +74,42 @@ router.get('/:id', async (req, res, next) => {
 
 
 // Create a Show
-router.post('/', requireAuth, handleValidationErrors, async (req, res, next) => {
+router.post('/', requireAuth, handleValidationErrors, singleMulterUpload('image'), async (req, res, next) => {
   try {
     const { user } = req;
+    console.log('outside first if, create show api')
     if (user) {
-      const { showTitle, showSubtitle, showDesc, author, showLink, category, showImage, language, explicit } = req.body;
-      let show = await Show.create({ userId: user.id, showTitle, showSubtitle, showDesc, author, showLink, category, showImage, language, explicit });
+      const {
+        userId,
+        showTitle,
+        showSubtitle,
+        showDesc,
+        author,
+        category,
+        showImage,
+        language,
+        explicit
+      } = req.body;
 
-      show = show.toJSON();
+      let imgUrl;
+      console.log('inside first if-----', req.body)
+
+      if (req.file) {
+        imgUrl = await singlePublicFileUpload(req.file);
+      }
+
+      const show = await Show.create({
+        userId: user.id,
+        showTitle,
+        showSubtitle,
+        showDesc,
+        author,
+        category,
+        showImage: imgUrl || null,
+        language,
+        explicit
+      });
+
       res.status(201);
       return res.json(show);
     } else {
