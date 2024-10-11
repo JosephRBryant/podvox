@@ -7,6 +7,7 @@ import Splash from '../components/Splash';
 import Browse from '../components/Browse';
 import Showpage from '../components/ShowPage';
 import LivePage from '../components/LivePage/LivePage';
+import ManageAccount from '../components/ManageAccount';
 
 export const router = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ export const router = createBrowserRouter([
       {
         path: "/shows/:showId/live",
         element: <LivePage />
+      },
+      {
+        path: "/account",
+        element: <ManageAccount />
       }
     ],
   },

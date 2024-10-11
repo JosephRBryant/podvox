@@ -5,6 +5,7 @@ const GET_ONE_SHOW = 'shows/getOneShow';
 const GET_USER_SHOWS = 'shows/getUserShows';
 const CLEAR_USER_SHOWS = 'shows/clearUserShows';
 const CREATE_SHOW = 'shows/createShow';
+const UPDATE_SHOW = 'shows/updateShow';
 
 const getAllShows = (shows) => {
   return {
@@ -36,6 +37,13 @@ export const clearUserShows = () => {
 export const createShow = (show) => {
   return {
     type: CREATE_SHOW,
+    payload: show
+  }
+}
+
+export const updateShow = (show) => {
+  return {
+    type: UPDATE_SHOW,
     payload: show
   }
 }
@@ -136,6 +144,61 @@ export const createShowThunk = (showForm, form) => async (dispatch) => {
   }
 }
 
+export const updateShowThunk = (showId, showForm, form) => async (dispatch) => {
+  try {
+    const {
+      userId,
+      showTitle,
+      showSubtitle,
+      showDesc,
+      author,
+      showLink,
+      category,
+      showImage,
+      language,
+      explicit
+    } = showForm;
+
+    const { img_url } = form;
+    const formData = new FormData();
+
+    formData.append('userId', userId);
+
+    if (showTitle) formData.append('showTitle', showTitle);
+    if (showSubtitle) formData.append('showSubtitle', showSubtitle);
+    if (showDesc) formData.append('showDesc', showDesc);
+    if (author) formData.append('author', author);
+    if (language) formData.append('language', language);
+    if (explicit !== undefined) formData.append('explicit', explicit);
+
+    console.log('updated image file: ', img_url);
+    if (img_url) formData.append('image', img_url);
+
+    const option = {
+      method: "PUT",
+      headers: { 'Content-Type': 'multipart/form-data' },
+      body: formData
+    }
+
+    const res = await csrfFetch(`/api/shows/${showId}`, option)
+
+    if (res.ok) {
+      const show = await res.json();
+      await dispatch(updateShow(show));
+      return show;
+    } else if (res.status < 500) {
+      const data = await res.json();
+      if (data.errors) {
+        return data
+      } else {
+        throw new Error('An error occured. Please try again.')
+      }
+    }
+  } catch (error) {
+    return (error)
+  }
+}
+
 const initialState = {
   allShows: [],
   byId: {},
@@ -174,6 +237,18 @@ const showsReducer = (state = initialState, action) => {
       newState = { ...state };
       newState.allShows = [action.payload, ...newState.allShows];
       newState.byId = {...newState.byId, [action.payload.id]: action.payload};
+      return newState;
+    case UPDATE_SHOW:
+      newState = { ...state };
+      if (newState.showDetails.id === action.payload.id) {
+        newState.showDetails = action.payload;
+      }
+
+      newState.byId = { ...newState.byId, [action.payload.id]: action.payload};
+
+      if (newState.userShows[action.payload.id]) {
+        newState.userShows = { ...newState.userShows, [action.payload.id]: action.payload};
+      }
       return newState;
     default:
       return state;

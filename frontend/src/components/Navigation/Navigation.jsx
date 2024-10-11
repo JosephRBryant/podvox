@@ -21,16 +21,11 @@ function Navigation() {
   console.log('userShows', userShows)
 
   useEffect(() => {
-    const getData = async () => {
-      if (user) {
-        await dispatch(getUserShowsThunk(user.id));
-        setIsUserLoaded(true)
-      }
+    if (user) {
+      dispatch(getUserShowsThunk(user.id));
+      setIsUserLoaded(true)
     }
-    if (user && !isUserLoaded) {
-      getData();
-    }
-  }, [dispatch, user, isUserLoaded])
+  }, [dispatch, user])
 
 
   return (

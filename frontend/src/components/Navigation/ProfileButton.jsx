@@ -11,7 +11,8 @@ function ProfileButton() {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const [isUserLoaded, setIsUserLoaded] = useState(false);
-  let user = useSelector((store) => store.session.user);
+  let user = useSelector((state) => state.session.user);
+  let userShow = useSelector((state) => state.showState.userShows)
   const ulRef = useRef();
 
   const toggleMenu = (e) => {
@@ -61,22 +62,20 @@ function ProfileButton() {
               />
       )}
       {showMenu && (
-        <ul className={"profile-dropdown"} ref={ulRef}>
+        <div className={"profile-dropdown"} ref={ulRef}>
           {user ? (
-            <>
-              <NavLink to='/'>
+            <div className="profile-dropdown-container">
+              <NavLink to='/account'>
                 Manage Account
               </NavLink>
-              <NavLink to={`/shows/`}>
+              <NavLink to={`/shows/${userShow.id}`}>
                 Visit Show Page
               </NavLink>
-              <li>
-                <button className="sign-out" onClick={logout}>
-                  <LuLogOut />
-                  Sign out
-                </button>
-              </li>
-            </>
+              <button className="sign-out" onClick={logout}>
+                <LuLogOut />
+                Sign out
+              </button>
+            </div>
           ) : (
             null
             // <>
@@ -87,7 +86,7 @@ function ProfileButton() {
             //   />
             // </>
           )}
-        </ul>
+        </div>
       )}
     </>
   );

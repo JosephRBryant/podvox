@@ -1,5 +1,5 @@
 import './Browse.css';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllShowsThunk } from '../../redux/show';
 import ShowTile from '../ShowTile';
@@ -28,7 +28,7 @@ const Browse = () => {
   let popular = sortArray([...shows], 'showDownloadTotal')
 
   return (
-    <div className="browse-container">
+    <main className="browse-container">
       <div className="browse-header">
         Explore Our Expansive Podcast Library
       </div>
@@ -77,7 +77,7 @@ const Browse = () => {
       <div className="load-more-container">
         <button className="load-more">Load More...</button>
       </div>
-    </div>
+    </main>
   )
 }
 

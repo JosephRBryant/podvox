@@ -9,11 +9,22 @@ import sessionReducer from "./session";
 import showsReducer from "./show";
 import episodesReducer from "./episode";
 
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+
+const persistConfig = {
+    key: 'root',
+    storage,
+    whitelist: ['session', 'showState']
+}
+
 const rootReducer = combineReducers({
     session: sessionReducer,
     showState: showsReducer,
     episodeState: episodesReducer
 });
+
+const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 let enhancer;
 if (import.meta.env.MODE === "production") {
@@ -25,8 +36,8 @@ if (import.meta.env.MODE === "production") {
     enhancer = composeEnhancers(applyMiddleware(thunk, logger));
 }
 
-const configureStore = (preloadedState) => {
-    return createStore(rootReducer, preloadedState, enhancer);
+export const configureStore = (preloadedState) => {
+    const store = createStore(persistedReducer, preloadedState, enhancer);
+    const persistor = persistStore(store);
+    return { store, persistor }
 };
-
-export default configureStore;
