@@ -16,6 +16,7 @@ module.exports = {
         {
           userId: 1,
           showId: 1,
+          episodeNumber: 1,
           episodeTitle: 'The Rise of AI',
           episodeDesc: 'An in-depth look at how artificial intelligence is shaping the tech industry and our daily lives.',
           guestInfo: '["Jack Hart", "Emma Lee"]',
@@ -33,6 +34,7 @@ module.exports = {
         {
           userId: 1,
           showId: 1,
+          episodeNumber: 2,
           episodeTitle: 'Blockchain Beyond Bitcoin',
           episodeDesc: 'Exploring the many uses of blockchain technology beyond cryptocurrency.',
           guestInfo: '',
@@ -50,6 +52,7 @@ module.exports = {
         {
           userId: 1,
           showId: 1,
+          episodeNumber: 3,
           episodeTitle: 'The Future of Wearable Tech',
           episodeDesc: 'How wearable technology is changing fitness, health, and entertainment.',
           guestInfo: '["Ryan Cole"]',
@@ -67,6 +70,7 @@ module.exports = {
         {
           userId: 1,
           showId: 1,
+          episodeNumber: 4,
           episodeTitle: 'Cybersecurity in 2024',
           episodeDesc: 'A discussion about the evolving challenges in cybersecurity and how to stay protected.',
           guestInfo: '["Mia Park", "Luke Ford"]',
@@ -86,6 +90,7 @@ module.exports = {
         {
           userId: 2,
           showId: 2,
+          episodeNumber: 1,
           episodeTitle: '10 Tips for Building Muscle',
           episodeDesc: 'A complete guide to building muscle through weight training and proper nutrition.',
           guestInfo: '',
@@ -103,6 +108,7 @@ module.exports = {
         {
           userId: 2,
           showId: 2,
+          episodeNumber: 2,
           episodeTitle: 'The Best Cardio Workouts',
           episodeDesc: 'Different types of cardio workouts and how to incorporate them into your routine for maximum fat burn.',
           guestInfo: '["Ava Lane"]',
@@ -120,6 +126,7 @@ module.exports = {
         {
           userId: 2,
           showId: 2,
+          episodeNumber: 3,
           episodeTitle: 'Staying Motivated on Your Fitness Journey',
           episodeDesc: 'How to stay consistent and motivated as you work toward your fitness goals.',
           guestInfo: '["Noah King"]',
@@ -137,6 +144,7 @@ module.exports = {
         {
           userId: 2,
           showId: 2,
+          episodeNumber: 4,
           episodeTitle: 'Nutrition for Athletes',
           episodeDesc: 'The best dietary choices for athletes to fuel performance and recovery.',
           guestInfo: '',
@@ -156,6 +164,7 @@ module.exports = {
         {
           userId: 3,
           showId: 3,
+          episodeNumber: 1,
           episodeTitle: 'Mastering the Art of Italian Cooking',
           episodeDesc: 'A guide to classic Italian dishes and cooking techniques.',
           guestInfo: '["Zoe Ray", "Max Hale"]',
@@ -173,6 +182,7 @@ module.exports = {
         {
           userId: 3,
           showId: 3,
+          episodeNumber: 2,
           episodeTitle: 'Exploring the Flavors of Thailand',
           episodeDesc: 'A journey through the rich and vibrant flavors of Thai cuisine.',
           guestInfo: '["Lily Page"]',
@@ -190,6 +200,7 @@ module.exports = {
         {
           userId: 3,
           showId: 3,
+          episodeNumber: 3,
           episodeTitle: 'Baking Like a Pro',
           episodeDesc: 'Tips and tricks for perfect baking, from cakes to cookies.',
           guestInfo: '["Adam Wood", "Ella Dean"]',
@@ -207,6 +218,7 @@ module.exports = {
         {
           userId: 3,
           showId: 3,
+          episodeNumber: 4,
           episodeTitle: 'Vegan Cooking Made Easy',
           episodeDesc: 'Delicious and easy vegan recipes for every occasion.',
           guestInfo: '',
@@ -226,6 +238,7 @@ module.exports = {
         {
           userId: 4,
           showId: 4,
+          episodeNumber: 1,
           episodeTitle: 'The Fall of the Roman Empire',
           episodeDesc: 'An exploration of the factors that led to the collapse of one of history’s greatest empires.',
           guestInfo: '["Jake Hill"]',
@@ -243,6 +256,7 @@ module.exports = {
         {
           userId: 4,
           showId: 4,
+          episodeNumber: 2,
           episodeTitle: 'World War II: Turning Points',
           episodeDesc: 'Key events that shifted the course of World War II.',
           guestInfo: '["Ruby Fox"]',
@@ -260,6 +274,7 @@ module.exports = {
         {
           userId: 4,
           showId: 4,
+          episodeNumber: 3,
           episodeTitle: 'The Industrial Revolution',
           episodeDesc: 'How the Industrial Revolution transformed societies around the world.',
           guestInfo: '["Owen West"]',
@@ -277,6 +292,7 @@ module.exports = {
         {
           userId: 4,
           showId: 4,
+          episodeNumber: 4,
           episodeTitle: 'Ancient Egypt: Pharaohs and Pyramids',
           episodeDesc: 'A look into the fascinating world of ancient Egypt and its incredible achievements.',
           guestInfo: '["Ivy Neal", "Eric Nash"]',
@@ -296,6 +312,7 @@ module.exports = {
         {
           userId: 5,
           showId: 5,
+          episodeNumber: 1,
           episodeTitle: 'The Importance of Mental Health',
           episodeDesc: 'Discussing the importance of mental well-being and how to maintain it.',
           guestInfo: '["Maya Kent"]',
@@ -313,6 +330,7 @@ module.exports = {
         {
           userId: 5,
           showId: 5,
+          episodeNumber: 2,
           episodeTitle: 'Healthy Eating for a Busy Lifestyle',
           episodeDesc: 'Tips for maintaining a balanced diet while juggling a busy life.',
           guestInfo: '["Levi Reed"]',
@@ -330,6 +348,7 @@ module.exports = {
         {
           userId: 5,
           showId: 5,
+          episodeNumber: 3,
           episodeTitle: 'Exercise for Stress Relief',
           episodeDesc: 'How physical activity can help relieve stress and improve overall well-being.',
           guestInfo: '["Kate Moss"]',
@@ -347,6 +366,7 @@ module.exports = {
         {
           userId: 5,
           showId: 5,
+          episodeNumber: 4,
           episodeTitle: 'Sleep: The Key to Health',
           episodeDesc: 'The importance of sleep for physical and mental health, and how to improve your sleep habits.',
           guestInfo: '',
@@ -365,6 +385,7 @@ module.exports = {
         {
           userId: 6,
           showId: 6,
+          episodeNumber: 1,
           episodeTitle: 'The Mystery of the Missing Heiress',
           episodeDesc: 'A deep dive into the disappearance of a wealthy heiress that shocked the nation.',
           guestInfo: '["Sean Day", "Nina Gale"]',
@@ -382,6 +403,7 @@ module.exports = {
         {
           userId: 6,
           showId: 6,
+          episodeNumber: 2,
           episodeTitle: 'The Serial Killer Next Door',
           episodeDesc: 'A chilling look at the double life of a man who turned out to be a serial killer.',
           guestInfo: '["Evan Ross"]',
@@ -399,6 +421,7 @@ module.exports = {
         {
           userId: 6,
           showId: 6,
+          episodeNumber: 3,
           episodeTitle: 'The Unsolved Case of Jon Doe',
           episodeDesc: 'An exploration of a cold case that has baffled investigators for decades.',
           guestInfo: '["Lily Wade"]',
@@ -416,6 +439,7 @@ module.exports = {
         {
           userId: 6,
           showId: 6,
+          episodeNumber: 4,
           episodeTitle: 'Forensic Breakthroughs That Caught Killers',
           episodeDesc: 'How forensic science has been used to solve some of the most infamous crimes.',
           guestInfo: '["Liam Nash", "Anna Cole"]',
@@ -435,6 +459,7 @@ module.exports = {
         {
           userId: 7,
           showId: 7,
+          episodeNumber: 1,
           episodeTitle: 'The Power of Meditation',
           episodeDesc: 'How meditation can improve mental and physical health.',
           guestInfo: '["John Hunt"]',
@@ -452,6 +477,7 @@ module.exports = {
         {
           userId: 7,
           showId: 7,
+          episodeNumber: 2,
           episodeTitle: 'Living in the Present Moment',
           episodeDesc: 'Tips and techniques for practicing mindfulness in everyday life.',
           guestInfo: '["Isla York"]',
@@ -469,6 +495,7 @@ module.exports = {
         {
           userId: 7,
           showId: 7,
+          episodeNumber: 3,
           episodeTitle: 'The Benefits of Yoga',
           episodeDesc: 'How yoga can enhance both physical and mental well-being.',
           guestInfo: '',
@@ -486,6 +513,7 @@ module.exports = {
         {
           userId: 7,
           showId: 7,
+          episodeNumber: 4,
           episodeTitle: 'Gratitude Practices for a Happier Life',
           episodeDesc: 'Exploring how practicing gratitude can transform your outlook and improve mental health.',
           guestInfo: '["Mark Tate", "Zoe Quinn"]',
@@ -505,6 +533,7 @@ module.exports = {
         {
           userId: 8,
           showId: 8,
+          episodeNumber: 1,
           episodeTitle: 'The Best Films of the 21st Century',
           episodeDesc: 'A countdown of the top films released since the year 2000.',
           guestInfo: '["Troy Beck"]',
@@ -522,6 +551,7 @@ module.exports = {
         {
           userId: 8,
           showId: 8,
+          episodeNumber: 2,
           episodeTitle: 'Underrated Movies You Need to Watch',
           episodeDesc: 'A list of movies that flew under the radar but are absolute must-watches.',
           guestInfo: '',
@@ -539,6 +569,7 @@ module.exports = {
         {
           userId: 8,
           showId: 8,
+          episodeNumber: 3,
           episodeTitle: 'The Rise of Superhero Films',
           episodeDesc: 'How superhero movies have dominated the box office and pop culture in the 21st century.',
           guestInfo: '["Lucy Frye"]',
@@ -556,6 +587,7 @@ module.exports = {
         {
           userId: 8,
           showId: 8,
+          episodeNumber: 4,
           episodeTitle: 'Directors Who Defined the Decade',
           episodeDesc: 'Highlighting directors whose work shaped cinema in the 2010s.',
           guestInfo: '["Kyle Gray"]',
@@ -575,6 +607,7 @@ module.exports = {
         {
           userId: 9,
           showId: 9,
+          episodeNumber: 1,
           episodeTitle: 'How to Start a Successful Business',
           episodeDesc: 'A guide for aspiring entrepreneurs looking to turn their ideas into profitable ventures.',
           guestInfo: '["Emma Bell"]',
@@ -592,6 +625,7 @@ module.exports = {
         {
           userId: 9,
           showId: 9,
+          episodeNumber: 2,
           episodeTitle: 'Marketing Tips for Entrepreneurs',
           episodeDesc: 'Proven strategies for promoting your business and attracting customers.',
           guestInfo: '["Matt Shaw"]',
@@ -609,6 +643,7 @@ module.exports = {
         {
           userId: 9,
           showId: 9,
+          episodeNumber: 3,
           episodeTitle: 'How to Scale Your Business',
           episodeDesc: 'Tips for growing your business beyond its initial phase and expanding your reach.',
           guestInfo: '["Brad Ross"]',
@@ -626,6 +661,7 @@ module.exports = {
         {
           userId: 9,
           showId: 9,
+          episodeNumber: 4,
           episodeTitle: 'Entrepreneurs Who Changed the World',
           episodeDesc: 'A look at some of the most influential entrepreneurs in history and their legacies.',
           guestInfo: '',
@@ -645,6 +681,7 @@ module.exports = {
         {
           userId: 10,
           showId: 10,
+          episodeNumber: 1,
           episodeTitle: 'Backpacking Across Europe',
           episodeDesc: 'Stories and tips from a backpacking trip across Europe, exploring its diverse cultures.',
           guestInfo: '["Mia Cruz"]',
@@ -662,6 +699,7 @@ module.exports = {
         {
           userId: 10,
           showId: 10,
+          episodeNumber: 2,
           episodeTitle: 'Exploring Southeast Asia',
           episodeDesc: 'An adventure through the rich landscapes and cultures of Southeast Asia.',
           guestInfo: '',
@@ -679,6 +717,7 @@ module.exports = {
         {
           userId: 10,
           showId: 10,
+          episodeNumber: 3,
           episodeTitle: 'The Best Hidden Gems in South America',
           episodeDesc: 'Discovering the most breathtaking but lesser-known destinations in South America.',
           guestInfo: '["Jade Fox"]',
@@ -696,6 +735,7 @@ module.exports = {
         {
           userId: 10,
           showId: 10,
+          episodeNumber: 4,
           episodeTitle: 'Solo Travel: Pros and Cons',
           episodeDesc: 'Exploring the joys and challenges of traveling solo around the world.',
           guestInfo: '["Nick Lane", "Leah Wade"]',

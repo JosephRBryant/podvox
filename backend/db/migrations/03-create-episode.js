@@ -34,6 +34,10 @@ module.exports = {
           key: 'id'
         }
       },
+      episodeNumber: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
       episodeTitle: {
         type: Sequelize.STRING(150),
         allowNull: false

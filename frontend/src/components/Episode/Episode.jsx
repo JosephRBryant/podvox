@@ -37,9 +37,9 @@ const Episode = ({episode, show}) => {
           <div className="episode-title-container">
             {<h3>{episode.episodeTitle}</h3>}
             {episode.guestInfo.length > 0 ? (
-              <h2>Episode {episode.id}  with guest {JSON.parse(episode.guestInfo)}</h2>
+              <h2>Episode {episode.episodeNumber}  with guest {JSON.parse(episode.guestInfo)}</h2>
             ) : (
-              <h2>Episode {episode.id}</h2>
+              <h2>Episode {episode.episodeNumber}</h2>
             )}
           </div>
         </div>

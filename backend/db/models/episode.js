@@ -1,6 +1,7 @@
 'use strict';
 const {
-  Model
+  Model,
+  INTEGER
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Episode extends Model {
@@ -32,6 +33,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     showId: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    episodeNumber: {
       type: DataTypes.INTEGER,
       allowNull: false
     },
