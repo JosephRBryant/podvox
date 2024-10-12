@@ -1,6 +1,7 @@
 'use strict';
 const {
-  Model
+  Model,
+  INTEGER
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Episode extends Model {
@@ -35,6 +36,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false
     },
+    episodeNumber: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
     episodeTitle: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -46,10 +51,10 @@ module.exports = (sequelize, DataTypes) => {
           args: [3, 150],
           msg: 'Episode title must be between 3 and 150 characters'
         },
-        is: {
-          args: /^[a-zA-Z\s]+$/,
-          msg: 'Episode title must be only letters and spaces'
-        }
+        // is: {
+        //   args: /^[a-zA-Z\s]+$/,
+        //   msg: 'Episode title must be only letters and spaces'
+        // }
       }
     },
     episodeDesc: {
@@ -63,11 +68,14 @@ module.exports = (sequelize, DataTypes) => {
           args: [50, 4000],
           msg: 'Episode description must be between 50 and 4000 characters'
         },
-        is: {
-          args: /^[a-zA-Z\s]+$/,
-          msg: 'Episode description must be only letters and spaces'
-        }
+        // is: {
+        //   args: /^[a-zA-Z\s]+$/,
+        //   msg: 'Episode description must be only letters and spaces'
+        // }
       }
+    },
+    guestInfo: {
+      type: DataTypes.STRING
     },
     pubDate: {
       type:DataTypes.DATE
@@ -89,26 +97,27 @@ module.exports = (sequelize, DataTypes) => {
           args: [3, 300],
           msg: 'Tags must be between 3 and 300 characters'
         },
-        is: {
-          args: /^[a-zA-Z\s]+$/,
-          msg: 'Tags must be only letters and spaces'
+        // is: {
+        //   args: /^[a-zA-Z\s]+$/,
+        //   msg: 'Tags must be only letters and spaces'
+        // }
+      }
+    },
+    episodeUrl: {
+      type: DataTypes.STRING,
+      validate: {
+        isUrl: {
+          msg: 'Episode URL must be a URL'
         }
       }
     },
     episodeImage: {
       type: DataTypes.STRING,
-      allowNull: false,
-      unique: {
-        msg: 'Episode image is required'
-      },
-      validate: {
-        notNull: {
-          msg: 'Episode image is required'
-        },
-        isUrl: {
-          msg: 'Episode image must but a URL'
-        }
-      }
+      // validate: {
+      //   isUrl: {
+      //     msg: 'Episode image must but a URL'
+      //   }
+      // }
     },
     explicit: {
       type: DataTypes.BOOLEAN,

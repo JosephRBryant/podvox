@@ -1,9 +1,10 @@
 import { csrfFetch } from './csrf';
+import { getUserShowsThunk, clearUserShows } from './show';
 
 //Constants
 const SET_USER = 'session/setUser';
 const REMOVE_USER = 'session/removeUser';
-const EDIT_USER = 'session/editUser'
+const EDIT_USER = 'session/editUser';
 
 const setUser = (user) => ({
     type: SET_USER,
@@ -17,14 +18,15 @@ const removeUser = () => ({
 const editUser = (user) => ({
     type: EDIT_USER,
     payload: user
-})
+});
 
 export const thunkAuthenticate = () => async (dispatch) => {
     try{
         const response = await csrfFetch("/api/restore-user");
         if (response.ok) {
-            const data = await response.json();
-            dispatch(setUser(data));
+            const user = await response.json();
+            dispatch(setUser(user));
+            dispatch(getUserShowsThunk(user.id))
         }
     } catch (e){
         return e
@@ -39,8 +41,9 @@ export const thunkLogin = (credentials) => async dispatch => {
     });
 
     if (response.ok) {
-        const data = await response.json();
-        dispatch(setUser(data));
+        const user = await response.json();
+        dispatch(setUser(user));
+        dispatch(getUserShowsThunk(user.id));
     } else if (response.status < 500) {
         const errorMessages = await response.json();
         return errorMessages
@@ -86,7 +89,7 @@ export const updateUserThunk = (userId, form) => async (dispatch) => {
         if (response.ok) {
             const user = await response.json();
             dispatch(editUser(user));
-
+            return user;
         } else if (response.status < 500) {
             const data = await response.json();
             if (data.errors) {
@@ -106,6 +109,7 @@ export const thunkLogout = () => async (dispatch) => {
         method: "DELETE",
     });
     dispatch(removeUser());
+    dispatch(clearUserShows());
 };
 
 

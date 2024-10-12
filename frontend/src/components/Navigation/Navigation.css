@@ -1,3 +1,93 @@
 .profile-dropdown {
     position: absolute;
 }
+
+.nav-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+    margin: 1rem 2rem;
+}
+
+.nav-logo {
+    width: 150px;
+}
+
+.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.about-btn,
+.shows-menu-btn {
+    border: none;
+    color: #F15A29;
+    text-decoration: none;
+    font-family: sans-serif;
+    font-weight: normal;
+    cursor: pointer;
+}
+
+.sign-up-btn,
+.upload-ep,
+.create-show-btn {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    height: 2rem;
+    border: 2px solid #F15A29;
+    border-radius: 24px;
+    padding: 0 24px;
+    font-family: sans-serif;
+    color: #F15A29;
+    cursor: pointer;
+}
+
+.upload-ep {
+    gap: .5rem;
+    padding: 0 1rem;
+}
+
+.profile-button-container {
+    display: flex;
+    justify-content: flex-end;
+    height: 2rem;
+}
+
+.profile-image-container {
+    background-color: #F15A29;
+    border-radius: 0 24px 24px 0;
+}
+
+.profile-image {
+    height: 2rem !important;
+    width: 2rem !important;
+}
+
+.profile-icon-container {
+    width: 2rem;
+    height: 2rem;
+    background-color: #F15A29;
+    border-radius: 0 1rem 1rem 0;
+}
+
+.sign-up-tab {
+    width: 2rem;
+    height: 2rem;
+    background-color: #F15A29;
+    border-radius: 0 1rem 1rem 0;
+}
+
+.profile-btn {
+    cursor: pointer;
+}
+
+.profile-icon {
+    font-size: 2rem;
+    color: #666;
+    background-color: white;
+    border-radius: 1rem;
+
+}

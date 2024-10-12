@@ -14,10 +14,20 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(
         models.Show,
         { foreignKey: 'userId', onDelete: 'CASCADE'}
+      ),
+      User.hasMany(
+        models.Chatroom,
+        { foreignKey: 'userId', onDelete: 'CASCADE'}
       )
     }
   }
   User.init({
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+      allowNull: false
+    },
     username: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -28,6 +38,20 @@ module.exports = (sequelize, DataTypes) => {
             throw new Error('Cannot be an email.');
           }
         }
+      }
+    },
+    firstName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        len: [2, 30]
+      }
+    },
+    lastName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        len: [2, 30]
       }
     },
     email: {
@@ -46,7 +70,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     profileImg: {
       type: DataTypes.STRING,
-      allowNull: false,
       defaultValue: ''
     }
   }, {

@@ -18,22 +18,84 @@ module.exports = {
       options.tableName = "Users";
       return queryInterface.bulkInsert(options, [
         {
-          email: 'demo@user.io',
-          username: 'Demo-lition',
+          email: 'alice@user.io',
+          username: 'AliceSmith',
+          firstName: 'Alice',
+          lastName: 'Smith',
           hashedPassword: bcrypt.hashSync('password'),
-          profileImg: ''
+          profileImg: 'https://toginet.com/images/podvox/profiles/alice-smith.jpg'
         },
         {
-          email: 'user1@user.io',
-          username: 'FakeUser1',
-          hashedPassword: bcrypt.hashSync('password2'),
-          profileImg: ''
+          email: 'bob@user.io',
+          username: 'BobJohnson',
+          firstName: 'Bob',
+          lastName: 'Johnson',
+          hashedPassword: bcrypt.hashSync('password'),
+          profileImg: 'https://toginet.com/images/podvox/profiles/bob-johnson.jpg'
         },
         {
-          email: 'user2@user.io',
-          username: 'FakeUser2',
-          hashedPassword: bcrypt.hashSync('password3'),
-          profileImg: ''
+          email: 'emma@user.io',
+          username: 'EmmaBrown',
+          firstName: 'Emma',
+          lastName: 'Brown',
+          hashedPassword: bcrypt.hashSync('password'),
+          profileImg: 'https://toginet.com/images/podvox/profiles/emma-brown.jpg'
+        },
+        {
+          email: 'david@user.io',
+          username: 'DavidLee',
+          firstName: 'David',
+          lastName: 'Lee',
+          hashedPassword: bcrypt.hashSync('password'),
+          profileImg: 'https://toginet.com/images/podvox/profiles/david-lee.jpg'
+        },
+        {
+          email: 'sophia@user.io',
+          username: 'SophiaWhite',
+          firstName: 'Sophia',
+          lastName: 'White',
+          hashedPassword: bcrypt.hashSync('password'),
+          profileImg: 'https://toginet.com/images/podvox/profiles/sophia-white.jpg'
+        },
+        {
+          email: 'tom@user.io',
+          username: 'TomBlack',
+          firstName: 'Tom',
+          lastName: 'Black',
+          hashedPassword: bcrypt.hashSync('password'),
+          profileImg: 'https://toginet.com/images/podvox/profiles/tom-black.jpg'
+        },
+        {
+          email: 'olivia@user.io',
+          username: 'OliviaGreen',
+          firstName: 'Olivia',
+          lastName: 'Green',
+          hashedPassword: bcrypt.hashSync('password'),
+          profileImg: 'https://toginet.com/images/podvox/profiles/olivia-green.jpg'
+        },
+        {
+          email: 'liam@user.io',
+          username: 'LiamClark',
+          firstName: 'Liam',
+          lastName: 'Clark',
+          hashedPassword: bcrypt.hashSync('password'),
+          profileImg: 'https://toginet.com/images/podvox/profiles/liam-clark.jpg'
+        },
+        {
+          email: 'mia@user.io',
+          username: 'MiaMartinez',
+          firstName: 'Mia',
+          lastName: 'Martinez',
+          hashedPassword: bcrypt.hashSync('password'),
+          profileImg: 'https://toginet.com/images/podvox/profiles/mia-martinez.jpg'
+        },
+        {
+          email: 'noah@user.io',
+          username: 'NoahHarris',
+          firstName: 'Noah',
+          lastName: 'Harris',
+          hashedPassword: bcrypt.hashSync('password'),
+          profileImg: 'https://toginet.com/images/podvox/profiles/noah-harris.jpg'
         }
       ], {})
     },

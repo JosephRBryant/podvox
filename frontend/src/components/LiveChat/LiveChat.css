@@ -1,0 +1,12 @@
+.live-chat-container {
+  border-radius: .5rem;
+  width: 50%;
+  height: 353px;
+  border: 1px solid purple;
+}
+
+.message-btn {
+  width: 10rem;
+  height: 3rem;
+  background-color: red;
+}

@@ -20,6 +20,10 @@ module.exports = (sequelize, DataTypes) => {
       Show.hasMany(
         models.Episode,
         { foreignKey: 'showId', onDelete: 'CASCADE'}
+      ),
+      Show.hasOne(
+        models.Chatroom,
+        { foreignKey: 'showId', onDelete: 'CASCADE'}
       )
     }
   }
@@ -42,10 +46,10 @@ module.exports = (sequelize, DataTypes) => {
           args: [3, 150],
           msg: 'Show title must be between 3 and 150 characters'
         },
-        is: {
-          args: /^[a-zA-Z\s]+$/,
-          msg: 'Show title must be only letters and spaces'
-        }
+        // is: {
+        //   args: /^[a-zA-Z\s]+$/,
+        //   msg: 'Show title must be only letters and spaces'
+        // }
       }
     },
     showSubtitle: {
@@ -55,10 +59,10 @@ module.exports = (sequelize, DataTypes) => {
           args: [3, 150],
           msg: 'Show subtitle must be between 3 and 150 characters'
         },
-        is: {
-          args: /^[a-zA-Z\s]+$/,
-          msg: 'Show subtitle must be only letters and spaces'
-        }
+        // is: {
+        //   args: /^[a-zA-Z\s]+$/,
+        //   msg: 'Show subtitle must be only letters and spaces'
+        // }
       }
     },
     showDesc: {
@@ -72,10 +76,10 @@ module.exports = (sequelize, DataTypes) => {
           args: [50, 4000],
           msg: 'Show description must be between 50 and 4000 characters'
         },
-        is: {
-          args: /^[a-zA-Z\s]+$/,
-          msg: 'Show description must be only letters and spaces'
-        }
+        // is: {
+        //   args: /^[a-zA-Z\s]+$/,
+        //   msg: 'Show description must be only letters and spaces'
+        // }
       }
     },
     author: {
@@ -89,10 +93,10 @@ module.exports = (sequelize, DataTypes) => {
           args: [3, 100],
           msg: 'Author must be between 3 and 100 characters'
         },
-        is: {
-          args: /^[a-zA-Z\s]+$/,
-          msg: 'Author must be only letters and spaces'
-        }
+        // is: {
+        //   args: /^[a-zA-Z\s]+$/,
+        //   msg: 'Author must be only letters and spaces'
+        // }
       }
     },
     showLink: {
@@ -108,11 +112,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     category: {
       type: DataTypes.STRING,
-      allowNull: false,
       validate: {
-        notNull: {
-          msg: 'Show category is required'
-        },
         len: {
           arg: [2, 150],
           msg: 'Show categories must be between 2 and 150 characters'
@@ -141,10 +141,10 @@ module.exports = (sequelize, DataTypes) => {
         notNull: {
           msg: 'Show language is required'
         },
-        is: {
-          args: /^[a-zA-Z\s]+$/,
-          msg: 'Show language must be only letters and spaces'
-        }
+        // is: {
+        //   args: /^[a-zA-Z\s]+$/,
+        //   msg: 'Show language must be only letters and spaces'
+        // }
       }
     },
     explicit: {

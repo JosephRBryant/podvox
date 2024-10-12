@@ -3,9 +3,8 @@ const { Op } = require('sequelize');
 const bcrypt = require('bcryptjs');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
-
 const { setTokenCookie, restoreUser } = require('../../utils/auth');
-const { User } = require('../../db/models');
+const { User, Show } = require('../../db/models');
 
 const router = express.Router();
 
@@ -23,8 +22,9 @@ const validateLogin = [
 
 
 // Log in
-router.post('/', async (req, res, next) => {
-    const { credential, password } = req.body;
+router.post('/', validateLogin, async (req, res, next) => {
+    const { credential, password, profileImg } = req.body;
+    console.log(req.body.credential)
     console.log(credential, password, "************")
     const user = await User.unscoped().findOne({
         where: {
@@ -32,7 +32,13 @@ router.post('/', async (req, res, next) => {
                 username: credential,
                 email: credential
             }
-        }
+        },
+        include: [
+            {
+                model: Show,
+                attributes: ['id']
+            }
+        ]
     });
 
     if (!user || !bcrypt.compareSync(password, user.hashedPassword.toString())) {
@@ -43,17 +49,20 @@ router.post('/', async (req, res, next) => {
         return next(err);
     }
 
+    // console.log('000000000000000000', user.Shows[0].id)
+
     const safeUser = {
         id: user.id,
         email: user.email,
         username: user.username,
+        profileImg: user.profileImg,
+        showId: user.Shows[0].id
     };
 
     await setTokenCookie(res, safeUser);
 
-    return res.json({
-        user: safeUser
-    });
+    return res.json(safeUser
+    );
 });
 
 // Log out

@@ -1,0 +1,198 @@
+.manage-account-container {
+
+}
+
+.account-show-container {
+  display: flex;
+  gap: 2rem;
+}
+
+.account-info-container,
+.show-info-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 50%;
+  margin: 4rem 2rem;
+}
+
+.account-info-header,
+.show-info-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  font-size: 1.24rem;
+  margin-bottom: 2rem;
+}
+
+.account-info-header h2,
+.show-info-header h2 {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  font-size: 2rem;
+  font-family: sans-serif;
+  line-height: 1.5rem;
+}
+
+.edit-account-info-btn,
+.edit-show-info-btn {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  line-height: 1rem;
+  font-family: sans-serif;
+}
+
+.username-field,
+.email-field,
+.password-field,
+.confirm-password-field,
+.profile-img-field,
+.title-field,
+.subtitle-field,
+.description-field,
+.author-field,
+.show-img-field,
+.language-field,
+.explicit-field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  margin: 2rem 0 0 0;
+  padding-bottom: 2rem;
+  font-family: sans-serif;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.language-explicit-container {
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.language-field,
+.explicit-field {
+  border: none;
+}
+
+.profile-img-field,
+.show-img-field {
+  justify-content: flex-start;
+  gap: 4rem;
+}
+
+/* .profile-img-field-label-btn,
+.show-img-field-label-btn {
+  gap: 2rem;
+} */
+
+#file-upload {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 2.5rem;
+  border-radius: 1.25rem;
+  border: 1px solid #666;
+  color: #666;
+  margin-top: 1rem;
+  gap: .5rem;
+  cursor: pointer;
+}
+
+.upload-img-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 2.5rem;
+  border-radius: 1.25rem;
+  border: 1px solid #666;
+  color: #666;
+  margin-top: 1rem;
+  gap: .5rem;
+  cursor: pointer;
+}
+
+.profile-img-field {
+  padding: 0;
+}
+
+.profile-img-field-img {
+  height: 248px;
+}
+
+.profile-img-field-img img {
+  width: 200px;
+  border-radius: 100px;
+  overflow: hidden;
+}
+
+.save-cancel-btns {
+  position: relative;
+  top: -1.75rem;
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.save-profile-btn,
+.cancel-profile-btn {
+  background: none;
+  border: none;
+  font-size: 3rem;
+  cursor: pointer;
+}
+
+.save-profile-btn {
+  color: rgb(0, 208, 0);
+}
+
+.cancel-profile-btn {
+  color: rgb(255, 0, 0);
+}
+
+.show-img-field-img {
+  width: 200px;
+  border-radius: .5rem;
+  overflow: hidden;
+}
+
+.language-explicit-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.language-field,
+.explicit-field {
+  display: flex;
+}
+
+.username-field-username,
+.email-field-email,
+.password-field-password,
+.confirm-password-field-password,
+.title-field-title,
+.subtitle-field-subtitle,
+.description-field-description,
+.author-field-author,
+.language-field-language,
+.explicit-field-explicit {
+  min-height: 2rem;
+  width: 65%;
+  background-color: rgb(240, 240, 240);
+  color: #666;
+  border-radius: .25rem;
+  display: flex;
+  align-items: center;
+  padding: .5rem 2rem;
+}
+
+.edit-icon {
+  cursor: pointer;
+}
+
+.hidden,
+.hiddenShow {
+  display: none !important;
+}
