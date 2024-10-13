@@ -50,8 +50,37 @@ router.post('/', validateSignup, async (req, res) => {
     });
 });
 
+// Update with user info
+router.put('/:id/update', requireAuth, handleValidationErrors, async (req, res, next) => {
+    try {
+        let { user } = req;
+        let userId = req.params.id;
+        const { email, username, firstName, lastName, password } = req.body;
+
+        let userExists = await User.findByPk(userId);
+        if (!userExists) {
+            return res.status(404).json({message: "User couldn't be found"})
+        } else if (userExists.id !== parseInt(userId)) {
+            return res.status(404).json({message: "User does not own this account"})
+        }
+
+        let updatedFields = { email, username, firstName, lastName };
+        if (password) {
+            const hashedPassword = bcrypt.hashSync(password);
+            updatedFields.password = hashedPassword;
+        }
+
+        userExists.set(updatedFields);
+        await userExists.save();
+        const updatedUser = userExists.toJSON();
+        return res.json(updatedUser);
+    } catch(error) {
+        next(error);
+    }
+})
+
 // Update user with image
-router.put('/:id/update', singleMulterUpload('image'), async (req, res, next) => {
+router.put('/:id/update', singleMulterUpload('image'), requireAuth, handleValidationErrors, async (req, res, next) => {
     try{
         const {userId} = req.body;
         let user;
@@ -85,6 +114,8 @@ router.get('/', (req, res) => {
             id: user.id,
             email: user.email,
             username: user.username,
+            firstName: user.firstName,
+            lastName: user.lastName,
             profileImg: user.profileImg,
             showId: user.showId
         };

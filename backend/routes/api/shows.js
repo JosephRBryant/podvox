@@ -77,7 +77,7 @@ router.get('/:id', async (req, res, next) => {
 router.post('/', requireAuth, handleValidationErrors, singleMulterUpload('image'), async (req, res, next) => {
   try {
     const { user } = req;
-    console.log('outside first if, create show api')
+
     if (user) {
       const {
         userId,
@@ -92,7 +92,6 @@ router.post('/', requireAuth, handleValidationErrors, singleMulterUpload('image'
       } = req.body;
 
       let imgUrl;
-      console.log('inside first if-----', req.body)
 
       if (req.file) {
         imgUrl = await singlePublicFileUpload(req.file);

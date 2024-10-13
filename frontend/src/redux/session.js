@@ -71,6 +71,38 @@ export const thunkSignup = (user) => async (dispatch) => {
 };
 
 export const updateUserThunk = (userId, form) => async (dispatch) => {
+    try {
+        const accountData = {};
+
+        if (form.email) accountData.email = form.email;
+        if (form.username) accountData.username = form.username;
+        if (form.firstName) accountData.firstName = form.firstName;
+        if (form.lastName) accountData.lastName = form.lastName;
+        if (form.password) accountData.password = form.password;
+        if (form.profileImg) accountData.profileImg = form.profileImg;
+
+        const options = {
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(accountData)
+        }
+
+        const res = await csrfFetch(`/api/users/${userId}/update`, options);
+        if (res.ok) {
+            const updatedUser = await res.json();
+            await dispatch(editUser(updatedUser));
+            return updatedUser;
+        } else {
+            const errorMessages = await res.json();
+            return errorMessages;
+        }
+    } catch (error) {
+        console.error('Error updating user: ', error);
+        return { server: "Something went wrong. Please try again." };
+    }
+}
+
+export const updateUserImgThunk = (userId, form) => async (dispatch) => {
     const { img_url } = form
     try{
 

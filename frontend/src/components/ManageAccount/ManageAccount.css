@@ -44,8 +44,15 @@
   font-family: sans-serif;
 }
 
+.toggle-editor-btn {
+  background: none;
+  border: none;
+}
+
 .username-field,
 .email-field,
+.firstname-field,
+.lastname-field,
 .password-field,
 .confirm-password-field,
 .profile-img-field,
@@ -160,7 +167,7 @@
 
 .language-explicit-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 
 .language-field,
@@ -170,6 +177,8 @@
 
 .username-field-username,
 .email-field-email,
+.firstname-field-firstname,
+.lastname-field-lastname,
 .password-field-password,
 .confirm-password-field-password,
 .title-field-title,
@@ -185,7 +194,7 @@
   border-radius: .25rem;
   display: flex;
   align-items: center;
-  padding: .5rem 2rem;
+  padding: .5rem 1rem;
 }
 
 .edit-icon {

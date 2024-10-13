@@ -58,7 +58,6 @@ function AddEpisodeModal() {
 
   const handleSubmit = async (e) => {
     e.preventDefault;
-    console.log('user from addep handsub', user)
     const img_url = imgUrl;
     const form = {img_url};
     const res = await dispatch(createEpisodeThunk(episodeForm, form));

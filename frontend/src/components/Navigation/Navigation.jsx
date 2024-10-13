@@ -18,8 +18,6 @@ function Navigation() {
   let userShows = useSelector((state) => state.showState.userShows);
   const [isUserLoaded, setIsUserLoaded] = useState(false);
 
-  console.log('userShows', userShows)
-
   useEffect(() => {
     if (user) {
       dispatch(getUserShowsThunk(user.id));

@@ -82,7 +82,6 @@ export const getUserShowsThunk = (userId) => async (dispatch) => {
     const res = await csrfFetch(`/api/users/${userId}/shows`);
     if (res.ok) {
       const data = await res.json();
-      console.log('fetched shows', data)
       dispatch(getUserShows(data))
     } else {
       throw res
@@ -108,7 +107,6 @@ export const createShowThunk = (showForm, form) => async (dispatch) => {
     } = showForm;
     const { img_url } = form;
     const formData = new FormData();
-    console.log('create show thunk', userId, showTitle, showSubtitle, showDesc, img_url)
 
     formData.append('userId', userId)
     formData.append('showTitle', showTitle)
@@ -124,7 +122,6 @@ export const createShowThunk = (showForm, form) => async (dispatch) => {
       headers: { 'Content-Type': 'multipart/form-data' },
       body: formData
     }
-    console.log('formData before post fetch create show', formData)
     const res = await csrfFetch('/api/shows', option)
 
     if (res.ok) {
@@ -144,58 +141,74 @@ export const createShowThunk = (showForm, form) => async (dispatch) => {
   }
 }
 
-export const updateShowThunk = (showId, showForm, form) => async (dispatch) => {
+export const updateShowThunk = (showId, form) => async (dispatch) => {
   try {
-    const {
-      userId,
-      showTitle,
-      showSubtitle,
-      showDesc,
-      author,
-      showLink,
-      category,
-      showImage,
-      language,
-      explicit
-    } = showForm;
+    const showData = {};
 
-    const { img_url } = form;
-    const formData = new FormData();
+    if (form.userId) showData.userId = form.userId;
+    if (form.showTitle) showData.showTitle = form.showTitle;
+    if (form.showSubtitle) showData.showSubtitle = form.showSubtitle;
+    if (form.showDesc) showData.showDesc = form.showDesc;
+    if (form.author) showData.author = form.author;
+    if (form.showLink) showData.showLink = form.showLink;
+    if (form.category) showData.category = form.category;
+    if (form.showImage) showData.showImage = form.showImage;
+    if (form.language) showData.language = form.language;
+    if (form.explicit) showData.explicit = form.explicit;
 
-    formData.append('userId', userId);
-
-    if (showTitle) formData.append('showTitle', showTitle);
-    if (showSubtitle) formData.append('showSubtitle', showSubtitle);
-    if (showDesc) formData.append('showDesc', showDesc);
-    if (author) formData.append('author', author);
-    if (language) formData.append('language', language);
-    if (explicit !== undefined) formData.append('explicit', explicit);
-
-    console.log('updated image file: ', img_url);
-    if (img_url) formData.append('image', img_url);
-
-    const option = {
-      method: "PUT",
-      headers: { 'Content-Type': 'multipart/form-data' },
-      body: formData
+    const options = {
+      method: 'PUT',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(showData)
     }
 
-    const res = await csrfFetch(`/api/shows/${showId}`, option)
+    const res = await csrfFetch(`/api/shows/${showId}`, options)
 
     if (res.ok) {
-      const show = await res.json();
-      await dispatch(updateShow(show));
-      return show;
-    } else if (res.status < 500) {
-      const data = await res.json();
-      if (data.errors) {
-        return data
-      } else {
-        throw new Error('An error occured. Please try again.')
-      }
+      const updatedShow = await res.json();
+      await dispatch(updateShow(updatedShow));
+      return updatedShow;
+    } else {
+      const errorMessages = await res.json();
+      return errorMessages;
     }
   } catch (error) {
-    return (error)
+    console.error('Error updating show: ', error);
+    return { server: "Something went wrong. Please try again."}
+  }
+}
+
+export const updateShowImgThunk = (showId, form) => async (dispatch) => {
+  const { img_url } = form
+  try{
+
+      const formData = new FormData();
+
+      formData.append('showId', showId)
+      formData.append("image", img_url);
+
+      const option = {
+          method: "PUT",
+          headers: { 'Content-Type': 'multipart/form-data' },
+          body: formData
+      }
+
+      const response = await csrfFetch(`/api/shows/${showId}/update`, option);
+      if (response.ok) {
+          const show = await response.json();
+          dispatch(updateShow(show));
+          return show;
+      } else if (response.status < 500) {
+          const data = await response.json();
+          if (data.errors) {
+              return data
+          } else {
+              throw new Error('An error occured. Please try again.')
+          }
+      }
+      return response;
+  } catch(e){
+      return e
   }
 }
 
@@ -203,7 +216,7 @@ const initialState = {
   allShows: [],
   byId: {},
   showDetails: {},
-  userShows: {}
+  showShows: {}
 };
 
 const showsReducer = (state = initialState, action) => {

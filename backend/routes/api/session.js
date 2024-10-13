@@ -49,12 +49,13 @@ router.post('/', validateLogin, async (req, res, next) => {
         return next(err);
     }
 
-    // console.log('000000000000000000', user.Shows[0].id)
 
     const safeUser = {
         id: user.id,
         email: user.email,
         username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
         profileImg: user.profileImg,
         showId: user.Shows[0].id
     };
