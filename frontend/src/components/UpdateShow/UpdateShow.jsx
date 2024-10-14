@@ -2,16 +2,23 @@ import React, { useEffect, useRef, useState } from 'react';
 import { FaRegEdit, FaCamera, FaCheckCircle } from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
 import './UpdateShow.css';
-import { useDispatch } from 'react-redux';
-import { updateShowThunk } from '../../redux/show';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateShowThunk, updateShowImgThunk, getUserShowsThunk } from '../../redux/show';
 
-const UpdateShow = ({userShow}) => {
+const UpdateShow = ({userId}) => {
   const dispatch = useDispatch();
+  const userShow = useSelector(state => state.showState.userShows);
 
-  const [imgUrl, setImgUrl] = useState(null);
+  useEffect(() => {
+    if (userId) {
+      dispatch(getUserShowsThunk(userId));
+    }
+  }, [dispatch, userId])
+
+  const [showImgUrl, setShowImgUrl] = useState(null);
   const [showUpload, setShowUpload] = useState(true);
-  const [previewUrl, setPreviewUrl] = useState(userShow.showImage);
-  const [currImg, setCurrImg] = useState(userShow.showImage);
+  const [previewShowUrl, setPreviewShowUrl] = useState(userShow.showImage);
+  const [currShowImg, setCurrShowImg] = useState(userShow.showImage);
   const [updateBtns, setUpdateBtns] = useState(false);
   const [editorOpen, setEditorOpen] = useState(false);
   const [errors, setErrors] = useState({});
@@ -20,6 +27,8 @@ const UpdateShow = ({userShow}) => {
     showSubtitle: '',
     showDesc: '',
     author: '',
+    showLink: 'www.example.com',
+    category: '',
     language: '',
     explicit: false
   })
@@ -27,15 +36,19 @@ const UpdateShow = ({userShow}) => {
   const editorRef = useRef();
 
   useEffect(() => {
-    setShowForm({
-      showTitle: userShow.showTitle || '',
-      showSubtitle: userShow.showSubtitle || '',
-      showDesc: userShow.showDesc || '',
-      author: userShow.author || '',
-      language: userShow.language || '',
-      explicit: userShow.explicit || false,
-    })
-  },[]);
+    if (userShow) {
+      setShowForm({
+        showTitle: userShow.showTitle || '',
+        showSubtitle: userShow.showSubtitle || '',
+        showDesc: userShow.showDesc || '',
+        author: userShow.author || '',
+        showLink: 'www.example.com',
+        category: userShow.category || '',
+        language: userShow.language || '',
+        explicit: userShow.explicit || false,
+      });
+    }
+  },[userShow]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -46,6 +59,8 @@ const UpdateShow = ({userShow}) => {
       showSubtitle: showForm.showSubtitle || userShow.showSubtitle,
       showDesc: showForm.showDesc || userShow.showDesc,
       author: showForm.author || userShow.author,
+      showLink: 'www.example.com',
+      category: showForm.category || userShow.category,
       language: showForm.language || userShow.language,
       explicit: showForm.explicit || userShow.explicit,
     };
@@ -54,14 +69,14 @@ const UpdateShow = ({userShow}) => {
       const res = await dispatch(updateShowThunk(userShow.id, payload));
 
       if (!res.id) {
-        console.log('clickity click')
         const err = await res.json();
         const backendErrors = {};
         backendErrors.message = err.message;
         setErrors(backendErrors);
       } else {
         setEditorOpen(false);
-        return res
+        await dispatch(getUserShowsThunk(userId));
+        return res;
       }
     } catch (error) {
       return error;
@@ -76,15 +91,15 @@ const UpdateShow = ({userShow}) => {
     })
   }
 
-  const updateImage = async (e) => {
+  const updateShowImage = async (e) => {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
-        setPreviewUrl(reader.result);
+        setPreviewShowUrl(reader.result);
       };
       reader.readAsDataURL(file);
-      setImgUrl(file);
+      setShowImgUrl(file);
       setShowUpload(false);
       setUpdateBtns(true);
     }
@@ -117,35 +132,40 @@ const UpdateShow = ({userShow}) => {
     return () => document.removeEventListener('click', closeEditor);
   }, [editorOpen])
 
-  const handleImgSubmit = async (e) => {
+  const handleShowImgSubmit = async (e) => {
     e.preventDefault();
-    const form = {};
+    if (!showImgUrl) return;
 
-    if (imgUrl) form.img_url = imgUrl;
+    const form = {
+      show_img_url: showImgUrl,
+      userId: userShow.userId,
+      showTitle: userShow.showTitle,
+      showSubtitle: userShow.showSubtitle,
+      showDesc: userShow.showDesc,
+      author: userShow.author,
+      showLink: 'www.example.com',
+      category: userShow.category,
+      language: userShow.language,
+      explicit: userShow.explicit
+    };
 
-    const updatedShow = await dispatch(updateShowThunk(
-      userShow.id,
-      {
-        userId: userShow.userId,
-        showtitle: userShow.showTitle,
-        showSubtitle: userShow.showSubtitle,
-        showDesc: userShow.showDesc,
-        author: userShow.author,
-        language: userShow.language,
-        explicit: userShow.explicit
-      }, form));
+    const updatedShow = await dispatch(updateShowImgThunk(userShow.id, form));
 
     if (updatedShow) {
-      setCurrImg(updatedShow.showImage);
-      setPreviewUrl(updatedShow.showImage);
+      console.log('is the updatedShow response ok', updatedShow)
+      setCurrShowImg(updatedShow.showImage);
       setUpdateBtns(false);
     }
   };
 
-  const handleCancelImgSubmit = () => {
-    setPreviewUrl(currImg);
-    setImgUrl(null);
+  const handleCancelShowImgSubmit = () => {
+    setPreviewShowUrl(currShowImg);
+    setShowImgUrl(null);
     setUpdateBtns(false);
+  }
+
+  const deleteShow = () => {
+
   }
 
   return (
@@ -155,7 +175,10 @@ const UpdateShow = ({userShow}) => {
           <div className="show-info-header">
             <h2>Show Info</h2>
             <div className="edit-show-info-btn">
-              <button type='submit' className="toggle-editor-btn">
+              <button className="delete-show-btn" onClick={deleteShow}>
+                delete
+              </button>
+              <button type='submit' className="update-show-btn">
                 save
               </button>
               <button className="toggle-editor-btn" onClick={toggleEditor}>
@@ -337,7 +360,7 @@ const UpdateShow = ({userShow}) => {
           </div>
         </form>
       )}
-      <form className="show-img-field" onSubmit={handleImgSubmit}>
+      <form className="show-img-field" onSubmit={handleShowImgSubmit}>
         <div className="show-img-field-label-btn">
           Show Image:
           <label htmlFor="show-file-upload" className="upload-img-btn">
@@ -345,20 +368,20 @@ const UpdateShow = ({userShow}) => {
             Edit
           </label>
           <input
-            className="hiddenShow"
+            className="hidden"
             type="file"
             id='show-file-upload'
-            name='img_url'
-            onChange={updateImage}
+            name='show_img_url'
+            onChange={updateShowImage}
             accept='.jpg, .jpeg, .png, .gif'
           />
         </div>
         <div className="show-img-field-img">
-          <img src={previewUrl} alt="Show Image" />
+          <img src={previewShowUrl} alt="Show Image" />
           {updateBtns && (
             <div className="save-cancel-btns">
               <button type="submit" className="save-profile-btn"><FaCheckCircle /></button>
-              <button type="button" className="cancel-profile-btn" onClick={handleCancelImgSubmit}><MdCancel /></button>
+              <button type="button" className="cancel-profile-btn" onClick={handleCancelShowImgSubmit}><MdCancel /></button>
             </div>
           )}
         </div>

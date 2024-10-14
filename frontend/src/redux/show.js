@@ -105,7 +105,7 @@ export const createShowThunk = (showForm, form) => async (dispatch) => {
       language,
       explicit
     } = showForm;
-    const { img_url } = form;
+    const { show_img_url } = form;
     const formData = new FormData();
 
     formData.append('userId', userId)
@@ -115,7 +115,7 @@ export const createShowThunk = (showForm, form) => async (dispatch) => {
     formData.append('author', author)
     formData.append('language', language)
     formData.append('explicit', explicit)
-    formData.append('image', img_url)
+    formData.append('image', show_img_url)
 
     const option = {
       method: 'POST',
@@ -162,8 +162,7 @@ export const updateShowThunk = (showId, form) => async (dispatch) => {
       body: JSON.stringify(showData)
     }
 
-    const res = await csrfFetch(`/api/shows/${showId}`, options)
-
+    const res = await csrfFetch(`/api/shows/${showId}/update-show`, options)
     if (res.ok) {
       const updatedShow = await res.json();
       await dispatch(updateShow(updatedShow));
@@ -173,19 +172,26 @@ export const updateShowThunk = (showId, form) => async (dispatch) => {
       return errorMessages;
     }
   } catch (error) {
-    console.error('Error updating show: ', error);
     return { server: "Something went wrong. Please try again."}
   }
 }
 
 export const updateShowImgThunk = (showId, form) => async (dispatch) => {
-  const { img_url } = form
+  const { show_img_url, showTitle, showSubtitle, showDesc, author, showLink, language, explicit } = form
   try{
 
       const formData = new FormData();
 
-      formData.append('showId', showId)
-      formData.append("image", img_url);
+      console.log('show title from thunk', showTitle)
+      formData.append('showId', showId);
+      formData.append('showTitle', showTitle);
+      formData.append('showSubtitle', showSubtitle);
+      formData.append('showDesc', showDesc);
+      formData.append('author', author);
+      formData.append('showLink', showLink);
+      formData.append('language', language);
+      formData.append('explicit', explicit);
+      formData.append("image", show_img_url);
 
       const option = {
           method: "PUT",
@@ -193,7 +199,7 @@ export const updateShowImgThunk = (showId, form) => async (dispatch) => {
           body: formData
       }
 
-      const response = await csrfFetch(`/api/shows/${showId}/update`, option);
+      const response = await csrfFetch(`/api/shows/${showId}/update-image`, option);
       if (response.ok) {
           const show = await response.json();
           dispatch(updateShow(show));

@@ -32,15 +32,17 @@ const validateSignup = [
 // Sign up
 router.post('/', validateSignup, async (req, res) => {
 
-    const { email, password, username } = req.body;
+    const { email, password, username, firstName, lastName } = req.body;
 
     const hashedPassword = bcrypt.hashSync(password);
-    const user = await User.create({ email, username, hashedPassword });
+    const user = await User.create({ email, username, firstName, lastName, hashedPassword });
 
     const safeUser = {
         id: user.id,
         email: user.email,
         username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName
     };
 
     await setTokenCookie(res, safeUser);
@@ -51,7 +53,7 @@ router.post('/', validateSignup, async (req, res) => {
 });
 
 // Update with user info
-router.put('/:id/update', requireAuth, handleValidationErrors, async (req, res, next) => {
+router.put('/:id/update-user', requireAuth, handleValidationErrors, async (req, res, next) => {
     try {
         let { user } = req;
         let userId = req.params.id;
@@ -80,25 +82,31 @@ router.put('/:id/update', requireAuth, handleValidationErrors, async (req, res, 
 })
 
 // Update user with image
-router.put('/:id/update', singleMulterUpload('image'), requireAuth, handleValidationErrors, async (req, res, next) => {
+router.put('/:id/update-image', singleMulterUpload('image'), requireAuth, handleValidationErrors, async (req, res, next) => {
     try{
-        const {userId} = req.body;
+        const { userId, username, email, firstName, lastName } = req.body;
         let user;
-
+        console.log('destructured user from route-----------------', userId, username, firstName, lastName, '---------------------------------------')
         if(userId){
             user = await User.findByPk(userId);
         } else{
-            throw new Error("No user founder with that id")
+            throw new Error("No user found with that id")
         }
 
         let imgUrl;
 
         if(req.file){
             imgUrl = await singlePublicFileUpload(req.file); //converts data from form
+            user.profileImg = imgUrl;
         }
-        user.profileImg = imgUrl;
+
+        if (username) user.username = username;
+        if (email) user.email = email;
+        if (firstName) user.firstName = firstName;
+        if (lastName) user.lastName = lastName;
+
         await user.save();
-        return res.json(user)
+        return res.json(user);
 
     }catch(e){
         next(e)
@@ -137,8 +145,12 @@ router.get('/:userId/shows', requireAuth, handleValidationErrors, async (req, re
           userId: user.id
         }
       });
+      if (userShows) {
+          userShows.dataValues.showLink = 'www.example.com'
+          console.log('-----------------------user show from backend', userShows.dataValues)
 
-      res.json(userShows)
+          res.json(userShows)
+      }
     } catch(error) {
       error.message = "Bad Request";
       error.status = 400;

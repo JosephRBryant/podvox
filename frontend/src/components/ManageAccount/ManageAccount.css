@@ -4,6 +4,7 @@
 
 .account-show-container {
   display: flex;
+  width: 100%;
   gap: 2rem;
 }
 
@@ -23,6 +24,19 @@
   justify-content: space-between;
   font-size: 1.24rem;
   margin-bottom: 2rem;
+}
+
+.show-info-create-container {
+  display: flex;
+  flex-direction: column;
+  width: 592px;
+  margin: 32px;
+}
+
+.manage-show-create-show-btn {
+  margin: 4rem 2rem;
+  width: 50%;
+  height: 5rem;
 }
 
 .account-info-header h2,
@@ -195,6 +209,10 @@
   display: flex;
   align-items: center;
   padding: .5rem 1rem;
+}
+
+.description-field-description {
+  height: 146px;
 }
 
 .edit-icon {

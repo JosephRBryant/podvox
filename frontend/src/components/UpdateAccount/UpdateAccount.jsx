@@ -5,8 +5,6 @@ import './UpdateAccount.css';
 import { useDispatch } from 'react-redux';
 import { updateUserImgThunk, updateUserThunk } from '../../redux/session';
 
-
-
 const UpdateAccount = ({user}) => {
   const dispatch = useDispatch();
 
@@ -129,10 +127,17 @@ const UpdateAccount = ({user}) => {
     e.preventDefault();
     if (!imgUrl) return;
 
-    const form = { img_url: imgUrl };
+    const form = {
+        img_url: imgUrl,
+        username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName
+     };
     const updatedUser = await dispatch(updateUserImgThunk(user.id, form));
 
     if (updatedUser) {
+      console.log('is the updatedUser response ok', updatedUser)
+
       setCurrImg(updatedUser.profileImg);
       setUpdateBtns(false);
     }
@@ -306,34 +311,34 @@ const UpdateAccount = ({user}) => {
         </div>
       </form>
       )}
-          <form className="profile-img-field" onSubmit={handleImgSubmit}>
-            <div className="profile-img-field-label-btn">
-              Profile Image:
-              <label htmlFor='file-upload' className="upload-img-btn">
-                <FaCamera />
-                Edit
-              </label>
-              <input
-                className='hidden'
-                type='file'
-                id='file-upload'
-                name="img_url"
-                onChange={updateImage}
-                accept='.jpg, .jpeg, .png, .gif'
-                />
-            </div>
-
-            <div className="profile-img-field-img">
-              <img src={previewUrl} alt="Profile Image"/>
-              {updateBtns && (
-                <div className="save-cancel-btns">
-                  <button type="submit" className="save-profile-btn"><FaCheckCircle /></button>
-                  <button type="button" className="cancel-profile-btn" onClick={handleCancelImgSubmit}><MdCancel /></button>
-                </div>
-              )}
-            </div>
-          </form>
+      <form className="profile-img-field" onSubmit={handleImgSubmit}>
+        <div className="profile-img-field-label-btn">
+          Profile Image:
+          <label htmlFor='file-upload' className="upload-img-btn">
+            <FaCamera />
+            Edit
+          </label>
+          <input
+            className='hidden'
+            type='file'
+            id='file-upload'
+            name="img_url"
+            onChange={updateImage}
+            accept='.jpg, .jpeg, .png, .gif'
+            />
         </div>
+
+        <div className="profile-img-field-img">
+          <img src={previewUrl || 'https://placehold.co/500x500/2196F3/fff/?font=raleway&text=image'} alt="Profile Image"/>
+          {updateBtns && (
+            <div className="save-cancel-btns">
+              <button type="submit" className="save-profile-btn"><FaCheckCircle /></button>
+              <button type="button" className="cancel-profile-btn" onClick={handleCancelImgSubmit}><MdCancel /></button>
+            </div>
+          )}
+        </div>
+      </form>
+    </div>
   )
 }
 

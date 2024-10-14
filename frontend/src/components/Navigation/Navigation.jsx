@@ -43,7 +43,7 @@ function Navigation() {
           />
         ) : (
           <>
-          {!userShows ? (
+          {!userShows.id ? (
             <OpenModalMenuItem
               className="create-show-btn"
               itemText="Create Show"
