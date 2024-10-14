@@ -5,6 +5,7 @@ const GET_ONE_SHOW = 'shows/getOneShow';
 const GET_USER_SHOWS = 'shows/getUserShows';
 const CLEAR_USER_SHOWS = 'shows/clearUserShows';
 const CREATE_SHOW = 'shows/createShow';
+const DELETE_SHOW = 'shows/deleteShow';
 const UPDATE_SHOW = 'shows/updateShow';
 
 const getAllShows = (shows) => {
@@ -31,6 +32,13 @@ export const getUserShows = (shows) => {
 export const clearUserShows = () => {
   return {
     type: CLEAR_USER_SHOWS
+  };
+};
+
+export const deleteShow = (showId) => {
+  return {
+    type: DELETE_SHOW,
+    payload: showId
   };
 };
 
@@ -77,20 +85,20 @@ export const getOneShowThunk = (showId) => async (dispatch) => {
 
 }
 
-export const getUserShowsThunk = (userId) => async (dispatch) => {
-  try {
-    const res = await csrfFetch(`/api/users/${userId}/shows`);
-    if (res.ok) {
-      const data = await res.json();
-      console.log('fetched shows', data)
-      dispatch(getUserShows(data))
-    } else {
-      throw res
-    }
-  } catch(error) {
-    return error;
-  }
-}
+// export const getUserShowsThunk = (userId) => async (dispatch) => {
+//   try {
+//     const res = await csrfFetch(`/api/users/${userId}/shows`);
+//     if (res.ok) {
+//       const data = await res.json();
+//       dispatch(getUserShows(data))
+//     } else {
+//       throw new Error('Failed to get User Show');
+//     }
+//   } catch(error) {
+//     console.error('Error fetching user show: ', error)
+//     return error;
+//   }
+// }
 
 export const createShowThunk = (showForm, form) => async (dispatch) => {
   try {
@@ -100,15 +108,11 @@ export const createShowThunk = (showForm, form) => async (dispatch) => {
       showSubtitle,
       showDesc,
       author,
-      showLink,
-      category,
-      showImage,
       language,
       explicit
     } = showForm;
     const { img_url } = form;
     const formData = new FormData();
-    console.log('create show thunk', userId, showTitle, showSubtitle, showDesc, img_url)
 
     formData.append('userId', userId)
     formData.append('showTitle', showTitle)
@@ -117,14 +121,16 @@ export const createShowThunk = (showForm, form) => async (dispatch) => {
     formData.append('author', author)
     formData.append('language', language)
     formData.append('explicit', explicit)
-    formData.append('image', img_url)
+
+    if (img_url) {
+      formData.append('image', img_url);
+    }
 
     const option = {
       method: 'POST',
       headers: { 'Content-Type': 'multipart/form-data' },
       body: formData
     }
-    console.log('formData before post fetch create show', formData)
     const res = await csrfFetch('/api/shows', option)
 
     if (res.ok) {
@@ -144,55 +150,97 @@ export const createShowThunk = (showForm, form) => async (dispatch) => {
   }
 }
 
-export const updateShowThunk = (showId, showForm, form) => async (dispatch) => {
+export const updateShowThunk = (showId, form) => async (dispatch) => {
   try {
-    const {
-      userId,
-      showTitle,
-      showSubtitle,
-      showDesc,
-      author,
-      showLink,
-      category,
-      showImage,
-      language,
-      explicit
-    } = showForm;
+    const showData = {};
 
-    const { img_url } = form;
-    const formData = new FormData();
+    if (form.userId) showData.userId = form.userId;
+    if (form.showTitle) showData.showTitle = form.showTitle;
+    if (form.showSubtitle) showData.showSubtitle = form.showSubtitle;
+    if (form.showDesc) showData.showDesc = form.showDesc;
+    if (form.author) showData.author = form.author;
+    if (form.showLink) showData.showLink = form.showLink;
+    if (form.category) showData.category = form.category;
+    if (form.showImage) showData.showImage = form.showImage;
+    if (form.language) showData.language = form.language;
+    if (form.explicit) showData.explicit = form.explicit;
 
-    formData.append('userId', userId);
-
-    if (showTitle) formData.append('showTitle', showTitle);
-    if (showSubtitle) formData.append('showSubtitle', showSubtitle);
-    if (showDesc) formData.append('showDesc', showDesc);
-    if (author) formData.append('author', author);
-    if (language) formData.append('language', language);
-    if (explicit !== undefined) formData.append('explicit', explicit);
-
-    console.log('updated image file: ', img_url);
-    if (img_url) formData.append('image', img_url);
-
-    const option = {
-      method: "PUT",
-      headers: { 'Content-Type': 'multipart/form-data' },
-      body: formData
+    const options = {
+      method: 'PUT',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(showData)
     }
 
-    const res = await csrfFetch(`/api/shows/${showId}`, option)
+    const res = await csrfFetch(`/api/shows/${showId}/update-show`, options)
+    if (res.ok) {
+      const updatedShow = await res.json();
+      await dispatch(updateShow(updatedShow));
+      return updatedShow;
+    } else {
+      const errorMessages = await res.json();
+      return errorMessages;
+    }
+  } catch (error) {
+    return { server: "Something went wrong. Please try again."}
+  }
+}
+
+export const updateShowImgThunk = (showId, form) => async (dispatch) => {
+  const { show_img_url, showTitle, showSubtitle, showDesc, author, showLink, language, explicit } = form
+  try{
+
+      const formData = new FormData();
+
+      console.log('show title from thunk', showTitle)
+      formData.append('showId', showId);
+      formData.append('showTitle', showTitle);
+      formData.append('showSubtitle', showSubtitle);
+      formData.append('showDesc', showDesc);
+      formData.append('author', author);
+      formData.append('showLink', showLink);
+      formData.append('language', language);
+      formData.append('explicit', explicit);
+      formData.append("image", show_img_url);
+
+      const option = {
+          method: "PUT",
+          headers: { 'Content-Type': 'multipart/form-data' },
+          body: formData
+      }
+
+      const response = await csrfFetch(`/api/shows/${showId}/update-image`, option);
+      if (response.ok) {
+          const show = await response.json();
+          dispatch(updateShow(show));
+          return show;
+      } else if (response.status < 500) {
+          const data = await response.json();
+          if (data.errors) {
+              return data
+          } else {
+              throw new Error('An error occured. Please try again.')
+          }
+      }
+      return response;
+  } catch(e){
+      return e
+  }
+}
+
+export const deleteShowThunk = (show) => async (dispatch) => {
+  try {
+    const options = {
+      method: 'DELETE',
+      header: {'Content-type': 'application/json'}
+    };
+
+    const res = await csrfFetch(`/api/shows/${show.id}`, options);
 
     if (res.ok) {
-      const show = await res.json();
-      await dispatch(updateShow(show));
-      return show;
-    } else if (res.status < 500) {
-      const data = await res.json();
-      if (data.errors) {
-        return data
-      } else {
-        throw new Error('An error occured. Please try again.')
-      }
+      const { showId } = await res.json();
+      dispatch(deleteShow(showId))
+    } else {
+      throw res;
     }
   } catch (error) {
     return (error)
@@ -202,8 +250,7 @@ export const updateShowThunk = (showId, showForm, form) => async (dispatch) => {
 const initialState = {
   allShows: [],
   byId: {},
-  showDetails: {},
-  userShows: {}
+  showDetails: {}
 };
 
 const showsReducer = (state = initialState, action) => {
@@ -225,10 +272,6 @@ const showsReducer = (state = initialState, action) => {
         newState.byId[show.id] = show;
       }
       return newState;
-    case GET_USER_SHOWS:
-      newState = {...state};
-      newState.userShows = action.payload;
-      return newState;
     case CLEAR_USER_SHOWS:
       newState = { ...state };
       newState.userShows = {};
@@ -243,12 +286,18 @@ const showsReducer = (state = initialState, action) => {
       if (newState.showDetails.id === action.payload.id) {
         newState.showDetails = action.payload;
       }
-
       newState.byId = { ...newState.byId, [action.payload.id]: action.payload};
-
       if (newState.userShows[action.payload.id]) {
         newState.userShows = { ...newState.userShows, [action.payload.id]: action.payload};
       }
+      return newState;
+    case DELETE_SHOW:
+      newState = { ...state };
+      newState.allShows = newState.allShows.filter(show => show.id !== action.payload);
+      if (newState.userShows[action.payload]) {
+        delete newState.userShows[action.payload]
+      }
+      delete newState.byId[action.payload];
       return newState;
     default:
       return state;

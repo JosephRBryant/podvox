@@ -74,25 +74,22 @@ router.get('/:id', async (req, res, next) => {
 
 
 // Create a Show
-router.post('/', requireAuth, handleValidationErrors, singleMulterUpload('image'), async (req, res, next) => {
+router.post('/', singleMulterUpload('image'), requireAuth, handleValidationErrors, async (req, res, next) => {
   try {
     const { user } = req;
-    console.log('outside first if, create show api')
+
     if (user) {
       const {
-        userId,
         showTitle,
         showSubtitle,
         showDesc,
         author,
         category,
-        showImage,
         language,
         explicit
       } = req.body;
 
       let imgUrl;
-      console.log('inside first if-----', req.body)
 
       if (req.file) {
         imgUrl = await singlePublicFileUpload(req.file);
@@ -105,7 +102,7 @@ router.post('/', requireAuth, handleValidationErrors, singleMulterUpload('image'
         showDesc,
         author,
         category,
-        showImage: imgUrl || null,
+        showImage: imgUrl,
         language,
         explicit
       });
@@ -123,55 +120,83 @@ router.post('/', requireAuth, handleValidationErrors, singleMulterUpload('image'
 })
 
 // Update a Show
-router.put('/:id', singleMulterUpload('image'), requireAuth, handleValidationErrors, async (req, res, next) => {
+router.put('/:id/update-show', requireAuth, handleValidationErrors, async (req, res, next) => {
   try {
     const { user } = req;
-    if (user) {
-      const { showTitle, showSubtitle, showDesc, author, showLink, category, showImage, language, explicit } = req.body;
-      let id = req.params.id;
-      let show = await Show.findByPk(id);
+    let userId = req.params.id;
+    const {
+      showTitle,
+      showSubtitle,
+      showDesc,
+      author,
+      showLink,
+      category,
+      language,
+      explicit
+    } = req.body;
+    let id = req.params.id;
+    let show = await Show.findByPk(id);
 
-      if (!show) {
-        return res.status(404).json({ message: "Show couldn't be found"})
-      } else if (show.userId !== user.id) {
-        return res.status(404).json({ message: "User must own show to make changes"})
-      } else {
-        if (showTitle !== undefined) show.showTitle = showTitle;
-        if (showSubtitle !== undefined) show.showSubtitle = showSubtitle;
-        if (showDesc !== undefined) show.showDesc = showDesc;
-        if (author !== undefined) show.author = author;
-        if (showLink !== undefined) show.showLink = showLink;
-        if (category !== undefined) show.category = category;
-        if (language !== undefined) show.language = language;
-        if (explicit !== undefined) show.explicit = explicit;
+    let updatedFields = { showTitle, showSubtitle, showDesc, author, showLink, category, category, language, explicit };
 
-        if (req.file) {
-          const imgUrl = await singlePublicFileUpload(req.file);
-          show.showImage = imgUrl;
-        }
-        await show.save();
-        return res.json(show);
-      }
-    }
+    await show.set(updatedFields);
+    await show.save();
+    const updatedShow = show.toJSON();
+    return res.json(updatedShow);
   } catch(error) {
     next(error)
   }
 });
 
+// Update show with image
+router.put('/:id/update-image', singleMulterUpload('image'), requireAuth, handleValidationErrors, async (req, res, next) => {
+  try {
+    const { showId, showTitle, showSubtitle, showDesc, author, showLink, category, language, explicit } = req.body;
+    let show;
+    if (showId) {
+      show = await Show.findByPk(showId)
+    } else {
+      throw new Error("No show found with that id")
+    }
+
+    let imgUrl;
+
+    if(req.file) {
+      imgUrl = await singlePublicFileUpload(req.file);
+      show.showImage = imgUrl;
+    }
+
+    if (showTitle) show.showTitle = showTitle;
+    if (showSubtitle) show.showSubtitle = showSubtitle;
+    if (showDesc) show.showDesc = showDesc;
+    if (author) show.author = author;
+    if (showLink) show.showLink = showLink;
+    if (category) show.category = category;
+    if (language) show.language = language;
+    if (explicit) show.explicit = explicit;
+
+    await show.save();
+    return res.json();
+
+  } catch(e) {
+    next(e)
+  }
+})
+
 // Delete a Show
-router.delete('/:id', requireAuth, handleValidationErrors, async (req, res, next) => {
+router.delete('/:showId', requireAuth, handleValidationErrors, async (req, res, next) => {
   try {
     let { user } = req;
-    let id = req.params.id;
-
-    let show = await Show.findByPk(id);
+    let { showId } = req.params;
+    let show = await Show.findByPk(showId);
+    console.log('show ------------------', show)
     if (!show) {
       res.status(404).json({ message: "Show couldn't be found"})
     } else if (show.userId !== user.id) {
       return res.status(404).json({ message: "User must own show to delete"})
     } else {
       await show.destroy();
-      return res.json({ message: "Successfully deleted"})
+      return res.json({ showId })
     }
   } catch(error) {
     next(error)
@@ -207,9 +232,16 @@ router.post('/:id/episodes', requireAuth, handleValidationErrors, singleMulterUp
         imgUrl = await singlePublicFileUpload(req.file);
       }
 
+      const maxEp = await Episode.max('episodeNumber', {
+        where: {showId}
+      })
+
+      const newEpisodeNumber = maxEp ? maxEp + 1 : 1;
+
       const episode = await Episode.create({
         userId,
         showId,
+        episodeNumber: newEpisodeNumber,
         episodeTitle,
         episodeDesc,
         guestInfo,
@@ -236,5 +268,7 @@ router.post('/:id/episodes', requireAuth, handleValidationErrors, singleMulterUp
     next(error)
   }
 })
+
+
 
 module.exports = router;

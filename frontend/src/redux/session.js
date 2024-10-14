@@ -1,5 +1,5 @@
 import { csrfFetch } from './csrf';
-import { getUserShowsThunk, clearUserShows } from './show';
+import { clearUserShows } from './show';
 
 //Constants
 const SET_USER = 'session/setUser';
@@ -26,7 +26,6 @@ export const thunkAuthenticate = () => async (dispatch) => {
         if (response.ok) {
             const user = await response.json();
             dispatch(setUser(user));
-            dispatch(getUserShowsThunk(user.id))
         }
     } catch (e){
         return e
@@ -41,9 +40,9 @@ export const thunkLogin = (credentials) => async dispatch => {
     });
 
     if (response.ok) {
+        console.log('is response ok?', response)
         const user = await response.json();
         dispatch(setUser(user));
-        dispatch(getUserShowsThunk(user.id));
     } else if (response.status < 500) {
         const errorMessages = await response.json();
         return errorMessages
@@ -51,6 +50,18 @@ export const thunkLogin = (credentials) => async dispatch => {
         return { server: "Something went wrong. Please try again" }
     }
 };
+
+export const fetchUser = (userId) => async (dispatch) => {
+    try {
+        const response = await csrfFetch('/api/users/current');
+        if (response.ok) {
+            const user = await response.json();
+            dispatch(setUser(user))
+        }
+    } catch (error) {
+        return error;
+    }
+}
 
 export const thunkSignup = (user) => async (dispatch) => {
     const response = await csrfFetch("/api/users", {
@@ -71,12 +82,47 @@ export const thunkSignup = (user) => async (dispatch) => {
 };
 
 export const updateUserThunk = (userId, form) => async (dispatch) => {
-    const { img_url } = form
+    try {
+        const accountData = {};
+
+        if (form.email) accountData.email = form.email;
+        if (form.username) accountData.username = form.username;
+        if (form.firstName) accountData.firstName = form.firstName;
+        if (form.lastName) accountData.lastName = form.lastName;
+        if (form.password) accountData.password = form.password;
+        if (form.profileImg) accountData.profileImg = form.profileImg;
+
+        const options = {
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(accountData)
+        }
+
+        const res = await csrfFetch(`/api/users/${userId}/update-user`, options);
+        if (res.ok) {
+            const updatedUser = await res.json();
+            await dispatch(editUser(updatedUser));
+            return updatedUser;
+        } else {
+            const errorMessages = await res.json();
+            return errorMessages;
+        }
+    } catch (error) {
+        return { server: "Something went wrong. Please try again." };
+    }
+}
+
+export const updateUserImgThunk = (userId, form) => async (dispatch) => {
+    const { img_url, username, firstName, lastName } = form
     try{
 
         const formData = new FormData();
 
-        formData.append('userId', userId)
+
+        formData.append('userId', userId);
+        formData.append('username', username);
+        formData.append('firstName', firstName);
+        formData.append('lastName', lastName);
         formData.append("image", img_url);
 
         const option = {
@@ -85,7 +131,8 @@ export const updateUserThunk = (userId, form) => async (dispatch) => {
             body: formData
         }
 
-        const response = await csrfFetch(`/api/users/${userId}/update`, option);
+
+        const response = await csrfFetch(`/api/users/${userId}/update-image`, option);
         if (response.ok) {
             const user = await response.json();
             dispatch(editUser(user));

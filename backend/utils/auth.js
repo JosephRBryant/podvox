@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { jwtConfig } = require('../config');
-const { User } = require('../db/models');
+const { User, Show } = require('../db/models');
 
 const { secret, expiresIn } = jwtConfig;
 
@@ -32,24 +32,42 @@ const setTokenCookie = (res, user) => {
     return token;
 };
 
-const restoreUser = (req, res, next) => {
+const restoreUser = async (req, res, next) => {
     // token parsed from cookies
     const { token } = req.cookies;
     req.user = null;
 
-    return jwt.verify(token, secret, null, async (err, jwtPayload) => {
+    if (!token) return next();
+
+    return jwt.verify(token, secret, async (err, jwtPayload) => {
         if (err) {
             return next();
         }
 
         try {
             const { id } = jwtPayload.data;
-            req.user = await User.findByPk(id, {
-                attributes: {
-                    include: ['email', 'createdAt', 'updatedAt']
-                }
+
+            const user  = await User.findByPk(id, {
+                include: [{
+                    model: Show,
+                    attributes: ['id']
+                }],
+                attributes: ['id', 'email', 'createdAt', 'updatedAt', 'profileImg', 'firstName', 'lastName', 'username']
             });
+
+            if (user) {
+                req.user = {
+                    id: user.id,
+                    email: user.email,
+                    username: user.username,
+                    profileImg: user.profileImg,
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    showId: user.Show ? user.Show.id : null
+                }
+            }
         } catch (e) {
+            console.error('Error fetching user: ', e)
             res.clearCookie('token');
             return next();
         }

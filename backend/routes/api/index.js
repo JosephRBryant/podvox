@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { restoreUser, requireAuth, setTokenCookie } = require('../../utils/auth.js');
-const { User } = require('../../db/models');
+const { User, Show } = require('../../db/models');
 const sessionRouter = require('./session.js');
 const usersRouter = require('./users.js');
 const showsRouter = require('./shows.js');
@@ -18,6 +18,7 @@ router.use('/shows', showsRouter);
 
 // Restore user
 router.get('/restore-user', (req, res) => {
+    console.log('req user in restuse', req.user)
     return res.json(req.user);
 });
 

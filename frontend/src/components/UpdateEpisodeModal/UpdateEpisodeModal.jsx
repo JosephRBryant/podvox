@@ -1,73 +1,30 @@
-import { useDispatch, useSelector } from "react-redux";
-import { useModal } from '../../context/Modal';
-import "./AddEpisode.css";
-import { createEpisodeThunk } from "../../redux/episode";
-import { useEffect, useState } from "react";
-import React from "react";
-import { Navigate } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import './UpdateEpisodeModal.css';
 
-function AddEpisodeModal() {
+const UpdateEpisodeModal = ({episode}) => {
   const dispatch = useDispatch();
-  const user = useSelector(state => state.session.user);
-  const show = useSelector(state => state.showState.showDetails);
-  const { closeModal } = useModal();
-  const [loaded, setLoaded] = useState(false);
-  const [errors, setErrors] = useState({});
   const [imgUrl, setImgUrl] = useState('');
 
-  // useEffect(() => {
-  //   const getData = async () => {
-  //     if (user && user.id) {
-  //       await dispatch(getshowsThunk(user.id));
-  //       setLoaded(true)
-  //     }
-  //   }
-
-  //   if (!loaded) {
-  //     getData();
-  //   }
-  // }, [dispatch, loaded, user])
-
-
   const [episodeForm, setEpisodeForm] = useState({
-          userId: user.id,
-          showId: null,
           episodeTitle: '',
           episodeDesc: '',
           guestInfo: '',
-          pubDate: null,
-          duration: null,
-          size: null,
           tags: '',
-          episodeImage: '',
-          explicit: false,
-          published: false,
-          prefix: null,
-          downloads: null
-  });
+          episodeImage: ''
+  })
 
-  episodeForm.showId = show.id;
-
-  const addImage = async (e) => {
+  const addImage = async (e) =>{
     const file = e.target.files[0];
     const reader = new FileReader();
     reader.readAsDataURL(file);
-    setImgUrl(file);
+    setImgUrl(file)
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault;
+    e.preventDefault();
     const img_url = imgUrl;
     const form = {img_url};
-    const res = await dispatch(createEpisodeThunk(episodeForm, form));
-
-    if (res) {
-      setErrors(res);
-    }
-    else {
-      closeModal();
-      Navigate(`/shows/${show.id}`);
-    }
+    const res = await dispatch()
   }
 
   function updateEpisodeForm(e, label) {
@@ -105,4 +62,4 @@ function AddEpisodeModal() {
   )
 }
 
-export default AddEpisodeModal;
+export default UpdateEpisodeModal;
