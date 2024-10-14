@@ -2,6 +2,7 @@ import { csrfFetch } from "./csrf";
 
 const GET_SHOW_EPISODES = 'episodes/getShowEpisodes';
 const CREATE_EPISODE = 'episodes/createEpisode';
+const UPDATE_EPISODE = 'episodes/updateEpisode';
 
 const getShowEpisodes = (episodes) => {
   return {
@@ -13,6 +14,13 @@ const getShowEpisodes = (episodes) => {
 const createEpisode = (episode) => {
   return {
     type: CREATE_EPISODE,
+    payload: episode
+  }
+}
+
+const updateEpisode = (episode) => {
+  return {
+    type: UPDATE_EPISODE,
     payload: episode
   }
 }
@@ -90,6 +98,34 @@ export const createEpisodeThunk = (episodeForm, form) => async (dispatch) => {
       }
     }
   } catch(error) {
+    return error;
+  }
+}
+
+export const updateEpisodeThunk = (episodeForm, form) => async (dispatch) => {
+  try {
+    const episodeData = {};
+
+    if (episodeForm.episodeTitle) episodeData.episodeTitle = episodeForm.episodeTitle;
+    if (episodeForm.episodeSubtitle) episodeData.episodeSubtitle = episodeForm.episodeSubtitle;
+    if (episodeForm.episodeDesc) episodeData.episodeDesc = episodeForm.episodeDesc;
+    if (episodeForm.guestInfo) episodeData.guestInfo = episodeForm.guestInfo;
+    if (episodeForm.tags) episodeData.tags = episodeForm.tags;
+
+    const { img_url } = form;
+
+    if (img_url) {
+      episodeData.image = img_url
+    }
+
+    const options = {
+      method: 'PUT',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(episodeData)
+    }
+
+    const res = await csrfFetch(`/api/shows/`)
+  } catch (error) {
     return error;
   }
 }

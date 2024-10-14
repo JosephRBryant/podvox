@@ -114,6 +114,24 @@ router.put('/:id/update-image', singleMulterUpload('image'), requireAuth, handle
 
 })
 
+// Get current user
+router.get ('/current', requireAuth, handleValidationErrors, async (req, res) => {
+    try {
+        const safeUser = {
+            id: user.id,
+            email: user.email,
+            username: user.username,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            profileImg: user.profileImg,
+            showId: user.showId
+        };
+        return res.json(safeUser);
+    } catch (error) {
+        return error;
+    }
+})
+
 // Restore session user
 router.get('/', (req, res) => {
     const { user } = req;
@@ -133,30 +151,36 @@ router.get('/', (req, res) => {
     } else return res.json({ user: null });
 });
 
-// Get User Shows
+// // Get User Shows
 
-router.get('/:userId/shows', requireAuth, handleValidationErrors, async (req, res, next) => {
-    try {
-      const { user } = req;
-      let usId = req.params.userId;
+// router.get('/:userId/shows', async (req, res, next) => {
+//     try {
+//       const { user } = req;
+//       let user_id = parseInt(req.params.userId);
 
-      let userShows = await Show.findOne({
-        where: {
-          userId: user.id
-        }
-      });
-      if (userShows) {
-          userShows.dataValues.showLink = 'www.example.com'
-          console.log('-----------------------user show from backend', userShows.dataValues)
+//       let userShow = await Show.findOne({
+//         where: {
+//           userId: user_id
+//         }
+//       });
+//       let userShows = await Show.findAll();
 
-          res.json(userShows)
-      }
-    } catch(error) {
-      error.message = "Bad Request";
-      error.status = 400;
-      next(error)
-    }
-  })
+
+//     //   console.log('usershows----------', userShows)
+//       console.log('usershow----------', userShow)
+//     //   console.log('user----------', user)
+//       if (!userShow) {
+//         return res.status(404).json({ message: 'Show not found for this user'})
+//       }
+//       userShow.dataValues.showLink = 'www.example.com'
+//       res.json(userShow)
+
+//     } catch(error) {
+//       error.message = "Bad Request";
+//       error.status = 400;
+//       next(error)
+//     }
+//   })
 
 
 module.exports = router;

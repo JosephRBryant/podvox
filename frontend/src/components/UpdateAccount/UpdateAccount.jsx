@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { FaRegEdit, FaCamera, FaCheckCircle } from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
 import './UpdateAccount.css';

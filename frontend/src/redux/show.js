@@ -5,6 +5,7 @@ const GET_ONE_SHOW = 'shows/getOneShow';
 const GET_USER_SHOWS = 'shows/getUserShows';
 const CLEAR_USER_SHOWS = 'shows/clearUserShows';
 const CREATE_SHOW = 'shows/createShow';
+const DELETE_SHOW = 'shows/deleteShow';
 const UPDATE_SHOW = 'shows/updateShow';
 
 const getAllShows = (shows) => {
@@ -31,6 +32,13 @@ export const getUserShows = (shows) => {
 export const clearUserShows = () => {
   return {
     type: CLEAR_USER_SHOWS
+  };
+};
+
+export const deleteShow = (showId) => {
+  return {
+    type: DELETE_SHOW,
+    payload: showId
   };
 };
 
@@ -77,19 +85,20 @@ export const getOneShowThunk = (showId) => async (dispatch) => {
 
 }
 
-export const getUserShowsThunk = (userId) => async (dispatch) => {
-  try {
-    const res = await csrfFetch(`/api/users/${userId}/shows`);
-    if (res.ok) {
-      const data = await res.json();
-      dispatch(getUserShows(data))
-    } else {
-      throw res
-    }
-  } catch(error) {
-    return error;
-  }
-}
+// export const getUserShowsThunk = (userId) => async (dispatch) => {
+//   try {
+//     const res = await csrfFetch(`/api/users/${userId}/shows`);
+//     if (res.ok) {
+//       const data = await res.json();
+//       dispatch(getUserShows(data))
+//     } else {
+//       throw new Error('Failed to get User Show');
+//     }
+//   } catch(error) {
+//     console.error('Error fetching user show: ', error)
+//     return error;
+//   }
+// }
 
 export const createShowThunk = (showForm, form) => async (dispatch) => {
   try {
@@ -99,13 +108,10 @@ export const createShowThunk = (showForm, form) => async (dispatch) => {
       showSubtitle,
       showDesc,
       author,
-      showLink,
-      category,
-      showImage,
       language,
       explicit
     } = showForm;
-    const { show_img_url } = form;
+    const { img_url } = form;
     const formData = new FormData();
 
     formData.append('userId', userId)
@@ -115,7 +121,10 @@ export const createShowThunk = (showForm, form) => async (dispatch) => {
     formData.append('author', author)
     formData.append('language', language)
     formData.append('explicit', explicit)
-    formData.append('image', show_img_url)
+
+    if (img_url) {
+      formData.append('image', img_url);
+    }
 
     const option = {
       method: 'POST',
@@ -218,11 +227,30 @@ export const updateShowImgThunk = (showId, form) => async (dispatch) => {
   }
 }
 
+export const deleteShowThunk = (show) => async (dispatch) => {
+  try {
+    const options = {
+      method: 'DELETE',
+      header: {'Content-type': 'application/json'}
+    };
+
+    const res = await csrfFetch(`/api/shows/${show.id}`, options);
+
+    if (res.ok) {
+      const { showId } = await res.json();
+      dispatch(deleteShow(showId))
+    } else {
+      throw res;
+    }
+  } catch (error) {
+    return (error)
+  }
+}
+
 const initialState = {
   allShows: [],
   byId: {},
-  showDetails: {},
-  showShows: {}
+  showDetails: {}
 };
 
 const showsReducer = (state = initialState, action) => {
@@ -244,10 +272,6 @@ const showsReducer = (state = initialState, action) => {
         newState.byId[show.id] = show;
       }
       return newState;
-    case GET_USER_SHOWS:
-      newState = {...state};
-      newState.userShows = action.payload;
-      return newState;
     case CLEAR_USER_SHOWS:
       newState = { ...state };
       newState.userShows = {};
@@ -262,12 +286,18 @@ const showsReducer = (state = initialState, action) => {
       if (newState.showDetails.id === action.payload.id) {
         newState.showDetails = action.payload;
       }
-
       newState.byId = { ...newState.byId, [action.payload.id]: action.payload};
-
       if (newState.userShows[action.payload.id]) {
         newState.userShows = { ...newState.userShows, [action.payload.id]: action.payload};
       }
+      return newState;
+    case DELETE_SHOW:
+      newState = { ...state };
+      newState.allShows = newState.allShows.filter(show => show.id !== action.payload);
+      if (newState.userShows[action.payload]) {
+        delete newState.userShows[action.payload]
+      }
+      delete newState.byId[action.payload];
       return newState;
     default:
       return state;

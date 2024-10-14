@@ -5,14 +5,15 @@ import { LuLogOut } from "react-icons/lu";
 import OpenModalMenuItem from "./OpenModalMenuItem";
 import LoginFormModal from "../LoginFormModal";
 import "./ProfileButton.css";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 function ProfileButton() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [showMenu, setShowMenu] = useState(false);
   const [isUserLoaded, setIsUserLoaded] = useState(false);
   let user = useSelector((state) => state.session.user);
-  let userShow = useSelector((state) => state.showState.userShows)
+
   const ulRef = useRef();
 
   const toggleMenu = (e) => {
@@ -35,9 +36,7 @@ function ProfileButton() {
   }, [showMenu]);
 
   useEffect(() => {
-    if (user) {
-      setIsUserLoaded(true)
-    }
+
   },[user])
 
   const closeMenu = () => setShowMenu(false);
@@ -46,6 +45,7 @@ function ProfileButton() {
     e.preventDefault();
     dispatch(thunkLogout());
     closeMenu();
+    navigate('/');
   };
 
   return (
@@ -68,9 +68,11 @@ function ProfileButton() {
               <NavLink to='/account'>
                 Manage Account
               </NavLink>
-              <NavLink to={`/shows/${userShow.id}`}>
-                Visit Show Page
-              </NavLink>
+              {!user.showId ? null : (
+                <NavLink to={`/shows/${user.showId}`}>
+                  Visit Show Page
+                </NavLink>
+              )}
               <button className="sign-out" onClick={logout}>
                 <LuLogOut />
                 Sign out

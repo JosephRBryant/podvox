@@ -8,22 +8,22 @@ import SignupFormModal from "../SignupFormModal";
 import OpenModalMenuItem from "./OpenModalMenuItem";
 import { LuUpload } from "react-icons/lu";
 import AddEpisodeModal from "../AddEpisodeModal/AddEpisodeModal";
-import { getUserShowsThunk } from "../../redux/show";
+// import { getUserShowsThunk } from "../../redux/show";
 import CreateShowModal from "../CreateShowModal";
 
 
 function Navigation() {
   const dispatch = useDispatch();
   let user = useSelector((state) => state.session.user);
-  let userShows = useSelector((state) => state.showState.userShows);
+  // let userShow = useSelector((state) => state.showState.userShows);
   const [isUserLoaded, setIsUserLoaded] = useState(false);
 
-  useEffect(() => {
-    if (user) {
-      dispatch(getUserShowsThunk(user.id));
-      setIsUserLoaded(true)
-    }
-  }, [dispatch, user])
+  // useEffect(() => {
+  //   if (user && !isUserLoaded) {
+  //     dispatch(getUserShowsThunk(user.id));
+  //     setIsUserLoaded(true)
+  //   }
+  // }, [dispatch, user, isUserLoaded])
 
 
   return (
@@ -43,7 +43,7 @@ function Navigation() {
           />
         ) : (
           <>
-          {!userShows.id ? (
+          {!user.showId ? (
             <OpenModalMenuItem
               className="create-show-btn"
               itemText="Create Show"
@@ -65,7 +65,7 @@ function Navigation() {
         )}
         <li className="profile-button-container" id="prof-btn-cont">
           <ProfileButton />
-          {user && isUserLoaded ? (
+          {!user ? null : (
             user.profileImg ? (
               <div className="profile-image-container">
                 <img
@@ -79,7 +79,7 @@ function Navigation() {
                   <FaCircleUser className="profile-icon"/>
                 </div>
               )
-          ) : null }
+          )}
         </li>
       </div>
     </ul>

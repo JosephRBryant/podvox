@@ -1,5 +1,5 @@
 import { csrfFetch } from './csrf';
-import { getUserShowsThunk, clearUserShows } from './show';
+import { clearUserShows } from './show';
 
 //Constants
 const SET_USER = 'session/setUser';
@@ -26,7 +26,6 @@ export const thunkAuthenticate = () => async (dispatch) => {
         if (response.ok) {
             const user = await response.json();
             dispatch(setUser(user));
-            dispatch(getUserShowsThunk(user.id))
         }
     } catch (e){
         return e
@@ -44,7 +43,6 @@ export const thunkLogin = (credentials) => async dispatch => {
         console.log('is response ok?', response)
         const user = await response.json();
         dispatch(setUser(user));
-        dispatch(getUserShowsThunk(user.id));
     } else if (response.status < 500) {
         const errorMessages = await response.json();
         return errorMessages
@@ -52,6 +50,18 @@ export const thunkLogin = (credentials) => async dispatch => {
         return { server: "Something went wrong. Please try again" }
     }
 };
+
+export const fetchUser = (userId) => async (dispatch) => {
+    try {
+        const response = await csrfFetch('/api/users/current');
+        if (response.ok) {
+            const user = await response.json();
+            dispatch(setUser(user))
+        }
+    } catch (error) {
+        return error;
+    }
+}
 
 export const thunkSignup = (user) => async (dispatch) => {
     const response = await csrfFetch("/api/users", {

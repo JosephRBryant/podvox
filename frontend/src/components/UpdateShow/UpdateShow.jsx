@@ -3,22 +3,30 @@ import { FaRegEdit, FaCamera, FaCheckCircle } from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
 import './UpdateShow.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateShowThunk, updateShowImgThunk, getUserShowsThunk } from '../../redux/show';
+import { updateShowThunk, updateShowImgThunk, deleteShowThunk, getOneShowThunk } from '../../redux/show';
+import { fetchUser } from '../../redux/session';
 
 const UpdateShow = ({userId}) => {
   const dispatch = useDispatch();
-  const userShow = useSelector(state => state.showState.userShows);
+  const user = useSelector(state => state.session.user);
+  const show = useSelector(state => state.showState.showDetails)
+  // const show = useSelector(state => state.showState.shows);
+  const [isUserLoaded, setIsUserLoaded] = useState(false);
 
+  // useEffect(() => {
+  //   if (userId && !isUserLoaded) {
+  //     dispatch(getshowsThunk(userId));
+  //     setIsUserLoaded(true)
+  //   }
+  // }, [dispatch, userId, isUserLoaded])
   useEffect(() => {
-    if (userId) {
-      dispatch(getUserShowsThunk(userId));
-    }
-  }, [dispatch, userId])
+    dispatch(getOneShowThunk(user.showId))
+  },[])
 
   const [showImgUrl, setShowImgUrl] = useState(null);
   const [showUpload, setShowUpload] = useState(true);
-  const [previewShowUrl, setPreviewShowUrl] = useState(userShow.showImage);
-  const [currShowImg, setCurrShowImg] = useState(userShow.showImage);
+  const [previewShowUrl, setPreviewShowUrl] = useState(show.showImage);
+  const [currShowImg, setCurrShowImg] = useState(show.showImage);
   const [updateBtns, setUpdateBtns] = useState(false);
   const [editorOpen, setEditorOpen] = useState(false);
   const [errors, setErrors] = useState({});
@@ -36,37 +44,37 @@ const UpdateShow = ({userId}) => {
   const editorRef = useRef();
 
   useEffect(() => {
-    if (userShow) {
+    if (show) {
       setShowForm({
-        showTitle: userShow.showTitle || '',
-        showSubtitle: userShow.showSubtitle || '',
-        showDesc: userShow.showDesc || '',
-        author: userShow.author || '',
+        showTitle: show.showTitle || '',
+        showSubtitle: show.showSubtitle || '',
+        showDesc: show.showDesc || '',
+        author: show.author || '',
         showLink: 'www.example.com',
-        category: userShow.category || '',
-        language: userShow.language || '',
-        explicit: userShow.explicit || false,
+        category: show.category || '',
+        language: show.language || '',
+        explicit: show.explicit || false,
       });
     }
-  },[userShow]);
+  },[show]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors({});
 
     const payload = {
-      showTitle: showForm.showTitle || userShow.showTitle,
-      showSubtitle: showForm.showSubtitle || userShow.showSubtitle,
-      showDesc: showForm.showDesc || userShow.showDesc,
-      author: showForm.author || userShow.author,
+      showTitle: showForm.showTitle || show.showTitle,
+      showSubtitle: showForm.showSubtitle || show.showSubtitle,
+      showDesc: showForm.showDesc || show.showDesc,
+      author: showForm.author || show.author,
       showLink: 'www.example.com',
-      category: showForm.category || userShow.category,
-      language: showForm.language || userShow.language,
-      explicit: showForm.explicit || userShow.explicit,
+      category: showForm.category || show.category,
+      language: showForm.language || show.language,
+      explicit: showForm.explicit || show.explicit,
     };
 
     try {
-      const res = await dispatch(updateShowThunk(userShow.id, payload));
+      const res = await dispatch(updateShowThunk(show.id, payload));
 
       if (!res.id) {
         const err = await res.json();
@@ -75,7 +83,6 @@ const UpdateShow = ({userId}) => {
         setErrors(backendErrors);
       } else {
         setEditorOpen(false);
-        await dispatch(getUserShowsThunk(userId));
         return res;
       }
     } catch (error) {
@@ -138,18 +145,18 @@ const UpdateShow = ({userId}) => {
 
     const form = {
       show_img_url: showImgUrl,
-      userId: userShow.userId,
-      showTitle: userShow.showTitle,
-      showSubtitle: userShow.showSubtitle,
-      showDesc: userShow.showDesc,
-      author: userShow.author,
+      userId: show.userId,
+      showTitle: show.showTitle,
+      showSubtitle: show.showSubtitle,
+      showDesc: show.showDesc,
+      author: show.author,
       showLink: 'www.example.com',
-      category: userShow.category,
-      language: userShow.language,
-      explicit: userShow.explicit
+      category: show.category,
+      language: show.language,
+      explicit: show.explicit
     };
 
-    const updatedShow = await dispatch(updateShowImgThunk(userShow.id, form));
+    const updatedShow = await dispatch(updateShowImgThunk(show.id, form));
 
     if (updatedShow) {
       console.log('is the updatedShow response ok', updatedShow)
@@ -164,8 +171,16 @@ const UpdateShow = ({userId}) => {
     setUpdateBtns(false);
   }
 
-  const deleteShow = () => {
-
+  const handleDeleteShow = async (e, show) => {
+    e.preventDefault();
+    e.stopPropagation();
+    try {
+      await dispatch(deleteShowThunk(show));
+      await dispatch(fetchUser(user.id));
+      setEditorOpen(false);
+    } catch (error) {
+      return (error)
+    }
   }
 
   return (
@@ -175,7 +190,7 @@ const UpdateShow = ({userId}) => {
           <div className="show-info-header">
             <h2>Show Info</h2>
             <div className="edit-show-info-btn">
-              <button className="delete-show-btn" onClick={deleteShow}>
+              <button className="delete-show-btn" onClick={(e) => handleDeleteShow(e, show)}>
                 delete
               </button>
               <button type='submit' className="update-show-btn">
@@ -197,7 +212,7 @@ const UpdateShow = ({userId}) => {
               className="title-field-title"
               onChange={(e) => updateShowForm(e, 'showTitle')}
               value={showForm.showTitle}
-              placeholder={userShow.showTitle}
+              placeholder={show.showTitle}
             />
           </div>
           <div className="subtitle-field">
@@ -211,7 +226,7 @@ const UpdateShow = ({userId}) => {
               className="subtitle-field-subtitle"
               onChange={(e) => updateShowForm(e, 'showSubtitle')}
               value={showForm.showSubtitle}
-              placeholder={userShow.showSubtitle}
+              placeholder={show.showSubtitle}
             />
           </div>
           <div className="description-field">
@@ -225,7 +240,7 @@ const UpdateShow = ({userId}) => {
               className='description-field-description'
               onChange={(e) => updateShowForm(e, 'showDesc')}
               value={showForm.showDesc}
-              placeholder={userShow.showDesc}
+              placeholder={show.showDesc}
             />
           </div>
           <div className="author-field">
@@ -239,7 +254,7 @@ const UpdateShow = ({userId}) => {
               className='author-field-author'
               onChange={(e) => updateShowForm(e, 'author')}
               value={showForm.author}
-              placeholder={userShow.author}
+              placeholder={show.author}
             />
           </div>
           <div className="language-explicit-container">
@@ -254,7 +269,7 @@ const UpdateShow = ({userId}) => {
                 className='language-field-language'
                 onChange={(e) => updateShowForm(e, 'language')}
                 value={showForm.language}
-                placeholder={JSON.stringify(userShow.language).slice(1,-1).charAt(0).toUpperCase() + JSON.stringify(userShow.language).slice(2,-1).toLowerCase()}
+                placeholder={JSON.stringify(show.language).slice(1,-1).charAt(0).toUpperCase() + JSON.stringify(show.language).slice(2,-1).toLowerCase()}
               />
             </div>
             <div className="explicit-field">
@@ -304,7 +319,7 @@ const UpdateShow = ({userId}) => {
                 Title:
             </div>
             <div className="title-field-title">
-              {userShow.showTitle}
+              {show.showTitle}
             </div>
           </div>
           <div className="subtitle-field">
@@ -312,7 +327,7 @@ const UpdateShow = ({userId}) => {
               Subtitle:
             </div>
             <div className="subtitle-field-subtitle">
-              {userShow.showSubtitle}
+              {show.showSubtitle}
             </div>
           </div>
           <div className="description-field">
@@ -320,7 +335,7 @@ const UpdateShow = ({userId}) => {
               Description:
             </div>
             <div className="description-field-description">
-              {userShow.showDesc}
+              {show.showDesc}
             </div>
           </div>
           <div className="author-field">
@@ -328,7 +343,7 @@ const UpdateShow = ({userId}) => {
               Host Name:
             </div>
             <div className="author-field-author">
-              {userShow.author}
+              {show.author}
             </div>
           </div>
           <div className="language-explicit-container">
@@ -337,14 +352,14 @@ const UpdateShow = ({userId}) => {
                 Language:
               </div>
               <div className="language-field-language">
-                {JSON.stringify(userShow.language).slice(1,-1).charAt(0).toUpperCase() + JSON.stringify(userShow.language).slice(2,-1).toLowerCase()}
+                {JSON.stringify(show.language).slice(1,-1).charAt(0).toUpperCase() + JSON.stringify(show.language).slice(2,-1).toLowerCase()}
               </div>
 
             </div>
             <div className="explicit-field">
               <p>Explicit: </p>
               <div className="explicit-yes-field-yes">
-                {JSON.stringify(userShow.explicit) === 'false' ? (
+                {/* {JSON.stringify(show.explicit) === 'false' ? (
                   <div className="explicit-no">
                     <div className="yes">Yes</div>
                     <div className="no-no">No</div>
@@ -354,7 +369,34 @@ const UpdateShow = ({userId}) => {
                     <div className="yes-yes">Yes</div>
                     <div className="no">No</div>
                   </div>
-                )}
+                )} */}
+
+              <input
+                type="radio"
+                name='explicit'
+                id='yes'
+                className="explicit-yes-field-yes"
+                value="false"
+                onChange={handleExplicitChoice}
+                checked={showForm.explicit === true}
+
+              />
+              <label htmlFor="yes" className="explicit-yes-field-label">
+                Yes
+              </label>
+              <input
+                type="radio"
+                name='explicit'
+                id='no'
+                className="explicit-no-field-no"
+                value="true"
+                onChange={handleExplicitChoice}
+                checked={showForm.explicit === false}
+              />
+              <label htmlFor="no" className="explicit-no-field-label">
+                No
+              </label>
+
               </div>
             </div>
           </div>

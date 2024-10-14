@@ -49,6 +49,7 @@ router.post('/', validateLogin, async (req, res, next) => {
         return next(err);
     }
 
+    console.log({user}, 'userrrrrrrrr', user.Show)
 
     const safeUser = {
         id: user.id,
@@ -57,11 +58,10 @@ router.post('/', validateLogin, async (req, res, next) => {
         firstName: user.firstName,
         lastName: user.lastName,
         profileImg: user.profileImg,
-        showId: user.Shows.id
+        showId: user.Show ? user.Show.id : null
     };
 
     await setTokenCookie(res, safeUser);
-
     return res.json(safeUser
     );
 });

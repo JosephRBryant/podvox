@@ -1,10 +1,15 @@
 /* eslint-disable react/prop-types */
 import './Episode.css';
 import { FaRegCirclePlay, FaRegCirclePause } from "react-icons/fa6";
+import { FaRegEdit } from "react-icons/fa";
 import React, { useState } from 'react';
 let sampleAudio = new Audio("https://toginet.com/images/podvox/Sample.mp3");
+import { useSelector } from 'react-redux';
+import OpenModalMenuItem from '../Navigation/OpenModalMenuItem';
+import UpdateEpisodeModal from '../UpdateEpisodeModal';
 
 const Episode = ({episode, show}) => {
+  const user = useSelector(state => state.session.user);
   const [playing, setPlaying] = useState(false);
   const playAudio = () => {
     sampleAudio.play()
@@ -42,6 +47,14 @@ const Episode = ({episode, show}) => {
               <h2>Episode {episode.episodeNumber}</h2>
             )}
           </div>
+          {user.id === show.userId ? (
+            <OpenModalMenuItem
+              className="edit-episode-btn"
+              itemText={<FaRegEdit />}
+              modalComponent={<UpdateEpisodeModal />}
+              episode={episode}
+            />
+          ) : null }
         </div>
         <div className="episode-description">
           {episode.episodeDesc}

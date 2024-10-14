@@ -74,19 +74,17 @@ router.get('/:id', async (req, res, next) => {
 
 
 // Create a Show
-router.post('/', requireAuth, handleValidationErrors, singleMulterUpload('image'), async (req, res, next) => {
+router.post('/', singleMulterUpload('image'), requireAuth, handleValidationErrors, async (req, res, next) => {
   try {
     const { user } = req;
 
     if (user) {
       const {
-        userId,
         showTitle,
         showSubtitle,
         showDesc,
         author,
         category,
-        showImage,
         language,
         explicit
       } = req.body;
@@ -104,7 +102,7 @@ router.post('/', requireAuth, handleValidationErrors, singleMulterUpload('image'
         showDesc,
         author,
         category,
-        showImage: imgUrl || null,
+        showImage: imgUrl,
         language,
         explicit
       });
@@ -186,19 +184,19 @@ router.put('/:id/update-image', singleMulterUpload('image'), requireAuth, handle
 })
 
 // Delete a Show
-router.delete('/:id', requireAuth, handleValidationErrors, async (req, res, next) => {
+router.delete('/:showId', requireAuth, handleValidationErrors, async (req, res, next) => {
   try {
     let { user } = req;
-    let id = req.params.id;
-
-    let show = await Show.findByPk(id);
+    let { showId } = req.params;
+    let show = await Show.findByPk(showId);
+    console.log('show ------------------', show)
     if (!show) {
       res.status(404).json({ message: "Show couldn't be found"})
     } else if (show.userId !== user.id) {
       return res.status(404).json({ message: "User must own show to delete"})
     } else {
       await show.destroy();
-      return res.json({ message: "Successfully deleted"})
+      return res.json({ showId })
     }
   } catch(error) {
     next(error)
@@ -234,9 +232,16 @@ router.post('/:id/episodes', requireAuth, handleValidationErrors, singleMulterUp
         imgUrl = await singlePublicFileUpload(req.file);
       }
 
+      const maxEp = await Episode.max('episodeNumber', {
+        where: {showId}
+      })
+
+      const newEpisodeNumber = maxEp ? maxEp + 1 : 1;
+
       const episode = await Episode.create({
         userId,
         showId,
+        episodeNumber: newEpisodeNumber,
         episodeTitle,
         episodeDesc,
         guestInfo,
@@ -263,5 +268,7 @@ router.post('/:id/episodes', requireAuth, handleValidationErrors, singleMulterUp
     next(error)
   }
 })
+
+
 
 module.exports = router;

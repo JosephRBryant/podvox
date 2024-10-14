@@ -7,13 +7,12 @@ import CreateShowModal from '../CreateShowModal';
 
 const ManageAccount = () => {
   const user = useSelector(state => state.session.user);
-  const userShow = useSelector(state => state.showState.userShows);
 
   return (
     <main className="manage-account-container">
       <div className="account-show-container">
         <UpdateAccount user={user}/>
-        {userShow.id ? (
+        {user.showId ? (
           <UpdateShow userId={user.id}/>
         ) : (
           <div className='show-info-create-container'>
