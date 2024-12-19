@@ -117,6 +117,11 @@ router.put('/:id/update-image', singleMulterUpload('image'), requireAuth, handle
 // Get current user
 router.get ('/current', requireAuth, handleValidationErrors, async (req, res) => {
     try {
+        const { user } = req;
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
         const safeUser = {
             id: user.id,
             email: user.email,
@@ -128,7 +133,8 @@ router.get ('/current', requireAuth, handleValidationErrors, async (req, res) =>
         };
         return res.json(safeUser);
     } catch (error) {
-        return error;
+        console.error(error);
+        return res.status(500).json({ message: 'Internal Server Error'});
     }
 })
 

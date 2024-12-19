@@ -1,13 +1,19 @@
 import { useEffect, useState } from "react";
 import "./Featured.css";
 import { useDispatch, useSelector } from "react-redux"
-import { getAllShowsThunk } from "../../redux/show";
+import { clearAndRefetchAllShowsThunk, getAllShowsThunk } from "../../redux/show";
 import ShowTile from "../ShowTile";
 
 const Featured = () => {
   const dispatch = useDispatch();
   const [loaded, setLoaded] = useState(false);
   let shows = useSelector(state => state.showState.allShows);
+
+  console.log('Shows in Featured component:', shows);
+
+  const handleRefreshAllShows = () => {
+    dispatch(clearAndRefetchAllShowsThunk());
+  };
 
   useEffect(() => {
     const getData = async () => {

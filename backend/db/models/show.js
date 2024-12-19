@@ -101,9 +101,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     showLink: {
       type: DataTypes.STRING,
-      unique: {
-        msg: 'Link must be unique'
-      },
+      // unique: {
+      //   msg: 'Link must be unique'
+      // },
       validate: {
         isURL: {
           msg: 'Show link must be a URL'

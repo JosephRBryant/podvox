@@ -3,25 +3,22 @@ import { FaRegEdit, FaCamera, FaCheckCircle } from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
 import './UpdateShow.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateShowThunk, updateShowImgThunk, deleteShowThunk, getOneShowThunk } from '../../redux/show';
+import { updateShowThunk, updateShowImgThunk, deleteShowThunk, getOneShowThunk, clearShowDetails } from '../../redux/show';
 import { fetchUser } from '../../redux/session';
 
 const UpdateShow = ({userId}) => {
   const dispatch = useDispatch();
   const user = useSelector(state => state.session.user);
   const show = useSelector(state => state.showState.showDetails)
-  // const show = useSelector(state => state.showState.shows);
   const [isUserLoaded, setIsUserLoaded] = useState(false);
+  const showDesc = show.showDesc;
+  let showDescLength = showDesc.length
 
-  // useEffect(() => {
-  //   if (userId && !isUserLoaded) {
-  //     dispatch(getshowsThunk(userId));
-  //     setIsUserLoaded(true)
-  //   }
-  // }, [dispatch, userId, isUserLoaded])
   useEffect(() => {
-    dispatch(getOneShowThunk(user.showId))
-  },[])
+    if (user.showId) {
+      dispatch(getOneShowThunk(user.showId))
+    }
+  },[dispatch, user.showId])
 
   const [showImgUrl, setShowImgUrl] = useState(null);
   const [showUpload, setShowUpload] = useState(true);
@@ -109,6 +106,7 @@ const UpdateShow = ({userId}) => {
       setShowImgUrl(file);
       setShowUpload(false);
       setUpdateBtns(true);
+      console.log('showImgUrl:', showImgUrl)
     }
   }
 
@@ -141,10 +139,11 @@ const UpdateShow = ({userId}) => {
 
   const handleShowImgSubmit = async (e) => {
     e.preventDefault();
-    if (!showImgUrl) return;
+    const show_img_url = showImgUrl;
+    const imgForm = {show_img_url};
+    if (!show_img_url) return;
 
     const form = {
-      show_img_url: showImgUrl,
       userId: show.userId,
       showTitle: show.showTitle,
       showSubtitle: show.showSubtitle,
@@ -156,10 +155,10 @@ const UpdateShow = ({userId}) => {
       explicit: show.explicit
     };
 
-    const updatedShow = await dispatch(updateShowImgThunk(show.id, form));
+    const updatedShow = await dispatch(updateShowImgThunk(show.id, form, imgForm));
 
     if (updatedShow) {
-      console.log('is the updatedShow response ok', updatedShow)
+      console.log('is the updatedShow response ok', imgForm)
       setCurrShowImg(updatedShow.showImage);
       setUpdateBtns(false);
     }
@@ -177,6 +176,7 @@ const UpdateShow = ({userId}) => {
     try {
       await dispatch(deleteShowThunk(show));
       await dispatch(fetchUser(user.id));
+      dispatch(clearShowDetails());
       setEditorOpen(false);
     } catch (error) {
       return (error)
@@ -190,10 +190,10 @@ const UpdateShow = ({userId}) => {
           <div className="show-info-header">
             <h2>Show Info</h2>
             <div className="edit-show-info-btn">
-              <button className="delete-show-btn" onClick={(e) => handleDeleteShow(e, show)}>
+              <button className="delete-show-btn toggle-editor-btn" onClick={(e) => handleDeleteShow(e, show)}>
                 delete
               </button>
-              <button type='submit' className="update-show-btn">
+              <button type='submit' className="update-show-btn toggle-editor-btn">
                 save
               </button>
               <button className="toggle-editor-btn" onClick={toggleEditor}>
@@ -213,6 +213,7 @@ const UpdateShow = ({userId}) => {
               onChange={(e) => updateShowForm(e, 'showTitle')}
               value={showForm.showTitle}
               placeholder={show.showTitle}
+              style={{boxShadow: 'inset 0 0 3px grey', backgroundColor: '#e4ecf0'}}
             />
           </div>
           <div className="subtitle-field">
@@ -227,6 +228,7 @@ const UpdateShow = ({userId}) => {
               onChange={(e) => updateShowForm(e, 'showSubtitle')}
               value={showForm.showSubtitle}
               placeholder={show.showSubtitle}
+              style={{boxShadow: 'inset 0 0 3px grey', backgroundColor: '#e4ecf0'}}
             />
           </div>
           <div className="description-field">
@@ -241,6 +243,7 @@ const UpdateShow = ({userId}) => {
               onChange={(e) => updateShowForm(e, 'showDesc')}
               value={showForm.showDesc}
               placeholder={show.showDesc}
+              style={{boxShadow: 'inset 0 0 3px grey', backgroundColor: '#e4ecf0'}}
             />
           </div>
           <div className="author-field">
@@ -255,6 +258,7 @@ const UpdateShow = ({userId}) => {
               onChange={(e) => updateShowForm(e, 'author')}
               value={showForm.author}
               placeholder={show.author}
+              style={{boxShadow: 'inset 0 0 3px grey', backgroundColor: '#e4ecf0'}}
             />
           </div>
           <div className="language-explicit-container">
@@ -269,7 +273,8 @@ const UpdateShow = ({userId}) => {
                 className='language-field-language'
                 onChange={(e) => updateShowForm(e, 'language')}
                 value={showForm.language}
-                placeholder={JSON.stringify(show.language).slice(1,-1).charAt(0).toUpperCase() + JSON.stringify(show.language).slice(2,-1).toLowerCase()}
+                style={{boxShadow: 'inset 0 0 3px grey', backgroundColor: '#e4ecf0'}}
+                // placeholder={JSON.stringify(show.language).slice(1,-1).charAt(0).toUpperCase() + JSON.stringify(show.language).slice(2,-1).toLowerCase()}
               />
             </div>
             <div className="explicit-field">
@@ -282,7 +287,7 @@ const UpdateShow = ({userId}) => {
                 value="true"
                 onChange={handleExplicitChoice}
                 checked={showForm.explicit === true}
-
+                style={{boxShadow: 'inset 0 0 3px grey', backgroundColor: '#e4ecf0'}}
               />
               <label htmlFor="yes" className="explicit-yes-field-label">
                 Yes
@@ -295,6 +300,7 @@ const UpdateShow = ({userId}) => {
                 value="false"
                 onChange={handleExplicitChoice}
                 checked={showForm.explicit === false}
+                style={{boxShadow: 'inset 0 0 3px grey', backgroundColor: '#e4ecf0'}}
               />
               <label htmlFor="no" className="explicit-no-field-label">
                 No
@@ -335,7 +341,11 @@ const UpdateShow = ({userId}) => {
               Description:
             </div>
             <div className="description-field-description">
-              {show.showDesc}
+            {showDescLength > 129 ? (
+                <p>{showDesc.slice(0, 216) + "..."}</p>
+              ) : (
+                showDesc
+              )}
             </div>
           </div>
           <div className="author-field">
@@ -357,46 +367,13 @@ const UpdateShow = ({userId}) => {
 
             </div>
             <div className="explicit-field">
-              <p>Explicit: </p>
-              <div className="explicit-yes-field-yes">
-                {/* {JSON.stringify(show.explicit) === 'false' ? (
-                  <div className="explicit-no">
-                    <div className="yes">Yes</div>
-                    <div className="no-no">No</div>
-                  </div>
+              <p>Explicit Language?: </p>
+              <div className="explicit-field-explicit">
+                {show.explicit ? (
+                  'yes'
                 ) : (
-                  <div className="explicit-yes">
-                    <div className="yes-yes">Yes</div>
-                    <div className="no">No</div>
-                  </div>
-                )} */}
-
-              <input
-                type="radio"
-                name='explicit'
-                id='yes'
-                className="explicit-yes-field-yes"
-                value="false"
-                onChange={handleExplicitChoice}
-                checked={showForm.explicit === true}
-
-              />
-              <label htmlFor="yes" className="explicit-yes-field-label">
-                Yes
-              </label>
-              <input
-                type="radio"
-                name='explicit'
-                id='no'
-                className="explicit-no-field-no"
-                value="true"
-                onChange={handleExplicitChoice}
-                checked={showForm.explicit === false}
-              />
-              <label htmlFor="no" className="explicit-no-field-label">
-                No
-              </label>
-
+                  'no'
+                )}
               </div>
             </div>
           </div>
@@ -413,7 +390,7 @@ const UpdateShow = ({userId}) => {
             className="hidden"
             type="file"
             id='show-file-upload'
-            name='show_img_url'
+            name='show_image_url'
             onChange={updateShowImage}
             accept='.jpg, .jpeg, .png, .gif'
           />

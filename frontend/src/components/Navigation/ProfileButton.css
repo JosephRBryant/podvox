@@ -31,6 +31,15 @@
   background-color: white;
 }
 
+.visit-show-btn {
+  cursor: pointer;
+}
+
+.manage-account-btn {
+  text-decoration: none;
+  color: #666;
+}
+
 .profile-dropdown-container {
   display: flex;
   flex-direction: column;

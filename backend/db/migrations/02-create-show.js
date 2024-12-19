@@ -43,7 +43,7 @@ module.exports = {
       },
       showLink: {
         type: Sequelize.STRING,
-        unique: true
+        // unique: true
       },
       category: {
         type: Sequelize.STRING(150)

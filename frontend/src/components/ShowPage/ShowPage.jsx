@@ -10,26 +10,34 @@ import React from 'react';
 const ShowPage = () => {
   const dispatch = useDispatch();
   const { showId } = useParams();
-  const [loaded, setLoaded] = useState(false);
+  // const [loaded, setLoaded] = useState(false);
   const [loading, setLoading] = useState(true);
   const [live, setLive] = useState(true);
   const [activeSort, setActiveSort] = useState('newest');
+
   const show = useSelector(state => state.showState.showDetails);
+  const showDesc = show.showDesc;
 
   useEffect(() => {
-    window.scrollTo(0, 0)
-    const getData = async () => {
+    window.scrollTo(0, 0);
+
+    const fetchShowDetails = async () => {
       setLoading(true);
       await dispatch(getOneShowThunk(Number(showId)));
-      setLoading(false)
-      setLoaded(true)
+      setLoading(false);
     };
-    if (!loaded) {
-      getData()
-    }
-  }, [dispatch, showId])
 
-  if (!show || !show.User) {
+    if (!show || show.id !== Number(showId)) {
+      fetchShowDetails();
+    } else {
+      setLoading(false);
+    }
+  }, [dispatch, showId, show]);
+
+  if (loading || !show || !show.User) {
+    console.log('show user', show.User);
+    console.log('show', show);
+    console.log('loading', loading);
     return <h1>Loading...</h1>
   }
 
@@ -42,34 +50,34 @@ const ShowPage = () => {
   return (
     <main>
       <div className="show-page-container">
-        {loaded ? (
-          <div className="show-page-banner">
-            <div className="show-page-banner-background-container">
-              <div className="show-page-banner-background" style={{backgroundImage: `url(${show.showImage})`}}></div>
-            </div>
-            <div className="show-page-banner-grid">
-              <img className='show-page-banner-show-image' src={show.showImage} alt="show image" />
-              <div className="show-page-banner-header">
-                <h1>{show.showTitle}</h1>
-                <h2>{`with ${show.author}`}</h2>
-              </div>
-              <div className="show-page-banner-description">
-                <p>{show.showDesc}</p>
-                <br />
-                {live ? (
-                  <NavLink to={`/shows/${showId}/live`} className="show-page-banner-description-live-btn">
-                    Streaming Live
-                    <div className="show-page-banner-description-green-light"></div>
-                  </NavLink>
-                ) : null}
-                <span className='show-page-banner-description-episode-count'>{`${show.Episodes.length} episodes available`}</span>
-              </div>
-              <img className="show-page-banner-profile-image" src={show.User.profileImg}/>
-            </div>
+        <div className="show-page-banner">
+          <div className="show-page-banner-background-container">
+            <div className="show-page-banner-background" style={{backgroundImage: `url(${show.showImage})`}}></div>
           </div>
-        ) : (
-          <div className="show-page-banner-load"></div>
-        )}
+          <div className="show-page-banner-grid">
+            <img className='show-page-banner-show-image' src={show.showImage} alt="show image" />
+            <div className="show-page-banner-header">
+              <h1>{show.showTitle}</h1>
+              <h2>{`with ${show.author}`}</h2>
+            </div>
+            <div className="show-page-banner-description">
+              {showDesc.length > 129 ? (
+                <p>{showDesc.slice(0, 130) + "... read more"}</p>
+              ) : (
+                showDesc
+              )}
+              <br />
+              {live ? (
+                <NavLink to={`/shows/${showId}/live`} className="show-page-banner-description-live-btn">
+                  Streaming Live
+                  <div className="show-page-banner-description-green-light"></div>
+                </NavLink>
+              ) : null}
+              <span className='show-page-banner-description-episode-count'>{`${show.Episodes.length} episodes available`}</span>
+            </div>
+            <img className="show-page-banner-profile-image" src={show.User.profileImg}/>
+          </div>
+        </div>
         <div className="show-page-episode-container">
           <div className="show-page-episode-links">
             <div id='newest' className={activeSort === 'newest' ? 'active-sort' : ''} onClick={() => toggleSort('newest')}>Newest</div>

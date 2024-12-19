@@ -1,12 +1,14 @@
 import { csrfFetch } from "./csrf";
+import { setUser } from '../redux/session';
 
 const GET_ALL_SHOWS = 'shows/getAllShows';
 const GET_ONE_SHOW = 'shows/getOneShow';
 const GET_USER_SHOWS = 'shows/getUserShows';
-const CLEAR_USER_SHOWS = 'shows/clearUserShows';
+const CLEAR_SHOW_DETAILS = 'shows/clearShowDetails';
 const CREATE_SHOW = 'shows/createShow';
 const DELETE_SHOW = 'shows/deleteShow';
 const UPDATE_SHOW = 'shows/updateShow';
+const RESET_ALL_SHOWS = 'shows/resetAllShows';
 
 const getAllShows = (shows) => {
   return {
@@ -29,11 +31,9 @@ export const getUserShows = (shows) => {
   }
 };
 
-export const clearUserShows = () => {
-  return {
-    type: CLEAR_USER_SHOWS
-  };
-};
+export const clearShowDetails = () => ({
+  type: CLEAR_SHOW_DETAILS
+});
 
 export const deleteShow = (showId) => {
   return {
@@ -56,12 +56,17 @@ export const updateShow = (show) => {
   }
 }
 
+export const resetAllShows = () => ({
+  type: RESET_ALL_SHOWS,
+});
+
 export const getAllShowsThunk = () => async (dispatch) => {
   try {
     const res = await csrfFetch('/api/shows');
     if (res.ok) {
       const data = await res.json();
       await dispatch(getAllShows(data))
+      console.log('Fetched shows from API:', data);
     } else {
       throw res;
     }
@@ -70,19 +75,31 @@ export const getAllShowsThunk = () => async (dispatch) => {
   }
 };
 
+// export const getOneShowThunk = (showId) => async (dispatch) => {
+//   try {
+//     const res = await csrfFetch(`/api/shows/${showId}`);
+//     if (res.ok) {
+//       const data = await res.json();
+//       await dispatch(getOneShow(data))
+//     } else {
+//       throw res;
+//     }
+//   } catch(error) {
+//     return error;
+//   }
+// }
+
 export const getOneShowThunk = (showId) => async (dispatch) => {
   try {
     const res = await csrfFetch(`/api/shows/${showId}`);
-    if (res.ok) {
-      const data = await res.json();
-      await dispatch(getOneShow(data))
-    } else {
-      throw res;
-    }
+    const data = await res.json();
+    await dispatch(getOneShow(data));
+    // dispatch({ type: 'Shows/GET_ONE', payload: data});
+    return data
   } catch(error) {
-    return error;
+    console.error('Error fetching show:', error);
+    return undefined;
   }
-
 }
 
 // export const getUserShowsThunk = (userId) => async (dispatch) => {
@@ -100,7 +117,7 @@ export const getOneShowThunk = (showId) => async (dispatch) => {
 //   }
 // }
 
-export const createShowThunk = (showForm, form) => async (dispatch) => {
+export const createShowThunk = (showForm, form) => async (dispatch, getState) => {
   try {
     const {
       userId,
@@ -111,8 +128,11 @@ export const createShowThunk = (showForm, form) => async (dispatch) => {
       language,
       explicit
     } = showForm;
+
     const { img_url } = form;
     const formData = new FormData();
+
+    console.log('img_url in create thunk:', img_url)
 
     formData.append('userId', userId)
     formData.append('showTitle', showTitle)
@@ -135,7 +155,17 @@ export const createShowThunk = (showForm, form) => async (dispatch) => {
 
     if (res.ok) {
       const show = await res.json();
+      const state = getState();
+      const currentUser = state.session.user;
+
       await dispatch(createShow(show));
+      console.log('create show thunk after dispatch:', show)
+
+      const updateUser = {
+        ...currentUser,
+        showId: show.id
+      };
+      dispatch(setUser(updateUser));
       return show;
     } else if (res.status < 500) {
       const data = await res.json();
@@ -185,11 +215,13 @@ export const updateShowThunk = (showId, form) => async (dispatch) => {
   }
 }
 
-export const updateShowImgThunk = (showId, form) => async (dispatch) => {
-  const { show_img_url, showTitle, showSubtitle, showDesc, author, showLink, language, explicit } = form
+export const updateShowImgThunk = (showId, form, imgForm) => async (dispatch) => {
   try{
-
+      const { showTitle, showSubtitle, showDesc, author, showLink, language, explicit } = form
+      const { show_img_url } = imgForm;
       const formData = new FormData();
+
+      console.log('showImgUrl in update img thunk:', show_img_url);
 
       console.log('show title from thunk', showTitle)
       formData.append('showId', showId);
@@ -210,9 +242,15 @@ export const updateShowImgThunk = (showId, form) => async (dispatch) => {
 
       const response = await csrfFetch(`/api/shows/${showId}/update-image`, option);
       if (response.ok) {
-          const show = await response.json();
-          dispatch(updateShow(show));
-          return show;
+          console.log('formData from updateShowImgThunk:', Array.from(formData.entries()));
+          try {
+            const show = await response.json();
+            dispatch(updateShow(show));
+            return show;
+          } catch (err) {
+            console.error('Failed to parse JSON response:', err);
+            return null;
+          }
       } else if (response.status < 500) {
           const data = await response.json();
           if (data.errors) {
@@ -223,6 +261,7 @@ export const updateShowImgThunk = (showId, form) => async (dispatch) => {
       }
       return response;
   } catch(e){
+    console.log('update image error', e)
       return e
   }
 }
@@ -239,6 +278,7 @@ export const deleteShowThunk = (show) => async (dispatch) => {
     if (res.ok) {
       const { showId } = await res.json();
       dispatch(deleteShow(showId))
+      await dispatch(getAllShowsThunk());
     } else {
       throw res;
     }
@@ -246,6 +286,15 @@ export const deleteShowThunk = (show) => async (dispatch) => {
     return (error)
   }
 }
+
+// export const clearShowDetailsThunk = () => async (dispatch) => {
+
+// }
+
+export const clearAndRefetchAllShowsThunk = () => async (dispatch) => {
+  dispatch(resetAllShows());
+  await dispatch(getAllShowsThunk());
+};
 
 const initialState = {
   allShows: [],
@@ -272,14 +321,16 @@ const showsReducer = (state = initialState, action) => {
         newState.byId[show.id] = show;
       }
       return newState;
-    case CLEAR_USER_SHOWS:
-      newState = { ...state };
-      newState.userShows = {};
-      return newState;
+    case CLEAR_SHOW_DETAILS:
+      return {
+        ...state,
+        showDetails: {}
+      };
     case CREATE_SHOW:
       newState = { ...state };
       newState.allShows = [action.payload, ...newState.allShows];
       newState.byId = {...newState.byId, [action.payload.id]: action.payload};
+      newState.showDetails = action.payload;
       return newState;
     case UPDATE_SHOW:
       newState = { ...state };
@@ -293,12 +344,17 @@ const showsReducer = (state = initialState, action) => {
       return newState;
     case DELETE_SHOW:
       newState = { ...state };
-      newState.allShows = newState.allShows.filter(show => show.id !== action.payload);
+      newState.allShows = newState.allShows.filter(show => show.id !== action.payload.showId);
       if (newState.userShows[action.payload]) {
         delete newState.userShows[action.payload]
       }
       delete newState.byId[action.payload];
       return newState;
+    case RESET_ALL_SHOWS:
+      return {
+        ...state,
+        allShows: [],
+      };
     default:
       return state;
   }

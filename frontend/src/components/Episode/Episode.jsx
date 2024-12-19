@@ -47,7 +47,7 @@ const Episode = ({episode, show}) => {
               <h2>Episode {episode.episodeNumber}</h2>
             )}
           </div>
-          {user.id === show.userId ? (
+          {user && (user.id === show.userId) ? (
             <OpenModalMenuItem
               className="edit-episode-btn"
               itemText={<FaRegEdit />}
