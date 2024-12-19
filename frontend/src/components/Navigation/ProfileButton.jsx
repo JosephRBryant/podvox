@@ -29,6 +29,8 @@ function ProfileButton() {
         setShowMenu(false);
       }
     };
+    console.log('create account-----', user.username)
+
 
     document.addEventListener("click", closeMenu);
 
@@ -36,23 +38,30 @@ function ProfileButton() {
   }, [showMenu]);
 
   useEffect(() => {
+    console.log('User updated in ProfileButton:', user);
+    setIsUserLoaded(!!user?.username);
+  }, [user]);
 
-  },[user])
+  // const closeMenu = () => setShowMenu(false);
 
-  const closeMenu = () => setShowMenu(false);
+  const goToShowPage = (e) => {
+    e.preventDefault();
+    navigate(`/shows/${user.showId}`);
+    toggleMenu(e);
+  };
 
   const logout = (e) => {
     e.preventDefault();
+    navigate('/');
     dispatch(thunkLogout());
     closeMenu();
-    navigate('/');
   };
 
   return (
     <>
       {user ? (
         <button className="profile-btn" onClick={toggleMenu}>
-          {user.username}
+          {user.username || 'Loading...'}
         </button>
       ) : (
         <OpenModalMenuItem
@@ -65,13 +74,13 @@ function ProfileButton() {
         <div className={"profile-dropdown"} ref={ulRef}>
           {user ? (
             <div className="profile-dropdown-container">
-              <NavLink to='/account'>
+              <NavLink className="manage-account-btn" to='/account' onClick={toggleMenu}>
                 Manage Account
               </NavLink>
               {!user.showId ? null : (
-                <NavLink to={`/shows/${user.showId}`}>
+                <div className="visit-show-btn" onClick={goToShowPage}>
                   Visit Show Page
-                </NavLink>
+                </div>
               )}
               <button className="sign-out" onClick={logout}>
                 <LuLogOut />

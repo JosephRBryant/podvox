@@ -1,0 +1,5 @@
+.description-field-description {
+  display: flex;
+  align-items: start;
+  /* overflow-y: scroll; */
+}

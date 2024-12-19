@@ -27,6 +27,7 @@ const UpdateAccount = ({user}) => {
     profileImg: ''
   })
   const ulRef = useRef();
+  const gradientBackground = 'linear-gradient(135deg, rgba(216,224,222,0.7) 0%,rgba(174,191,188,0.7) 22%,rgba(153,175,171,0.7) 33%,rgba(142,166,162,0.7) 50%,rgba(130,157,152,0.7) 73%,rgba(78,92,90,0.7) 100%)';
 
   useEffect(() => {
     setAccountForm({
@@ -113,7 +114,7 @@ const UpdateAccount = ({user}) => {
     if (!editorOpen) return;
 
     const closeEditor = (e) => {
-      if (!ulRef.current.contains(e.target)) {
+      if (ulRef.current && !ulRef.current.contains(e.target)) {
         setEditorOpen(false);
       }
     };
@@ -176,6 +177,7 @@ const UpdateAccount = ({user}) => {
               onChange={(e) => updateAccountForm(e, 'username')}
               value={accountForm.username}
               placeholder={user.username}
+              style={{boxShadow: 'inset 0 0 3px grey', backgroundColor: '#e4ecf0'}}
             />
           </div>
           <div className="firstname-field">
@@ -190,6 +192,7 @@ const UpdateAccount = ({user}) => {
               onChange={(e) => updateAccountForm(e, 'firstName')}
               value={accountForm.firstName}
               placeholder={user.firstName}
+              style={{boxShadow: 'inset 0 0 3px grey', backgroundColor: '#e4ecf0'}}
             />
           </div>
           <div className="lastname-field">
@@ -204,6 +207,7 @@ const UpdateAccount = ({user}) => {
               onChange={(e) => updateAccountForm(e, 'lastName')}
               value={accountForm.lastName}
               placeholder={user.lastName}
+              style={{boxShadow: 'inset 0 0 3px grey', backgroundColor: '#e4ecf0'}}
             />
           </div>
           <div className="email-field">
@@ -218,6 +222,7 @@ const UpdateAccount = ({user}) => {
               onChange={(e) => updateAccountForm(e, 'email')}
               value={accountForm.email}
               placeholder={user.email}
+              style={{boxShadow: 'inset 0 0 3px grey', backgroundColor: '#e4ecf0'}}
             />
           </div>
           <div className="password-field">
@@ -232,6 +237,7 @@ const UpdateAccount = ({user}) => {
               onChange={(e) => setPassword(e.target.value)}
               value={password}
               placeholder='**********'
+              style={{boxShadow: 'inset 0 0 3px grey', backgroundColor: '#e4ecf0'}}
             />
           </div>
           <div className="confirm-password-field">
@@ -246,6 +252,7 @@ const UpdateAccount = ({user}) => {
               onChange={matchPassword}
               value={confirmPassword}
               placeholder='**********'
+              style={{boxShadow: 'inset 0 0 3px grey', backgroundColor: '#e4ecf0'}}
             />
             {!passwordMatch && <p className='error-message'>Passwords do not match.</p>}
           </div>

@@ -1,12 +1,11 @@
 import { csrfFetch } from './csrf';
-import { clearUserShows } from './show';
 
 //Constants
 const SET_USER = 'session/setUser';
 const REMOVE_USER = 'session/removeUser';
 const EDIT_USER = 'session/editUser';
 
-const setUser = (user) => ({
+export const setUser = (user) => ({
     type: SET_USER,
     payload: user
 });
@@ -54,12 +53,15 @@ export const thunkLogin = (credentials) => async dispatch => {
 export const fetchUser = (userId) => async (dispatch) => {
     try {
         const response = await csrfFetch('/api/users/current');
-        if (response.ok) {
-            const user = await response.json();
-            dispatch(setUser(user))
+        if (!response.ok) {
+            throw new Error('Failed to fetch user data');
         }
+        const user = await response.json();
+        dispatch(setUser(user))
+        return user;
     } catch (error) {
-        return error;
+        console.error('Error fetching user:', error);
+        throw error;
     }
 }
 
@@ -72,7 +74,7 @@ export const thunkSignup = (user) => async (dispatch) => {
 
     if (response.ok) {
         const data = await response.json();
-        dispatch(setUser(data));
+        dispatch(setUser(data.user));
     } else if (response.status < 500) {
         const errorMessages = await response.json();
         return errorMessages
@@ -156,7 +158,6 @@ export const thunkLogout = () => async (dispatch) => {
         method: "DELETE",
     });
     dispatch(removeUser());
-    dispatch(clearUserShows());
 };
 
 
@@ -166,7 +167,14 @@ function sessionReducer(state = initialState, action) {
     let newState;
     switch (action.type) {
         case SET_USER:
-            return { ...state, user: action.payload };
+            console.log('Action payload:', action.payload);
+            console.log('Previous State:', state);
+            newState = {
+                ...state,
+                user: action.payload
+            };
+            console.log('Updated state', newState);
+            return newState;
         case REMOVE_USER:
             return { ...state, user: null };
         case EDIT_USER:

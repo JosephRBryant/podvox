@@ -91,6 +91,8 @@ router.post('/', singleMulterUpload('image'), requireAuth, handleValidationError
 
       let imgUrl;
 
+      console.log('req file in create api', req.file)
+
       if (req.file) {
         imgUrl = await singlePublicFileUpload(req.file);
       }
@@ -106,6 +108,12 @@ router.post('/', singleMulterUpload('image'), requireAuth, handleValidationError
         language,
         explicit
       });
+
+      const dbUser = await User.findByPk(user.id);
+      if (dbUser) {
+        dbUser.showId = show.id;
+        await dbUser.save();
+      }
 
       res.status(201);
       return res.json(show);
@@ -161,8 +169,13 @@ router.put('/:id/update-image', singleMulterUpload('image'), requireAuth, handle
 
     let imgUrl;
 
+    console.log('Request body:', req.body);
+    console.log('Request file:', req.file);
+
+
     if(req.file) {
       imgUrl = await singlePublicFileUpload(req.file);
+      console.log('show image url from api', imgUrl)
       show.showImage = imgUrl;
     }
 
@@ -176,7 +189,8 @@ router.put('/:id/update-image', singleMulterUpload('image'), requireAuth, handle
     if (explicit) show.explicit = explicit;
 
     await show.save();
-    return res.json();
+    const updatedShow = show.toJSON();
+    return res.status(200).json(updatedShow);
 
   } catch(e) {
     next(e)
