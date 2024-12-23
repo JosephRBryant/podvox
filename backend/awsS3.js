@@ -2,6 +2,7 @@ const AWS = require("aws-sdk");
 // name of your bucket here
 const NAME_OF_BUCKET = process.env.AWS_BUCKET_NAME
 const multer = require("multer");
+const upload = multer();
 
 //  make sure to set environment variables in production for:
 //  AWS_ACCESS_KEY_ID
@@ -13,8 +14,12 @@ const s3 = new AWS.S3({ apiVersion: "2006-03-01" });
 // --------------------------- Public UPLOAD ------------------------
 
 const singlePublicFileUpload = async (file) => {
-    const { originalname, mimetype, buffer } = await file;
+    const { originalname, mimetype, buffer } = file;
     const path = require("path");
+
+    if (!originalname || !buffer) {
+        throw new Error("Invalid file structure");
+    }
     // name of the file in your S3 bucket will be the date in ms plus the extension name
     const Key = new Date().getTime().toString() + path.extname(originalname);
     const uploadParams = {
@@ -30,6 +35,9 @@ const singlePublicFileUpload = async (file) => {
 };
 
 const multiplePublicFileUpload = async (files) => {
+    if (!Array.isArray(files)) {
+        throw new Error("Expected an array of files")
+    }
     return await Promise.all(
         files.map((file) => {
             return singlePublicFileUpload(file);
@@ -83,9 +91,10 @@ const storage = multer.memoryStorage({
 });
 
 const singleMulterUpload = (nameOfKey) => //'image' comes in
-    multer({ storage: storage }).single(nameOfKey);
-const multipleMulterUpload = (nameOfKey) =>
-    multer({ storage: storage }).array(nameOfKey);
+    multer({ storage: storage, limits: { fileSize: 100 * 1024 * 1024 } }).single(nameOfKey);
+const multipleMulterUpload = (fields) => {
+    return upload.fields(fields.map(field => ({ name: field, maxCount: 1 })))
+}
 
 module.exports = {
     s3,

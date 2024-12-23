@@ -11,7 +11,6 @@ import AddEpisodeModal from "../AddEpisodeModal/AddEpisodeModal";
 // import { getUserShowsThunk } from "../../redux/show";
 import CreateShowModal from "../CreateShowModal";
 
-
 function Navigation() {
   const dispatch = useDispatch();
   let user = useSelector((state) => state.session.user);
@@ -29,7 +28,7 @@ function Navigation() {
   return (
     <ul className="nav-bar">
       <li>
-        <NavLink to="/"><img className="nav-logo" src="../../images/podvox-nav-logo.svg" /></NavLink>
+        <NavLink to="/"><img className="nav-logo" src="https://toginet.com/images/podvox/podvox-nav-logo.svg" /></NavLink>
       </li>
       <div className="nav-menu">
         <NavLink className="about-btn" to="/about">About</NavLink>

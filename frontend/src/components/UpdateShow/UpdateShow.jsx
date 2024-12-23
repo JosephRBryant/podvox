@@ -154,7 +154,7 @@ const UpdateShow = ({userId}) => {
       language: show.language,
       explicit: show.explicit
     };
-
+    console.log('showimgthunk formdata:', imgForm);
     const updatedShow = await dispatch(updateShowImgThunk(show.id, form, imgForm));
 
     if (updatedShow) {
@@ -278,7 +278,7 @@ const UpdateShow = ({userId}) => {
               />
             </div>
             <div className="explicit-field">
-              <p>Explicit: </p>
+              <p>Explicit Language: </p>
               <input
                 type="radio"
                 name='explicit'
@@ -342,7 +342,7 @@ const UpdateShow = ({userId}) => {
             </div>
             <div className="description-field-description">
             {showDescLength > 129 ? (
-                <p>{showDesc.slice(0, 216) + "..."}</p>
+                <p>{showDesc.slice(0, 206) + "..."}</p>
               ) : (
                 showDesc
               )}

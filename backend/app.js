@@ -14,8 +14,8 @@ const routes = require('./routes');
 const app = express();
 app.use(morgan('dev'));
 app.use(cookieParser());
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
+app.use(express.urlencoded({ extended: false, limit: '128mb' }));
+app.use(express.json({ limit: '128mb'}));
 
 
 // Security Middleware
@@ -80,5 +80,11 @@ app.use((err, _req, res, _next) => {
         stack: isProduction ? null : err.stack
     });
 });
+
+// const server = app.listen(3001, () => {
+//     console.log('Server is running on port 3001');
+// });
+
+// server.setTimeout(600000)
 
 module.exports = app;

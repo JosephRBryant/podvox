@@ -61,8 +61,8 @@ const ShowPage = () => {
               <h2>{`with ${show.author}`}</h2>
             </div>
             <div className="show-page-banner-description">
-              {showDesc.length > 129 ? (
-                <p>{showDesc.slice(0, 130) + "... read more"}</p>
+              {showDesc.length > 179 ? (
+                <p>{showDesc.slice(0, 180) + "... read more"}</p>
               ) : (
                 showDesc
               )}
@@ -75,7 +75,7 @@ const ShowPage = () => {
               ) : null}
               <span className='show-page-banner-description-episode-count'>{`${show.Episodes.length} episodes available`}</span>
             </div>
-            <img className="show-page-banner-profile-image" src={show.User.profileImg}/>
+            <img className="show-page-banner-profile-image" src={show.User.profileImg || 'https://placehold.co/500x500/2196F3/fff/?font=raleway&text=image'}/>
           </div>
         </div>
         <div className="show-page-episode-container">
