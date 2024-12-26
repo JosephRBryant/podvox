@@ -1,8 +1,10 @@
 import { csrfFetch } from "./csrf";
+import { getOneShowThunk } from "./show";
 
 const GET_SHOW_EPISODES = 'episodes/getShowEpisodes';
 const CREATE_EPISODE = 'episodes/createEpisode';
 const UPDATE_EPISODE = 'episodes/updateEpisode';
+const DELETE_EPISODE = 'episodes/deleteEpisode';
 
 const getShowEpisodes = (episodes) => {
   return {
@@ -24,6 +26,13 @@ const updateEpisode = (episode) => {
     payload: episode
   }
 }
+
+const deleteEpisode = (episodeId) => {
+  return {
+    type: DELETE_EPISODE,
+    payload: episodeId
+  };
+};
 
 export const getShowEpisodesThunk = (showId) => async (dispatch) => {
   try {
@@ -145,6 +154,28 @@ export const updateEpisodeThunk = (episodeForm, form) => async (dispatch) => {
   }
 }
 
+export const deleteEpisodeThunk = (episode) => async (dispatch) => {
+  try {
+    const options = {
+      method: 'DELETE',
+      header: {'Content-type': 'application/json'}
+    };
+    console.log('episode in del ep thunk', episode)
+
+    const res = await csrfFetch(`/api/episodes/${episode.id}`, options);
+
+    if (res.ok) {
+      const { episodeId } = await res.json();
+      dispatch(deleteEpisode(episodeId));
+      await dispatch(getShowEpisodesThunk());
+    } else {
+      throw res;
+    }
+  } catch (error) {
+    return (error)
+  }
+}
+
 const initialState = {
   showEpisodes: [],
   byId: {},
@@ -165,6 +196,14 @@ const episodesReducer = (state = initialState, action) => {
       newState = {...state};
       newState.showEpisodes = [action.payload, ...newState.showEpisodes];
       newState.byId = {...newState.byId, [action.payload.id]: action.payload};
+      return newState;
+    case DELETE_EPISODE:
+      newState = { ...state };
+      newState.showEpisodes = newState.showEpisodes.filter(episode => episode.id !== action.payload.episodeId);
+      if (newState.showEpisodes[action.payload]) {
+        delete newState.showEpisodes[action.payload];
+      }
+      delete newState.byId[action.payload];
       return newState;
     default:
       return state;

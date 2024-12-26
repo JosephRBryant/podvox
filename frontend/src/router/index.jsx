@@ -4,7 +4,7 @@ import SignupFormPage from '../components/SignupFormPage';
 import Layout from './Layout';
 import Splash from '../components/Splash';
 import Browse from '../components/Browse';
-import Showpage from '../components/ShowPage';
+import ShowPage from '../components/ShowPage';
 import LivePage from '../components/LivePage/LivePage';
 import ManageAccount from '../components/ManageAccount';
 
@@ -30,7 +30,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/shows/:showId",
-        element: <Showpage />
+        element: <ShowPage />
       },
       {
         path: "/shows/:showId/live",

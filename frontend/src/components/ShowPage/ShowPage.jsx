@@ -58,7 +58,7 @@ const ShowPage = () => {
             <img className='show-page-banner-show-image' src={show.showImage} alt="show image" />
             <div className="show-page-banner-header">
               <h1>{show.showTitle}</h1>
-              <h2>{`with ${show.author}`}</h2>
+              <h2>{show.showSubtitle}</h2>
             </div>
             <div className="show-page-banner-description">
               {showDesc.length > 179 ? (

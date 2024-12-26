@@ -49,12 +49,12 @@ function AddEpisodeModal() {
     }
   }
 
-  const addImage = async (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    setImageFile(file);
-  }
+  // const addImage = async (e) => {
+  //   const file = e.target.files[0];
+  //   const reader = new FileReader();
+  //   reader.readAsDataURL(file);
+  //   setImageFile(file);
+  // }
 
   const cleanEpisodeForm = {
     ...episodeForm,
@@ -104,6 +104,13 @@ function AddEpisodeModal() {
 
   return (
     <div className="add-episode-main">
+      {loading && (
+        <div className="spinner-overlay">
+          <div className="loader"></div>
+          <h2>Uploading Episode...</h2>
+        </div>
+      )}
+
       <h1>Upload an Episode</h1>
       <form className="form-add-episode" onSubmit={handleSubmit} method="post">
         <div className="add-episode-left-fields">

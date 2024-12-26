@@ -4,15 +4,15 @@ import { FaRegCirclePlay, FaRegCirclePause } from "react-icons/fa6";
 import { FaRegEdit } from "react-icons/fa";
 import React, { useEffect, useState, useRef } from 'react';
 let sampleAudio = new Audio("https://toginet.com/images/podvox/Sample.mp3");
-import { useSelector } from 'react-redux';
-import OpenModalMenuItem from '../Navigation/OpenModalMenuItem';
-import UpdateEpisodeModal from '../UpdateEpisodeModal';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteEpisodeThunk, getShowEpisodesThunk } from '../../redux/episode';
+import { getOneShowThunk } from '../../redux/show';
 
 const Episode = ({episode, show}) => {
-  const user = useSelector(state => state.session.user);
   const audioRef = useRef(null);
-  // const podcastAudio = new Audio(episode.episodeUrl)
+  const dispatch = useDispatch();
   const [playing, setPlaying] = useState(false);
+  const [editorOpen, setEditorOpen] = useState(false);
 
   useEffect(() => {
     if (episode.episodeUrl) {
@@ -29,6 +29,8 @@ const Episode = ({episode, show}) => {
     };
   }, [episode.episodeUrl]);
 
+  const editorRef = useRef();
+
   const playAudio = () => {
     if (audioRef.current) {
       audioRef.current.play();
@@ -43,6 +45,26 @@ const Episode = ({episode, show}) => {
     }
   };
 
+  const toggleEditor = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setEditorOpen(!editorOpen);
+  }
+
+  useEffect(() => {
+    if (!editorOpen) return;
+
+    const closeEditor = (e) => {
+      if (editorRef.current && !editorRef.current.contains(e.target)) {
+        setEditorOpen(false);
+      }
+    };
+
+    document.addEventListener('click', closeEditor);
+
+    return () => document.removeEventListener('click', closeEditor);
+  }, [editorOpen]);
+
   const guestInfo = episode.guestInfo.split(',');
 
   const getEpisodeNumber = () => {
@@ -51,6 +73,20 @@ const Episode = ({episode, show}) => {
       if (episodes[i].id === episode.id) {
         return i + 1;
       }
+    }
+  }
+
+  const handleDeleteEpisode = async (e, episode) => {
+    e.preventDefault();
+    e.stopPropagation();
+    try {
+      await dispatch(deleteEpisodeThunk(episode));
+      await dispatch(getOneShowThunk(show.id))
+      // await dispatch(getShowEpisodesThunk(show.id));
+      setEditorOpen(false);
+      console.log('handleDelete in Episode.jsx');
+    } catch (error) {
+      return (error)
     }
   }
 
@@ -65,35 +101,49 @@ const Episode = ({episode, show}) => {
       )}
       <div className="episode-text-block">
         <div className="episode-play-guest">
-          {playing ? (
-            <button className="play-button" onClick={pauseAudio}>
-              <FaRegCirclePause />
-            </button>
-          ) : (
-            <button className="play-button" onClick={playAudio}>
-              <FaRegCirclePlay />
-            </button>
-          )}
-          <div className="episode-title-container">
-            {<h3>{episode.episodeTitle}</h3>}
-            {hasGuests < 1 ? (
-              <h2>Episode {getEpisodeNumber()}</h2>
+          <div className="episode-play-title">
+            {playing ? (
+              <button className="play-button" onClick={pauseAudio}>
+                <FaRegCirclePause />
+              </button>
             ) : (
-              <h2>Episode {getEpisodeNumber()} with{' '}
-              {guestInfo.length === 1
-                ? `guest ${guestInfo[0]}`
-                : `guests ${guestInfo.slice(0, -1).join(', ')}, and ${guestInfo[guestInfo.length - 1]}`}
-             </h2>
+              <button className="play-button" onClick={playAudio}>
+                <FaRegCirclePlay />
+              </button>
             )}
+            <div className="episode-title-container">
+              {<h3>{episode.episodeTitle}</h3>}
+              {hasGuests < 1 ? (
+                <h2>Episode {getEpisodeNumber()}</h2>
+              ) : (
+                <h2>Episode {getEpisodeNumber()} with{' '}
+                {guestInfo.length === 1
+                  ? `guest ${guestInfo[0]}`
+                  : `guests ${guestInfo.slice(0, -1).join(', ')}, and ${guestInfo[guestInfo.length - 1]}`}
+              </h2>
+              )}
+            </div>
           </div>
-          {user && (user.id === show.userId) ? (
-            <OpenModalMenuItem
-              className="edit-episode-btn"
-              itemText={<FaRegEdit />}
-              modalComponent={<UpdateEpisodeModal />}
-              episode={episode}
-            />
-          ) : null }
+          {!editorOpen ? (
+            <div className="edit-episode-btn">
+             <button className="open-editor-btn toggle-episode-editor-btn" onClick={toggleEditor}>
+              edit
+              <FaRegEdit className='edit-icon'/>
+             </button>
+            </div>
+          ) : (
+            <div className="edit-episode-btn">
+              <button className="delete-episode-btn toggle-episode-editor-btn" onClick={(e) => handleDeleteEpisode(e, episode)}>
+                delete
+              </button>
+              <button type='submit' className="update-episode-btn toggle-episode-editor-btn">
+                save
+              </button>
+              <button type='submit' className="toggle-episode-editor-btn" onClick={toggleEditor}>
+                cancel
+              </button>
+            </div>
+          ) }
         </div>
         <div className="episode-description">
           {episode.episodeDesc}

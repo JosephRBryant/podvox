@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { thunkLogout } from "../../redux/session";
 import { LuLogOut } from "react-icons/lu";
 import OpenModalMenuItem from "./OpenModalMenuItem";
+import { getOneShowThunk } from "../../redux/show";
 import LoginFormModal from "../LoginFormModal";
 import "./ProfileButton.css";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -13,6 +14,7 @@ function ProfileButton() {
   const [showMenu, setShowMenu] = useState(false);
   const [isUserLoaded, setIsUserLoaded] = useState(false);
   let user = useSelector((state) => state.session.user);
+  let show = useSelector((state) => state.showState.showDetails);
 
   const ulRef = useRef();
 
@@ -46,6 +48,7 @@ function ProfileButton() {
 
   const goToShowPage = (e) => {
     e.preventDefault();
+    dispatch(getOneShowThunk(show.id));
     navigate(`/shows/${user.showId}`);
     toggleMenu(e);
   };

@@ -18,6 +18,7 @@ const Featured = () => {
   useEffect(() => {
     const getData = async () => {
       await dispatch(getAllShowsThunk());
+      await dispatch(clearAndRefetchAllShowsThunk());
       setLoaded(true)
     }
     if (!loaded && !shows.length) {

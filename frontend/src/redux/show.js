@@ -75,20 +75,6 @@ export const getAllShowsThunk = () => async (dispatch) => {
   }
 };
 
-// export const getOneShowThunk = (showId) => async (dispatch) => {
-//   try {
-//     const res = await csrfFetch(`/api/shows/${showId}`);
-//     if (res.ok) {
-//       const data = await res.json();
-//       await dispatch(getOneShow(data))
-//     } else {
-//       throw res;
-//     }
-//   } catch(error) {
-//     return error;
-//   }
-// }
-
 export const getOneShowThunk = (showId) => async (dispatch) => {
   try {
     const res = await csrfFetch(`/api/shows/${showId}`);
@@ -101,21 +87,6 @@ export const getOneShowThunk = (showId) => async (dispatch) => {
     return undefined;
   }
 }
-
-// export const getUserShowsThunk = (userId) => async (dispatch) => {
-//   try {
-//     const res = await csrfFetch(`/api/users/${userId}/shows`);
-//     if (res.ok) {
-//       const data = await res.json();
-//       dispatch(getUserShows(data))
-//     } else {
-//       throw new Error('Failed to get User Show');
-//     }
-//   } catch(error) {
-//     console.error('Error fetching user show: ', error)
-//     return error;
-//   }
-// }
 
 export const createShowThunk = (showForm, form) => async (dispatch, getState) => {
   try {
@@ -293,6 +264,7 @@ export const deleteShowThunk = (show) => async (dispatch) => {
 
 export const clearAndRefetchAllShowsThunk = () => async (dispatch) => {
   dispatch(resetAllShows());
+  console.log('reset all shows thunk running')
   await dispatch(getAllShowsThunk());
 };
 

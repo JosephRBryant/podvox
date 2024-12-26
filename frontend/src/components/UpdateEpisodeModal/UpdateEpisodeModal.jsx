@@ -1,4 +1,5 @@
 import { useDispatch } from 'react-redux';
+import { useState } from 'react';
 import './UpdateEpisodeModal.css';
 
 const UpdateEpisodeModal = ({episode}) => {
@@ -39,8 +40,10 @@ const UpdateEpisodeModal = ({episode}) => {
     <div className="add-episode-main">
       <h1>Upload an Episode</h1>
       <form className="form-add-episode" onSubmit={handleSubmit}>
-        <label htmlFor="episodeTitle">Title</label>
-        <input type="text" name="episodeTitle" id="episodeTitle" onChange={(e) => updateEpisodeForm(e, 'episodeTitle')} value={episodeForm.episodeTitle} placeholder="Title"/>
+        <div className="update-episode-left-fields">
+          <label htmlFor="episodeTitle">Title</label>
+          <input type="text" name="episodeTitle" id="episodeTitle" onChange={(e) => updateEpisodeForm(e, 'episodeTitle')} value={episodeForm.episodeTitle} placeholder="Title"/>
+        </div>
         <label htmlFor="episodeDesc">Description</label>
         <textarea type="text" name="episodeDesc" id="episodeDesc" onChange={(e) => updateEpisodeForm(e, 'episodeDesc')} value={episodeForm.episodeDesc} placeholder="Description"/>
         <label htmlFor="guestInfo">Guests</label>

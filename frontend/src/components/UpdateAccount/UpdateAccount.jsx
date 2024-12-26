@@ -258,7 +258,7 @@ const UpdateAccount = ({user}) => {
           </div>
         </form>
       ) : (
-        <form>
+      <form>
         <div className="account-info-header">
           <h2>Account Info</h2>
           <div className="edit-account-info-btn" >

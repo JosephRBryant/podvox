@@ -1,0 +1,41 @@
+.footer-main {
+  display: flex;
+  justify-content: space-around;
+  padding: 2rem 0 1rem 0;
+  margin-top: 2rem;
+  background-color: white;
+  opacity: .5;
+  z-index: 2;
+  border-top: 1px solid #777;
+}
+
+.footer-logo {
+  width: 12rem;
+}
+
+.footer-left-menu,
+.footer-right-menu {
+  display: flex;
+  gap: .5rem;
+  flex-direction: column;
+}
+
+.footer-left-menu a,
+.footer-right-menu a {
+  text-decoration: none;
+  font-family: sans-serif;
+  color: black;
+}
+
+.socials {
+  display: flex;
+  gap: 2rem;
+}
+
+.footer-veteran {
+  width: 8rem;
+}
+
+.socials svg {
+  color: black;
+}
