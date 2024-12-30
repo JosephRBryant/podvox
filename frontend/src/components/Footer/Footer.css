@@ -1,16 +1,22 @@
 .footer-main {
   display: flex;
   justify-content: space-around;
+  align-items: center;
   padding: 2rem 0 1rem 0;
   margin-top: 2rem;
   background-color: white;
-  opacity: .5;
+  /* opacity: .5; */
   z-index: 2;
   border-top: 1px solid #777;
 }
 
+.nav-logo-container {
+  display: flex;
+  opacity: .4;
+}
+
 .footer-logo {
-  width: 12rem;
+  width: 150px;
 }
 
 .footer-left-menu,
@@ -25,17 +31,31 @@
   text-decoration: none;
   font-family: sans-serif;
   color: black;
+  opacity: .5;
 }
 
 .socials {
   display: flex;
+  align-items: center;
   gap: 2rem;
 }
 
 .footer-veteran {
-  width: 8rem;
+  height: 6rem;
+  opacity: .3;
 }
 
 .socials svg {
   color: black;
+}
+
+.testimonials,
+.be-a-guest,
+.about-us,
+.terms,
+.contact-us,
+.phone-number,
+.staff-email,
+.socials {
+  position: relative;
 }

@@ -9,7 +9,6 @@ const UpdateAccount = ({user}) => {
   const dispatch = useDispatch();
 
   const [imgUrl, setImgUrl] = useState(null);
-  const [accountUpload, setAccountUpload] = useState(true);
   const [previewUrl, setPreviewUrl] = useState(user.profileImg);
   const [currImg, setCurrImg] = useState(user.profileImg);
   const [updateBtns, setUpdateBtns] = useState(false);
@@ -27,7 +26,6 @@ const UpdateAccount = ({user}) => {
     profileImg: ''
   })
   const ulRef = useRef();
-  const gradientBackground = 'linear-gradient(135deg, rgba(216,224,222,0.7) 0%,rgba(174,191,188,0.7) 22%,rgba(153,175,171,0.7) 33%,rgba(142,166,162,0.7) 50%,rgba(130,157,152,0.7) 73%,rgba(78,92,90,0.7) 100%)';
 
   useEffect(() => {
     setAccountForm({
@@ -72,7 +70,7 @@ const UpdateAccount = ({user}) => {
         return res
       }
     } catch(error) {
-      return error;
+      return errors;
     }
   }
 
@@ -99,7 +97,6 @@ const UpdateAccount = ({user}) => {
       };
       reader.readAsDataURL(file);
       setImgUrl(file);
-      setAccountUpload(false);
       setUpdateBtns(true);
     }
   }
@@ -137,8 +134,6 @@ const UpdateAccount = ({user}) => {
     const updatedUser = await dispatch(updateUserImgThunk(user.id, form));
 
     if (updatedUser) {
-      console.log('is the updatedUser response ok', updatedUser)
-
       setCurrImg(updatedUser.profileImg);
       setUpdateBtns(false);
     }

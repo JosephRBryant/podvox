@@ -62,6 +62,8 @@ WORKDIR /var/www
 COPY /backend/package.json .
 COPY /backend/.sequelizerc .
 
+COPY --from=backend backend/db/seeders /var/www/db/seeders
+
 COPY --from=frontend frontend/dist ./frontend/dist
 
 RUN npm install --only=production
@@ -74,3 +76,5 @@ COPY ./package.json .
 EXPOSE 8000
 
 CMD [ "npm", "start" ]
+
+# CMD ["sh", "-c", "npx sequelize-cli db:drop && npx sequelize-cli db:create && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all && npm start"]

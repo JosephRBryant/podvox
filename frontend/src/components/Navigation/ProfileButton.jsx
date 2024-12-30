@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { thunkLogout } from "../../redux/session";
 import { LuLogOut } from "react-icons/lu";
@@ -12,7 +12,6 @@ function ProfileButton() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showMenu, setShowMenu] = useState(false);
-  const [isUserLoaded, setIsUserLoaded] = useState(false);
   let user = useSelector((state) => state.session.user);
   let show = useSelector((state) => state.showState.showDetails);
 
@@ -31,20 +30,11 @@ function ProfileButton() {
         setShowMenu(false);
       }
     };
-    console.log('create account-----', user.username)
-
 
     document.addEventListener("click", closeMenu);
 
     return () => document.removeEventListener("click", closeMenu);
   }, [showMenu]);
-
-  useEffect(() => {
-    console.log('User updated in ProfileButton:', user);
-    setIsUserLoaded(!!user?.username);
-  }, [user]);
-
-  // const closeMenu = () => setShowMenu(false);
 
   const goToShowPage = (e) => {
     e.preventDefault();
@@ -55,9 +45,10 @@ function ProfileButton() {
 
   const logout = (e) => {
     e.preventDefault();
+    setShowMenu(false);
     navigate('/');
     dispatch(thunkLogout());
-    closeMenu();
+    // closeMenu();
   };
 
   return (
@@ -74,7 +65,7 @@ function ProfileButton() {
               />
       )}
       {showMenu && (
-        <div className={"profile-dropdown"} ref={ulRef}>
+        <div className="profile-dropdown" ref={ulRef}>
           {user ? (
             <div className="profile-dropdown-container">
               <NavLink className="manage-account-btn" to='/account' onClick={toggleMenu}>
@@ -92,13 +83,6 @@ function ProfileButton() {
             </div>
           ) : (
             null
-            // <>
-            //   <OpenModalMenuItem
-            //     itemText="Log In"
-            //     onItemClick={closeMenu}
-            //     modalComponent={<LoginFormModal />}
-            //   />
-            // </>
           )}
         </div>
       )}

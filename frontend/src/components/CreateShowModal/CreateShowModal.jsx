@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './CreateShowModal.css';
 import { useModal } from '../../context/Modal';
@@ -38,7 +38,6 @@ const CreateShowModal = () => {
       };
       reader.readAsDataURL(file);
       setImgUrl(file);
-      console.log('imgUrl:', imgUrl);
     }
   }
 
@@ -48,27 +47,20 @@ const CreateShowModal = () => {
     const form = {img_url};
 
     try {
-      console.log('before create show dispatch', form);
       const res = await dispatch(createShowThunk(showForm, form));
-      console.log('Res from create show dispatch', res);
 
       if (res && (res.errors || res.server)) {
         setErrors(res);
-        console.log('error creating show', res)
       } else {
         try {
-          console.log('Dispatching fetchUser with user id:', user.id);
-          const userRes = await dispatch(fetchUser(user.id));
-          console.log('fetchUser response:', userRes);
+          await dispatch(fetchUser(user.id));
         } catch (error) {
-          console.error('Error in fetchUser dispatch', error);
+          console.error('Error in fetchUser dispatch', errors);
         }
         try {
-          console.log('Dispatching getOneShowThunk with show id:', res.id);
-          const showRes = await dispatch(getOneShowThunk(res.id));
-          console.log('getoneshow response:', showRes);
+          await dispatch(getOneShowThunk(res.id));
         } catch (error) {
-          console.error('Error in getOneShow dispatch', error);
+          console.error('Error in getOneShow dispatch', errors);
         }
         console.log('create show submit before closeModal:', show)
         closeModal();

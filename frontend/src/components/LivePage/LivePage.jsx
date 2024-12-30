@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import LiveStream from '../LiveStream';
 import LiveChat from '../LiveChat';
 import './LivePage.css';
@@ -21,7 +21,7 @@ const LivePage = () => {
     if (!loaded) {
       getData()
     }
-  }, [dispatch, showId]);
+  }, [dispatch, showId, loaded]);
 
   return (
     <main>

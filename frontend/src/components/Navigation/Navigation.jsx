@@ -1,9 +1,8 @@
 import { NavLink } from "react-router-dom";
 import ProfileButton from "./ProfileButton";
 import "./Navigation.css";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { FaCircleUser } from "react-icons/fa6";
-import React, { useEffect, useState } from "react";
 import SignupFormModal from "../SignupFormModal";
 import OpenModalMenuItem from "./OpenModalMenuItem";
 import { LuUpload } from "react-icons/lu";
@@ -12,18 +11,7 @@ import AddEpisodeModal from "../AddEpisodeModal/AddEpisodeModal";
 import CreateShowModal from "../CreateShowModal";
 
 function Navigation() {
-  const dispatch = useDispatch();
   let user = useSelector((state) => state.session.user);
-  // let userShow = useSelector((state) => state.showState.userShows);
-  const [isUserLoaded, setIsUserLoaded] = useState(false);
-
-  // useEffect(() => {
-  //   if (user && !isUserLoaded) {
-  //     dispatch(getUserShowsThunk(user.id));
-  //     setIsUserLoaded(true)
-  //   }
-  // }, [dispatch, user, isUserLoaded])
-
 
   return (
     <ul className="nav-bar">
@@ -31,8 +19,14 @@ function Navigation() {
         <NavLink to="/"><img className="nav-logo" src="https://toginet.com/images/podvox/podvox-nav-logo.svg" /></NavLink>
       </li>
       <div className="nav-menu">
-        <NavLink className="about-btn" to="/about">About</NavLink>
-        <div className="shows-menu-btn">Shows</div>
+        <div className="about-btn">
+          About
+          <span className='tool-tip-text'>In Development</span>
+        </div>
+        <div className="shows-menu-btn">
+          Shows
+          <span className='tool-tip-text'>In Development</span>
+        </div>
         {/* <button className="sign-up-btn">Create Account</button> */}
         {!user ? (
           <OpenModalMenuItem

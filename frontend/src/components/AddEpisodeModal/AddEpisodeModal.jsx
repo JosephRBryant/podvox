@@ -1,11 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useModal } from '../../context/Modal';
 import "./AddEpisode.css";
-import { createEpisodeThunk, getShowEpisodesThunk } from "../../redux/episode";
-import { useEffect, useState } from "react";
+import { createEpisodeThunk } from "../../redux/episode";
+import { useState } from "react";
 import { LuUpload } from "react-icons/lu";
 import { FaImage } from "react-icons/fa6";
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import { getOneShowThunk } from "../../redux/show";
 
@@ -15,8 +14,6 @@ function AddEpisodeModal() {
   const show = useSelector(state => state.showState.showDetails);
   const { closeModal } = useModal();
   const [loading, setLoading] = useState(false);
-  const [loaded, setLoaded] = useState(false);
-  const [errors, setErrors] = useState({});
   const [imageFile, setImageFile] = useState(null);
   const [audioFile, setAudioFile] = useState(null);
   const navigate = useNavigate();
@@ -49,13 +46,6 @@ function AddEpisodeModal() {
     }
   }
 
-  // const addImage = async (e) => {
-  //   const file = e.target.files[0];
-  //   const reader = new FileReader();
-  //   reader.readAsDataURL(file);
-  //   setImageFile(file);
-  // }
-
   const cleanEpisodeForm = {
     ...episodeForm,
     guestInfo: Array.isArray(episodeForm.guestInfo)
@@ -83,7 +73,6 @@ function AddEpisodeModal() {
     const res = await dispatch(createEpisodeThunk(show.id, formData));
 
     if (res) {
-      setErrors(res);
       setLoading(false);
     }
     else {

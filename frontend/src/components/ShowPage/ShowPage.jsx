@@ -5,12 +5,10 @@ import { useEffect, useState } from 'react';
 import Episode from '../Episode';
 import { sortEpisodes } from '../../helpers/sort-array';
 import './ShowPage.css';
-import React from 'react';
 
 const ShowPage = () => {
   const dispatch = useDispatch();
   const { showId } = useParams();
-  // const [loaded, setLoaded] = useState(false);
   const [loading, setLoading] = useState(true);
   const [live, setLive] = useState(true);
   const [activeSort, setActiveSort] = useState('newest');
@@ -20,6 +18,9 @@ const ShowPage = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    if (!live) {
+      setLive(true)
+    }
 
     const fetchShowDetails = async () => {
       setLoading(true);
@@ -32,12 +33,9 @@ const ShowPage = () => {
     } else {
       setLoading(false);
     }
-  }, [dispatch, showId, show]);
+  }, [dispatch, showId, show, live]);
 
   if (loading || !show || !show.User) {
-    console.log('show user', show.User);
-    console.log('show', show);
-    console.log('loading', loading);
     return <h1>Loading...</h1>
   }
 

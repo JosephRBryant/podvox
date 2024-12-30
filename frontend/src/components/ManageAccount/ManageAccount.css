@@ -10,7 +10,7 @@
   flex-direction: column;
   justify-content: flex-start;
   width: 50%;
-  margin: 4rem 2rem;
+  margin: 4rem 2rem 0 2rem;
 }
 
 .account-info-header,
@@ -26,17 +26,25 @@
   display: flex;
   flex-direction: column;
   width: 592px;
-  margin: 32px;
+  margin: 4rem 2rem;
 }
 
 .manage-show-create-show-btn {
   margin: 4rem 2rem;
-  width: 50%;
+  width: 80%;
   height: 5rem;
+  background-color: #27AAE0;
+  color: white;
+  font-family: sans-serif;
+  font-size: 2rem;
+  border: none;
+  border-radius: 1rem;
+  cursor: pointer;
 }
 
 .account-info-header h2,
-.show-info-header h2 {
+.show-info-header h2,
+.show-info-create-container h2 {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
@@ -97,12 +105,8 @@
 .show-img-field {
   justify-content: flex-start;
   gap: 4rem;
+  border-bottom: none;
 }
-
-/* .profile-img-field-label-btn,
-.show-img-field-label-btn {
-  gap: 2rem;
-} */
 
 #file-upload {
   display: flex;
@@ -137,10 +141,12 @@
 }
 
 .profile-img-field-img {
-  height: 248px;
+  display: flex;
 }
 
 .profile-img-field-img img {
+  flex: 1;
+  aspect-ratio: 1/1;
   width: 200px;
   border-radius: 100px;
   overflow: hidden;

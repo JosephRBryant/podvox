@@ -2,15 +2,15 @@
 import './Episode.css';
 import { FaRegCirclePlay, FaRegCirclePause } from "react-icons/fa6";
 import { FaRegEdit } from "react-icons/fa";
-import React, { useEffect, useState, useRef } from 'react';
-let sampleAudio = new Audio("https://toginet.com/images/podvox/Sample.mp3");
+import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteEpisodeThunk, getShowEpisodesThunk } from '../../redux/episode';
+import { deleteEpisodeThunk } from '../../redux/episode';
 import { getOneShowThunk } from '../../redux/show';
 
 const Episode = ({episode, show}) => {
   const audioRef = useRef(null);
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.session.user);
   const [playing, setPlaying] = useState(false);
   const [editorOpen, setEditorOpen] = useState(false);
 
@@ -84,7 +84,6 @@ const Episode = ({episode, show}) => {
       await dispatch(getOneShowThunk(show.id))
       // await dispatch(getShowEpisodesThunk(show.id));
       setEditorOpen(false);
-      console.log('handleDelete in Episode.jsx');
     } catch (error) {
       return (error)
     }
@@ -124,26 +123,28 @@ const Episode = ({episode, show}) => {
               )}
             </div>
           </div>
-          {!editorOpen ? (
-            <div className="edit-episode-btn">
-             <button className="open-editor-btn toggle-episode-editor-btn" onClick={toggleEditor}>
-              edit
-              <FaRegEdit className='edit-icon'/>
-             </button>
-            </div>
-          ) : (
-            <div className="edit-episode-btn">
-              <button className="delete-episode-btn toggle-episode-editor-btn" onClick={(e) => handleDeleteEpisode(e, episode)}>
-                delete
-              </button>
-              <button type='submit' className="update-episode-btn toggle-episode-editor-btn">
-                save
-              </button>
-              <button type='submit' className="toggle-episode-editor-btn" onClick={toggleEditor}>
-                cancel
-              </button>
-            </div>
-          ) }
+          {user?.id === show.userId ? (
+            !editorOpen ? (
+              <div className="edit-episode-btn">
+               <button className="open-editor-btn toggle-episode-editor-btn" onClick={toggleEditor}>
+                edit
+                <FaRegEdit className='edit-icon'/>
+               </button>
+              </div>
+            ) : (
+              <div className="edit-episode-btn">
+                <button className="delete-episode-btn toggle-episode-editor-btn" onClick={(e) => handleDeleteEpisode(e, episode)}>
+                  delete
+                </button>
+                <button type='submit' className="update-episode-btn toggle-episode-editor-btn">
+                  (in development) save
+                </button>
+                <button type='submit' className="toggle-episode-editor-btn" onClick={toggleEditor}>
+                  cancel
+                </button>
+              </div>
+            )
+          ) : null }
         </div>
         <div className="episode-description">
           {episode.episodeDesc}

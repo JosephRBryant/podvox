@@ -1,9 +1,7 @@
 import { csrfFetch } from "./csrf";
-import { getOneShowThunk } from "./show";
 
 const GET_SHOW_EPISODES = 'episodes/getShowEpisodes';
 const CREATE_EPISODE = 'episodes/createEpisode';
-const UPDATE_EPISODE = 'episodes/updateEpisode';
 const DELETE_EPISODE = 'episodes/deleteEpisode';
 
 const getShowEpisodes = (episodes) => {
@@ -16,13 +14,6 @@ const getShowEpisodes = (episodes) => {
 const createEpisode = (episode) => {
   return {
     type: CREATE_EPISODE,
-    payload: episode
-  }
-}
-
-const updateEpisode = (episode) => {
-  return {
-    type: UPDATE_EPISODE,
     payload: episode
   }
 }
@@ -64,69 +55,13 @@ export const createEpisodeThunk = (showId, formData) => async (dispatch) => {
       const error = await response.json();
       return error.errors;
     }
-    // const {
-    //   userId,
-    //   showId,
-    //   episodeTitle,
-    //   episodeDesc,
-    //   guestInfo,
-    //   pubDate,
-    //   duration,
-    //   size,
-    //   tags,
-    //   episodeUrl,
-    //   episodeImage,
-    //   explicit,
-    //   published,
-    //   prefix,
-    //   downloads
-    // } = episodeForm;
-    // const { img_url } = form;
-    // const formData = new FormData();
-
-    // formData.append('userId', userId)
-    // formData.append('showId', showId)
-    // formData.append('episodeTitle', episodeTitle)
-    // formData.append('episodeDesc', episodeDesc)
-    // formData.append('guestInfo', guestInfo)
-    // // formData.append('pubDate', pubDate)
-    // // formData.append('duration', duration)
-    // // formData.append('size', size)
-    // formData.append('tags', tags)
-    // // formData.append('episodeUrl', episodeUrl)
-    // formData.append('explicit', explicit)
-    // formData.append('published', published)
-    // // formData.append('prefix', prefix)
-    // // formData.append('downloads', downloads)
-    // formData.append('image', img_url)
-
-    // const option = {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'multipart/form-data' },
-    //   body: formData
-    // }
-
-    // const res = await csrfFetch(`/api/shows/${showId}/episodes`, option)
-
-    // if (res.ok) {
-    //   const episode = await res.json();
-    //   await dispatch(createEpisode(episode));
-    //   return episode;
-    // } else if (res.status < 500) {
-    //   const data = await res.json();
-    //   if (data.errors) {
-    //     return data
-    //   } else {
-    //     throw new Error('An error occured. Please try again.')
-    //   }
-    // }
   } catch(error) {
     console.error("Error creating episode:", error);
     return { general: "An error occurred. Please try again later."};
   }
 };
 
-export const updateEpisodeThunk = (episodeForm, form) => async (dispatch) => {
+export const updateEpisodeThunk = (episodeForm, form) => async () => {
   try {
     const episodeData = {};
 
@@ -148,7 +83,7 @@ export const updateEpisodeThunk = (episodeForm, form) => async (dispatch) => {
       body: JSON.stringify(episodeData)
     }
 
-    const res = await csrfFetch(`/api/shows/`, options)
+    await csrfFetch(`/api/shows/`, options)
   } catch (error) {
     return error;
   }
@@ -160,7 +95,6 @@ export const deleteEpisodeThunk = (episode) => async (dispatch) => {
       method: 'DELETE',
       header: {'Content-type': 'application/json'}
     };
-    console.log('episode in del ep thunk', episode)
 
     const res = await csrfFetch(`/api/episodes/${episode.id}`, options);
 
