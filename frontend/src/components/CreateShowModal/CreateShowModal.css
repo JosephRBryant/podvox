@@ -1,0 +1,136 @@
+.create-show-main {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 0 4rem;
+}
+
+.form-create-show {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  width: 100%;
+}
+
+.form-create-show label {
+  padding-bottom: .5rem;
+}
+
+.create-show-left-fields,
+.create-show-right-fields {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 50%;
+}
+
+.create-show-title,
+.create-show-host,
+.create-show-image,
+.create-show-subtitle,
+.create-show-language,
+.create-show-description,
+.create-show-explicit-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 1rem 0;
+}
+
+.create-show-image {
+  display: flex;
+}
+
+.create-show-explicit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.create-show-explicit-radios {
+  display: flex;
+};
+
+#showTitle,
+#showSubtitle,
+#showDesc,
+#author,
+#language {
+  padding: 0.25rem;
+}
+
+#showDesc {
+  aspect-ratio: 1/.75;
+}
+
+.create-show-submit-btn {
+  border: none;
+  background-color: #007bff;
+  color: white;
+  height: 3rem;
+  width: 100%;
+  margin: 1rem 0;
+  padding: 0.5rem 2rem;
+  font-size: 1.15rem;
+  font-family: sans-serif;
+  border-radius: 1rem;
+  cursor: pointer;;
+}
+
+.custom-file-label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #E0E0E0;
+  color: #666;
+  width: 100%;
+  gap: 1rem;
+  margin: 1.5rem 0;
+  padding: .5rem 2rem;
+  font-size: 1.15rem;
+  letter-spacing: .1rem;
+  font-family: sans-serif;
+  cursor: pointer;
+  border-radius: 1rem;
+  user-select: none;
+  height: 3rem;
+}
+
+.upload-icon {
+  font-size: 1.5rem;
+}
+
+.hidden-file-input {
+  display: none;
+}
+
+.create-show-image {
+  display: flex;
+  align-items: center;
+}
+
+.create-show-preview-container {
+  display: flex;
+  justify-content: center;
+  width: 50%;
+}
+
+.create-show-preview {
+  flex: 1;
+  aspect-ratio: 1/1;
+  border: 2px solid rgb(192, 192, 192);
+  border-radius: 1rem;
+}
+
+.create-show-preview-image {
+  border-radius: 1rem;
+}
+
+.create-show-explicit-yes input,
+.create-show-explicit-no input {
+  margin-right: 1rem;
+}
+
+.create-show-explicit-yes label {
+  margin-right: 2rem;
+}

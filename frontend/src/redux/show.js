@@ -66,7 +66,6 @@ export const getAllShowsThunk = () => async (dispatch) => {
     if (res.ok) {
       const data = await res.json();
       await dispatch(getAllShows(data))
-      console.log('Fetched shows from API:', data);
     } else {
       throw res;
     }
@@ -74,20 +73,6 @@ export const getAllShowsThunk = () => async (dispatch) => {
     return error;
   }
 };
-
-// export const getOneShowThunk = (showId) => async (dispatch) => {
-//   try {
-//     const res = await csrfFetch(`/api/shows/${showId}`);
-//     if (res.ok) {
-//       const data = await res.json();
-//       await dispatch(getOneShow(data))
-//     } else {
-//       throw res;
-//     }
-//   } catch(error) {
-//     return error;
-//   }
-// }
 
 export const getOneShowThunk = (showId) => async (dispatch) => {
   try {
@@ -101,21 +86,6 @@ export const getOneShowThunk = (showId) => async (dispatch) => {
     return undefined;
   }
 }
-
-// export const getUserShowsThunk = (userId) => async (dispatch) => {
-//   try {
-//     const res = await csrfFetch(`/api/users/${userId}/shows`);
-//     if (res.ok) {
-//       const data = await res.json();
-//       dispatch(getUserShows(data))
-//     } else {
-//       throw new Error('Failed to get User Show');
-//     }
-//   } catch(error) {
-//     console.error('Error fetching user show: ', error)
-//     return error;
-//   }
-// }
 
 export const createShowThunk = (showForm, form) => async (dispatch, getState) => {
   try {
@@ -131,8 +101,6 @@ export const createShowThunk = (showForm, form) => async (dispatch, getState) =>
 
     const { img_url } = form;
     const formData = new FormData();
-
-    console.log('img_url in create thunk:', img_url)
 
     formData.append('userId', userId)
     formData.append('showTitle', showTitle)
@@ -159,7 +127,6 @@ export const createShowThunk = (showForm, form) => async (dispatch, getState) =>
       const currentUser = state.session.user;
 
       await dispatch(createShow(show));
-      console.log('create show thunk after dispatch:', show)
 
       const updateUser = {
         ...currentUser,
@@ -221,9 +188,6 @@ export const updateShowImgThunk = (showId, form, imgForm) => async (dispatch) =>
       const { show_img_url } = imgForm;
       const formData = new FormData();
 
-      console.log('showImgUrl in update img thunk:', show_img_url);
-
-      console.log('show title from thunk', showTitle)
       formData.append('showId', showId);
       formData.append('showTitle', showTitle);
       formData.append('showSubtitle', showSubtitle);
@@ -242,7 +206,6 @@ export const updateShowImgThunk = (showId, form, imgForm) => async (dispatch) =>
 
       const response = await csrfFetch(`/api/shows/${showId}/update-image`, option);
       if (response.ok) {
-          console.log('formData from updateShowImgThunk:', Array.from(formData.entries()));
           try {
             const show = await response.json();
             dispatch(updateShow(show));
@@ -261,7 +224,6 @@ export const updateShowImgThunk = (showId, form, imgForm) => async (dispatch) =>
       }
       return response;
   } catch(e){
-    console.log('update image error', e)
       return e
   }
 }

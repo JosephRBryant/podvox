@@ -1,10 +1,12 @@
 .show-page-container {
-  position: absolute;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 1280px;
-  height: 100dvh;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  min-height: calc(100vh - 60px);
 }
 
 .show-page-banner {
@@ -74,7 +76,7 @@
   box-sizing: border-box;
   padding: 2rem 0 1rem 0;
   color: white;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   letter-spacing: .2rem;
 }
 
@@ -129,8 +131,13 @@
 .show-page-banner-profile-image {
   grid-area: 2 / 3 / 3 / 4;
   z-index: 3;
+  width: 384px;
+  height: 384px;
   padding: 1rem;
-  border-radius: 192px;
+  border-radius: 50%;
+  overflow: hidden;
+  object-fit: cover;
+  object-position: center;
 }
 
 .show-page-episode-container {

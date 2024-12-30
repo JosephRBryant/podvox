@@ -5,12 +5,10 @@ import UpdateShow from '../UpdateShow/UpdateShow';
 import OpenModalMenuItem from '../Navigation/OpenModalMenuItem';
 import CreateShowModal from '../CreateShowModal';
 import { useEffect, useState } from 'react';
-import { fetchUser } from '../../redux/session';
 import { getOneShowThunk } from '../../redux/show';
 
 const ManageAccount = () => {
   const user = useSelector(state => state.session.user);
-  const show = useSelector(state => state.showState.showDetails)
   const [hasShowId, setHasShowId] = useState(Boolean(user?.showId));
   const dispatch = useDispatch();
 
@@ -34,7 +32,7 @@ const ManageAccount = () => {
             <h2>Show Info</h2>
             <OpenModalMenuItem
                 className="manage-show-create-show-btn"
-                itemText="Create Show"
+                itemText="Create Your Show"
                 modalComponent={<CreateShowModal />}
                 user={user}
               />

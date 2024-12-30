@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FaRegEdit, FaCamera, FaCheckCircle } from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
 import './UpdateShow.css';
@@ -6,11 +6,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateShowThunk, updateShowImgThunk, deleteShowThunk, getOneShowThunk, clearShowDetails } from '../../redux/show';
 import { fetchUser } from '../../redux/session';
 
-const UpdateShow = ({userId}) => {
+const UpdateShow = () => {
   const dispatch = useDispatch();
   const user = useSelector(state => state.session.user);
   const show = useSelector(state => state.showState.showDetails)
-  const [isUserLoaded, setIsUserLoaded] = useState(false);
   const showDesc = show.showDesc;
   let showDescLength = showDesc.length
 
@@ -21,7 +20,6 @@ const UpdateShow = ({userId}) => {
   },[dispatch, user.showId])
 
   const [showImgUrl, setShowImgUrl] = useState(null);
-  const [showUpload, setShowUpload] = useState(true);
   const [previewShowUrl, setPreviewShowUrl] = useState(show.showImage);
   const [currShowImg, setCurrShowImg] = useState(show.showImage);
   const [updateBtns, setUpdateBtns] = useState(false);
@@ -83,7 +81,7 @@ const UpdateShow = ({userId}) => {
         return res;
       }
     } catch (error) {
-      return error;
+      return errors;
     }
   }
 
@@ -104,9 +102,7 @@ const UpdateShow = ({userId}) => {
       };
       reader.readAsDataURL(file);
       setShowImgUrl(file);
-      setShowUpload(false);
       setUpdateBtns(true);
-      console.log('showImgUrl:', showImgUrl)
     }
   }
 
@@ -158,7 +154,6 @@ const UpdateShow = ({userId}) => {
     const updatedShow = await dispatch(updateShowImgThunk(show.id, form, imgForm));
 
     if (updatedShow) {
-      console.log('is the updatedShow response ok', imgForm)
       setCurrShowImg(updatedShow.showImage);
       setUpdateBtns(false);
     }
@@ -278,7 +273,7 @@ const UpdateShow = ({userId}) => {
               />
             </div>
             <div className="explicit-field">
-              <p>Explicit: </p>
+              <p>Explicit Language: </p>
               <input
                 type="radio"
                 name='explicit'
@@ -342,7 +337,7 @@ const UpdateShow = ({userId}) => {
             </div>
             <div className="description-field-description">
             {showDescLength > 129 ? (
-                <p>{showDesc.slice(0, 216) + "..."}</p>
+                <p>{showDesc.slice(0, 206) + "..."}</p>
               ) : (
                 showDesc
               )}

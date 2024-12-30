@@ -86,7 +86,7 @@ router.put('/:id/update-image', singleMulterUpload('image'), requireAuth, handle
     try{
         const { userId, username, email, firstName, lastName } = req.body;
         let user;
-        console.log('destructured user from route-----------------', userId, username, firstName, lastName, '---------------------------------------')
+
         if(userId){
             user = await User.findByPk(userId);
         } else{
@@ -156,37 +156,5 @@ router.get('/', (req, res) => {
         );
     } else return res.json({ user: null });
 });
-
-// // Get User Shows
-
-// router.get('/:userId/shows', async (req, res, next) => {
-//     try {
-//       const { user } = req;
-//       let user_id = parseInt(req.params.userId);
-
-//       let userShow = await Show.findOne({
-//         where: {
-//           userId: user_id
-//         }
-//       });
-//       let userShows = await Show.findAll();
-
-
-//     //   console.log('usershows----------', userShows)
-//       console.log('usershow----------', userShow)
-//     //   console.log('user----------', user)
-//       if (!userShow) {
-//         return res.status(404).json({ message: 'Show not found for this user'})
-//       }
-//       userShow.dataValues.showLink = 'www.example.com'
-//       res.json(userShow)
-
-//     } catch(error) {
-//       error.message = "Bad Request";
-//       error.status = 400;
-//       next(error)
-//     }
-//   })
-
 
 module.exports = router;

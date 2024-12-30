@@ -3,7 +3,7 @@ const { check } = require('express-validator');
 const { Show, User, Episode, Sequelize } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
 const { handleValidationErrors } = require('../../utils/validation');
-const { singleMulterUpload, singlePublicFileUpload } = require('../../awsS3');
+const { singleMulterUpload, singlePublicFileUpload, multipleMulterUpload, multiplePublicFileUpload } = require('../../awsS3');
 
 const router = express.Router();
 
@@ -91,8 +91,6 @@ router.post('/', singleMulterUpload('image'), requireAuth, handleValidationError
 
       let imgUrl;
 
-      console.log('req file in create api', req.file)
-
       if (req.file) {
         imgUrl = await singlePublicFileUpload(req.file);
       }
@@ -169,13 +167,8 @@ router.put('/:id/update-image', singleMulterUpload('image'), requireAuth, handle
 
     let imgUrl;
 
-    console.log('Request body:', req.body);
-    console.log('Request file:', req.file);
-
-
     if(req.file) {
       imgUrl = await singlePublicFileUpload(req.file);
-      console.log('show image url from api', imgUrl)
       show.showImage = imgUrl;
     }
 
@@ -203,7 +196,7 @@ router.delete('/:showId', requireAuth, handleValidationErrors, async (req, res, 
     let { user } = req;
     let { showId } = req.params;
     let show = await Show.findByPk(showId);
-    console.log('show ------------------', show)
+
     if (!show) {
       res.status(404).json({ message: "Show couldn't be found"})
     } else if (show.userId !== user.id) {
@@ -218,71 +211,75 @@ router.delete('/:showId', requireAuth, handleValidationErrors, async (req, res, 
 })
 
 // Create an Episode
-router.post('/:id/episodes', requireAuth, handleValidationErrors, singleMulterUpload('image'), async (req, res, next) => {
+router.post('/:id/episodes', multipleMulterUpload(['img_url', 'audio_url']), requireAuth, handleValidationErrors, async (req, res, next) => {
   try {
     const { user } = req;
 
-    if (user) {
-      const {
-        userId,
-        showId,
-        episodeTitle,
-        episodeDesc,
-        guestInfo,
-        // pubDate,
-        duration,
-        size,
-        tags,
-        // episodeUrl,
-        explicit,
-        published,
-        // prefix,
-        downloads
-      } = req.body;
+    if (!user) {
+      return res.status(401).json({ message: 'You must be logged in to create an Episode.' })
+    }
+    const {
+      // userId,
+      // showId,
+      episodeTitle,
+      episodeDesc,
+      guestInfo,
+      duration,
+      size,
+      tags,
+      explicit,
+      published,
+      downloads
+    } = req.body;
 
-      let imgUrl;
+    const { id: showId } = req.params;
 
-      if(req.file) {
-        imgUrl = await singlePublicFileUpload(req.file);
-      }
+    let imgUrl = null;
+    let episodeUrl = null;
 
-      const maxEp = await Episode.max('episodeNumber', {
-        where: {showId}
-      })
 
-      const newEpisodeNumber = maxEp ? maxEp + 1 : 1;
+    if (req.files && req.files.img_url) {
+      const imgUrls = await multiplePublicFileUpload(req.files.img_url);
+      imgUrl = imgUrls.length > 0 ? imgUrls[0] : null;
+    }
 
-      const episode = await Episode.create({
-        userId,
-        showId,
-        episodeNumber: newEpisodeNumber,
-        episodeTitle,
-        episodeDesc,
-        guestInfo,
-        // pubDate,
-        duration,
-        size,
-        tags,
-        // episodeUrl,
-        episodeImage: imgUrl || null,
-        explicit,
-        published,
-        // prefix,
-        downloads,
-      });
+    if (req.files && req.files.audio_url) {
+      const audioUrls = await multiplePublicFileUpload(req.files.audio_url);
+      episodeUrl = audioUrls.length > 0 ? audioUrls[0] : null;
+    }
 
-      res.status(201);
-      return res.json(episode);
-    } else {
-      res.status(400).json({message: 'You must be logged in to create an Episode!'})
-      }
+    const maxEp = await Episode.max('episodeNumber', {
+      where: {showId}
+    })
+
+    const newEpisodeNumber = maxEp ? maxEp + 1 : 1;
+
+    const episode = await Episode.create({
+      userId: user.id,
+      showId,
+      episodeNumber: newEpisodeNumber,
+      episodeTitle,
+      episodeDesc,
+      guestInfo,
+      duration,
+      size,
+      tags,
+      episodeImage: imgUrl,
+      episodeUrl: episodeUrl,
+      explicit,
+      published,
+      downloads,
+    });
+
+    return res.status(201).json(episode);
   } catch(error) {
-    error.message = "Bad Request";
-    error.status = 400;
-    next(error)
+    console.error(error);
+    return next({
+      message: 'An error occurred while creating this episode.',
+      status: 400,
+      error
+    })
   }
 })
-
-
 
 module.exports = router;

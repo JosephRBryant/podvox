@@ -9,15 +9,10 @@ const Featured = () => {
   const [loaded, setLoaded] = useState(false);
   let shows = useSelector(state => state.showState.allShows);
 
-  console.log('Shows in Featured component:', shows);
-
-  const handleRefreshAllShows = () => {
-    dispatch(clearAndRefetchAllShowsThunk());
-  };
-
   useEffect(() => {
     const getData = async () => {
       await dispatch(getAllShowsThunk());
+      await dispatch(clearAndRefetchAllShowsThunk());
       setLoaded(true)
     }
     if (!loaded && !shows.length) {
@@ -32,7 +27,7 @@ const Featured = () => {
   return (
     <div className="featured-grid">
       {shows.map((show, idx) => (
-        <div key={`${show.id}-${show.title}`} className="show-tile-container">
+        <div key={`${idx}-${show.title}`} className="show-tile-container">
           <ShowTile show={show}/>
         </div>
       ))}

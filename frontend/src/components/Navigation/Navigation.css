@@ -30,6 +30,54 @@
     cursor: pointer;
 }
 
+.about-btn,
+.shows-menu-btn {
+    background-color: rgba(255, 255, 255, 0.15);
+    position: relative;
+}
+
+.tool-tip-text {
+    display: flex;
+    justify-content: center;
+    background-color: #222;
+    color: white;
+    border-radius: 1rem;
+    padding: 0.5rem 1.5rem;
+    font-family: sans-serif;
+    font-size: .875rem;
+    visibility: hidden;
+    opacity: 0;
+    transition: .2s;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 15px;
+    z-index: 1;
+    white-space: nowrap;
+}
+
+.tool-tip-text::before {
+    content: "";
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    background-color: #222;
+    width: 10px;
+    height: 10px;
+    z-index: -1;
+}
+
+.about-btn:hover .tool-tip-text {
+    visibility: visible;
+    opacity: 1;
+}
+.shows-menu-btn:hover .tool-tip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
 .sign-up-btn,
 .upload-ep,
 .create-show-btn {

@@ -5,12 +5,10 @@ import { useEffect, useState } from 'react';
 import Episode from '../Episode';
 import { sortEpisodes } from '../../helpers/sort-array';
 import './ShowPage.css';
-import React from 'react';
 
 const ShowPage = () => {
   const dispatch = useDispatch();
   const { showId } = useParams();
-  // const [loaded, setLoaded] = useState(false);
   const [loading, setLoading] = useState(true);
   const [live, setLive] = useState(true);
   const [activeSort, setActiveSort] = useState('newest');
@@ -20,6 +18,9 @@ const ShowPage = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    if (!live) {
+      setLive(true)
+    }
 
     const fetchShowDetails = async () => {
       setLoading(true);
@@ -32,12 +33,9 @@ const ShowPage = () => {
     } else {
       setLoading(false);
     }
-  }, [dispatch, showId, show]);
+  }, [dispatch, showId, show, live]);
 
   if (loading || !show || !show.User) {
-    console.log('show user', show.User);
-    console.log('show', show);
-    console.log('loading', loading);
     return <h1>Loading...</h1>
   }
 
@@ -58,11 +56,11 @@ const ShowPage = () => {
             <img className='show-page-banner-show-image' src={show.showImage} alt="show image" />
             <div className="show-page-banner-header">
               <h1>{show.showTitle}</h1>
-              <h2>{`with ${show.author}`}</h2>
+              <h2>{show.showSubtitle}</h2>
             </div>
             <div className="show-page-banner-description">
-              {showDesc.length > 129 ? (
-                <p>{showDesc.slice(0, 130) + "... read more"}</p>
+              {showDesc.length > 179 ? (
+                <p>{showDesc.slice(0, 180) + "... read more"}</p>
               ) : (
                 showDesc
               )}
@@ -75,7 +73,7 @@ const ShowPage = () => {
               ) : null}
               <span className='show-page-banner-description-episode-count'>{`${show.Episodes.length} episodes available`}</span>
             </div>
-            <img className="show-page-banner-profile-image" src={show.User.profileImg}/>
+            <img className="show-page-banner-profile-image" src={show.User.profileImg || 'https://placehold.co/500x500/2196F3/fff/?font=raleway&text=image'}/>
           </div>
         </div>
         <div className="show-page-episode-container">

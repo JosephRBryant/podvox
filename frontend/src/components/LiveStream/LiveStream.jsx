@@ -1,4 +1,3 @@
-import React from "react";
 import "./LiveStream.css"
 
 const LiveStream = () => {

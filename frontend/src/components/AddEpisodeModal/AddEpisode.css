@@ -1,0 +1,130 @@
+.add-episode-main {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.form-add-episode {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  width: 100%;
+}
+
+.form-add-episode label {
+  padding-bottom: .5rem;
+}
+
+.add-episode-left-fields,
+.add-episode-right-fields {
+  width: 50%;
+}
+
+.add-episode-title-desc,
+.add-episode-guests-tags {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  margin: 1rem;
+}
+
+.add-episode-title,
+.add-episode-description,
+.add-episode-guests,
+.add-episode-tags {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 1rem 0;
+}
+
+#episodeTitle,
+#guestInfo,
+#tags,
+#episodeDesc {
+  padding: .25rem;
+}
+
+#episodeDesc {
+  height: 6.25rem;
+}
+
+.add-episode-btn {
+  border: none;
+  background-color: #007bff;
+  color: white;
+  height: 3rem;
+  margin: 1rem 0;
+  padding: 0.5rem 2rem;
+  font-size: 1.15rem;
+  font-family: sans-serif;
+  border-radius: 1rem;
+  cursor: pointer;;
+}
+
+.custom-file-label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #E0E0E0;
+  color: #666;
+  width: 100%;
+  gap: 1rem;
+  margin: 1.5rem 0;
+  padding: .5rem 2rem;
+  font-size: 1.15rem;
+  letter-spacing: .1rem;
+  font-family: sans-serif;
+  cursor: pointer;
+  border-radius: 1rem;
+  user-select: none;
+  height: 3rem;
+}
+
+.upload-icon {
+  font-size: 1.5rem;
+}
+
+.hidden-file-input {
+  display: none;
+}
+
+.add-episode-main {
+  position: relative; /* To position the spinner inside the modal */
+}
+
+.spinner-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: sans-serif;
+  z-index: 1000; /* Ensure it's above modal content */
+}
+
+.loader {
+  width: 100px;
+  --b: 16px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  padding: 1px;
+  margin-bottom: 2rem;
+  background: conic-gradient(#0000 10%, #27AAE0) content-box;
+  -webkit-mask: repeating-conic-gradient(#0000 0deg, #000 1deg 20deg, #0000 21deg 36deg),
+                radial-gradient(farthest-side, #0000 calc(100% - var(--b) - 1px), #000 calc(100% - var(--b)));
+  -webkit-mask-composite: destination-in;
+          mask-composite: intersect;
+  animation: l4 1s infinite steps(10);
+}
+
+@keyframes l4 {
+  to {
+    transform: rotate(1turn);
+  }
+}

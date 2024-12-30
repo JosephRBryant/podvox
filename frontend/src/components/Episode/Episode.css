@@ -1,11 +1,13 @@
 .episode-block-container {
   display: flex;
+  align-items: center;
   margin-bottom: 4rem;
   width: 100%;
 }
 
 .episode-image {
   width: 250px;
+  height: 250px;
   border-radius: .5rem;
   filter: drop-shadow(0px 0px 7px rgba(0, 0, 0, .1));
 }
@@ -17,12 +19,17 @@
 
 .episode-play-guest {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
+  justify-content: space-between;
   margin-bottom: 1rem;
   padding-bottom: 1rem;
   font-size: 2rem;
   font-family: sans-serif;
   border-bottom: 2px solid #F15A29;
+}
+
+.episode-play-title {
+  display: flex;
 }
 
 .play-button {
@@ -36,4 +43,24 @@
 
 .episode-description {
   font-size: 1.5rem;
+}
+
+.edit-episode-btn {
+  display: flex;
+  flex-direction: column;
+}
+
+.toggle-episode-editor-btn {
+  font-size: 1.5rem;
+  border: none;
+  background-color: white;
+  padding: 0;
+  line-height: 1.7rem;
+  text-align: end;
+  cursor: pointer;
+}
+
+.open-editor-btn {
+  display: flex;
+  gap: .7rem;
 }

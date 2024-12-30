@@ -39,7 +39,6 @@ export const thunkLogin = (credentials) => async dispatch => {
     });
 
     if (response.ok) {
-        console.log('is response ok?', response)
         const user = await response.json();
         dispatch(setUser(user));
     } else if (response.status < 500) {
@@ -50,7 +49,7 @@ export const thunkLogin = (credentials) => async dispatch => {
     }
 };
 
-export const fetchUser = (userId) => async (dispatch) => {
+export const fetchUser = () => async (dispatch) => {
     try {
         const response = await csrfFetch('/api/users/current');
         if (!response.ok) {
@@ -167,13 +166,10 @@ function sessionReducer(state = initialState, action) {
     let newState;
     switch (action.type) {
         case SET_USER:
-            console.log('Action payload:', action.payload);
-            console.log('Previous State:', state);
             newState = {
                 ...state,
                 user: action.payload
             };
-            console.log('Updated state', newState);
             return newState;
         case REMOVE_USER:
             return { ...state, user: null };

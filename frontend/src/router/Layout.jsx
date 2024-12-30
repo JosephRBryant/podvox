@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
+import Footer from "../components/Footer";
 import { useDispatch } from "react-redux";
 import { ModalProvider, Modal } from "../context/Modal";
 import { thunkAuthenticate } from "../redux/session";
@@ -16,7 +17,12 @@ export default function Layout() {
     <>
       <ModalProvider>
         <Navigation />
-        {isLoaded && <Outlet />}
+        {isLoaded && (
+          <>
+            <Outlet />
+            <Footer />
+          </>
+          )}
         <Modal />
       </ModalProvider>
     </>
