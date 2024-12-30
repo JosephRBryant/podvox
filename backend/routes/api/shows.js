@@ -91,8 +91,6 @@ router.post('/', singleMulterUpload('image'), requireAuth, handleValidationError
 
       let imgUrl;
 
-      console.log('req file in create api', req.file)
-
       if (req.file) {
         imgUrl = await singlePublicFileUpload(req.file);
       }
@@ -169,13 +167,8 @@ router.put('/:id/update-image', singleMulterUpload('image'), requireAuth, handle
 
     let imgUrl;
 
-    console.log('Request body:', req.body);
-    console.log('Request file:', req.file);
-
-
     if(req.file) {
       imgUrl = await singlePublicFileUpload(req.file);
-      console.log('show image url from api', imgUrl)
       show.showImage = imgUrl;
     }
 
@@ -203,7 +196,7 @@ router.delete('/:showId', requireAuth, handleValidationErrors, async (req, res, 
     let { user } = req;
     let { showId } = req.params;
     let show = await Show.findByPk(showId);
-    console.log('show ------------------', show)
+
     if (!show) {
       res.status(404).json({ message: "Show couldn't be found"})
     } else if (show.userId !== user.id) {

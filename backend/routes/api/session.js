@@ -24,8 +24,6 @@ const validateLogin = [
 // Log in
 router.post('/', validateLogin, async (req, res, next) => {
     const { credential, password, profileImg } = req.body;
-    console.log(req.body.credential)
-    console.log(credential, password, "************")
     const user = await User.unscoped().findOne({
         where: {
             [Op.or]: {
@@ -48,8 +46,6 @@ router.post('/', validateLogin, async (req, res, next) => {
         err.errors = { credential: 'The provided credentials were invalid.' };
         return next(err);
     }
-
-    console.log({user}, 'userrrrrrrrr', user.Show)
 
     const safeUser = {
         id: user.id,

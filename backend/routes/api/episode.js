@@ -12,7 +12,7 @@ router.delete('/:episodeId', requireAuth, handleValidationErrors, async (req, re
     let { user } = req;
     let { episodeId } = req.params;
     let episode = await Episode.findByPk(episodeId)
-    console.log('episode log in delete route===========>>>', episode)
+
     if (!episode) {
       res.status(404).json({ message: "Show couldn't be found"})
     } else if (episode.userId !== user.id) {

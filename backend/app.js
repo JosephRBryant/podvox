@@ -81,10 +81,4 @@ app.use((err, _req, res, _next) => {
     });
 });
 
-// const server = app.listen(3001, () => {
-//     console.log('Server is running on port 3001');
-// });
-
-// server.setTimeout(600000)
-
 module.exports = app;

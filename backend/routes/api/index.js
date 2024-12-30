@@ -20,7 +20,6 @@ router.use('/episodes', episodesRouter);
 
 // Restore user
 router.get('/restore-user', (req, res) => {
-    console.log('req user in restuse', req.user)
     return res.json(req.user);
 });
 
