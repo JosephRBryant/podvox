@@ -191,6 +191,16 @@
 .language-field,
 .explicit-field {
   display: flex;
+  flex-wrap: nowrap;
+}
+
+.explicit-label {
+  white-space: nowrap;
+}
+
+.explicit-input {
+  display: flex;
+  gap: 1rem;
 }
 
 .username-field-username,
@@ -207,13 +217,13 @@
 .explicit-field-explicit {
   min-height: 2rem;
   width: 65%;
-  background-color: rgb(240, 240, 240);
+  background-color: rgb(245, 245, 245);
   color: #666;
   border-radius: .25rem;
   border: none;
   display: flex;
   align-items: center;
-  padding: .5rem 1rem;
+  padding: .5rem 1rem !important;
 }
 
 .explicit-field-explicit {

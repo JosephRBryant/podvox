@@ -1,3 +1,4 @@
+const path = require('path');
 const config = require('./index');
 require('dotenv').config();
 const db = config.db;
@@ -36,7 +37,10 @@ module.exports = {
             }
         },
         define: {
-            schema
-        }
+            schema,
+        },
+        migrationStorage: 'sequelize',
+        migrationStoragePath: path.resolve('db', 'migrations'),
+        seederStoragePath: path.resolve('db', 'seeders'),
     }
 };

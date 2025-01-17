@@ -1,0 +1,49 @@
+.login-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+}
+
+.login-input,
+.login-btns {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.login-input label {
+  padding-bottom: 0.5rem;
+}
+
+.login-input input {
+  height: 2rem;
+}
+
+.email-input,
+.password-input,
+.login-btn,
+.demo-btn {
+  display: flex;
+  flex-direction: column;
+  margin: 1rem 0;
+}
+
+.login-btn,
+.demo-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  height: 3rem;
+  width: 100%;
+  padding: 0.5rem 2rem;
+  font-size: 1.15rem;
+  font-family: sans-serif;
+  border-radius: 1rem;
+  cursor: pointer;
+  margin-bottom: 0;
+
+}
