@@ -208,7 +208,7 @@ const UpdateShow = () => {
               onChange={(e) => updateShowForm(e, 'showTitle')}
               value={showForm.showTitle}
               placeholder={show.showTitle}
-              style={{boxShadow: 'inset 0 0 3px grey', backgroundColor: '#e4ecf0'}}
+              style={{backgroundColor: '#f7f7f7', outline: '1px solid #B1B1B1'}}
             />
           </div>
           <div className="subtitle-field">
@@ -223,7 +223,7 @@ const UpdateShow = () => {
               onChange={(e) => updateShowForm(e, 'showSubtitle')}
               value={showForm.showSubtitle}
               placeholder={show.showSubtitle}
-              style={{boxShadow: 'inset 0 0 3px grey', backgroundColor: '#e4ecf0'}}
+              style={{backgroundColor: '#f7f7f7', outline: '1px solid #B1B1B1'}}
             />
           </div>
           <div className="description-field">
@@ -238,7 +238,7 @@ const UpdateShow = () => {
               onChange={(e) => updateShowForm(e, 'showDesc')}
               value={showForm.showDesc}
               placeholder={show.showDesc}
-              style={{boxShadow: 'inset 0 0 3px grey', backgroundColor: '#e4ecf0'}}
+              style={{backgroundColor: '#f7f7f7', outline: '1px solid #B1B1B1'}}
             />
           </div>
           <div className="author-field">
@@ -253,7 +253,7 @@ const UpdateShow = () => {
               onChange={(e) => updateShowForm(e, 'author')}
               value={showForm.author}
               placeholder={show.author}
-              style={{boxShadow: 'inset 0 0 3px grey', backgroundColor: '#e4ecf0'}}
+              style={{backgroundColor: '#f7f7f7', outline: '1px solid #B1B1B1'}}
             />
           </div>
           <div className="language-explicit-container">
@@ -268,38 +268,40 @@ const UpdateShow = () => {
                 className='language-field-language'
                 onChange={(e) => updateShowForm(e, 'language')}
                 value={showForm.language}
-                style={{boxShadow: 'inset 0 0 3px grey', backgroundColor: '#e4ecf0'}}
+                style={{backgroundColor: '#f7f7f7', outline: '1px solid #B1B1B1'}}
                 // placeholder={JSON.stringify(show.language).slice(1,-1).charAt(0).toUpperCase() + JSON.stringify(show.language).slice(2,-1).toLowerCase()}
               />
             </div>
             <div className="explicit-field">
-              <p>Explicit Language: </p>
-              <input
-                type="radio"
-                name='explicit'
-                id='yes'
-                className="explicit-yes-field-yes"
-                value="true"
-                onChange={handleExplicitChoice}
-                checked={showForm.explicit === true}
-                style={{boxShadow: 'inset 0 0 3px grey', backgroundColor: '#e4ecf0'}}
-              />
-              <label htmlFor="yes" className="explicit-yes-field-label">
-                Yes
-              </label>
-              <input
-                type="radio"
-                name='explicit'
-                id='no'
-                className="explicit-no-field-no"
-                value="false"
-                onChange={handleExplicitChoice}
-                checked={showForm.explicit === false}
-                style={{boxShadow: 'inset 0 0 3px grey', backgroundColor: '#e4ecf0'}}
-              />
-              <label htmlFor="no" className="explicit-no-field-label">
-                No
-              </label>
+              <p className='explicit-label'>Explicit Content: </p>
+              <div className="explicit-input">
+                <input
+                  type="radio"
+                  name='explicit'
+                  id='yes'
+                  className="explicit-yes-field-yes"
+                  value="true"
+                  onChange={handleExplicitChoice}
+                  checked={showForm.explicit === true}
+                  style={{backgroundColor: '#f7f7f7', outline: '1px solid #B1B1B1'}}
+                />
+                <label htmlFor="yes" className="explicit-yes-field-label">
+                  Yes
+                </label>
+                <input
+                  type="radio"
+                  name='explicit'
+                  id='no'
+                  className="explicit-no-field-no"
+                  value="false"
+                  onChange={handleExplicitChoice}
+                  checked={showForm.explicit === false}
+                  style={{backgroundColor: '#f7f7f7', outline: '1px solid #B1B1B1'}}
+                />
+                <label htmlFor="no" className="explicit-no-field-label">
+                  No
+                </label>
+              </div>
             </div>
           </div>
         </form>

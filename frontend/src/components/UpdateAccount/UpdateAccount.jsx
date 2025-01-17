@@ -172,7 +172,7 @@ const UpdateAccount = ({user}) => {
               onChange={(e) => updateAccountForm(e, 'username')}
               value={accountForm.username}
               placeholder={user.username}
-              style={{boxShadow: 'inset 0 0 3px grey', backgroundColor: '#e4ecf0'}}
+              style={{backgroundColor: '#f7f7f7', outline: '1px solid #B1B1B1'}}
             />
           </div>
           <div className="firstname-field">
@@ -187,7 +187,7 @@ const UpdateAccount = ({user}) => {
               onChange={(e) => updateAccountForm(e, 'firstName')}
               value={accountForm.firstName}
               placeholder={user.firstName}
-              style={{boxShadow: 'inset 0 0 3px grey', backgroundColor: '#e4ecf0'}}
+              style={{backgroundColor: '#f7f7f7', outline: '1px solid #B1B1B1'}}
             />
           </div>
           <div className="lastname-field">
@@ -202,7 +202,7 @@ const UpdateAccount = ({user}) => {
               onChange={(e) => updateAccountForm(e, 'lastName')}
               value={accountForm.lastName}
               placeholder={user.lastName}
-              style={{boxShadow: 'inset 0 0 3px grey', backgroundColor: '#e4ecf0'}}
+              style={{backgroundColor: '#f7f7f7', outline: '1px solid #B1B1B1'}}
             />
           </div>
           <div className="email-field">
@@ -217,7 +217,7 @@ const UpdateAccount = ({user}) => {
               onChange={(e) => updateAccountForm(e, 'email')}
               value={accountForm.email}
               placeholder={user.email}
-              style={{boxShadow: 'inset 0 0 3px grey', backgroundColor: '#e4ecf0'}}
+              style={{backgroundColor: '#f7f7f7', outline: '1px solid #B1B1B1'}}
             />
           </div>
           <div className="password-field">
@@ -232,7 +232,7 @@ const UpdateAccount = ({user}) => {
               onChange={(e) => setPassword(e.target.value)}
               value={password}
               placeholder='**********'
-              style={{boxShadow: 'inset 0 0 3px grey', backgroundColor: '#e4ecf0'}}
+              style={{backgroundColor: '#f7f7f7', outline: '1px solid #B1B1B1'}}
             />
           </div>
           <div className="confirm-password-field">
@@ -247,7 +247,7 @@ const UpdateAccount = ({user}) => {
               onChange={matchPassword}
               value={confirmPassword}
               placeholder='**********'
-              style={{boxShadow: 'inset 0 0 3px grey', backgroundColor: '#e4ecf0'}}
+              style={{backgroundColor: '#f7f7f7', outline: '1px solid #B1B1B1'}}
             />
             {!passwordMatch && <p className='error-message'>Passwords do not match.</p>}
           </div>

@@ -61,8 +61,12 @@ WORKDIR /var/www
 
 COPY /backend/package.json .
 COPY /backend/.sequelizerc .
+COPY --from=backend backend ./backend
+COPY /backend/config/database.js /var/www/config/database.js
 
 COPY --from=backend backend/db/seeders /var/www/db/seeders
+COPY --from=backend backend/db/migrations /var/www/db/migrations
+COPY --from=backend backend/config /var/www/config
 
 COPY --from=frontend frontend/dist ./frontend/dist
 
@@ -75,6 +79,8 @@ COPY ./package.json .
 
 EXPOSE 8000
 
-CMD [ "npm", "start" ]
+# CMD [ "npm", "start" ]
 
 # CMD ["sh", "-c", "npx sequelize-cli db:drop && npx sequelize-cli db:create && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all && npm start"]
+
+CMD ["sh", "-c", "npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all && npm start"]
