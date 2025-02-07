@@ -19,7 +19,7 @@ const Episode = ({episode, show}) => {
   const [audioFile, setAudioFile] = useState(null);
   const [previewEpisodeImageUrl, setPreviewEpisodeImageUrl] = useState(null);
   const [episodeForm, setEpisodeForm] = useState({
-    userId: user.id,
+    userId: user?.id || null,
     showId: show.id || null,
     episodeTitle: episode.episodeTitle || '',
     episodeDesc: episode.episodeDesc || '',
