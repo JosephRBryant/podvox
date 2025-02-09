@@ -93,11 +93,6 @@ export const updateUserThunk = (userId, form) => async (dispatch) => {
         if (form.password) accountData.password = form.password;
         if (form.profileImg) accountData.profileImg = form.profileImg;
 
-        const currUser = getState().session.user;
-        if (currUser.showId) {
-            accountData.showId = currUser.showId;
-        }
-
         const options = {
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},
