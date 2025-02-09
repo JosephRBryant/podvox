@@ -30,7 +30,7 @@ const UpdateShow = () => {
     showSubtitle: '',
     showDesc: '',
     author: '',
-    showLink: 'www.example.com',
+    showLink: '',
     category: '',
     language: '',
     explicit: false
@@ -45,7 +45,7 @@ const UpdateShow = () => {
         showSubtitle: show.showSubtitle || '',
         showDesc: show.showDesc || '',
         author: show.author || '',
-        showLink: 'www.example.com',
+        showLink: '',
         category: show.category || '',
         language: show.language || '',
         explicit: show.explicit || false,
