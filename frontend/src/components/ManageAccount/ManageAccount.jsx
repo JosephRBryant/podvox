@@ -19,6 +19,7 @@ const ManageAccount = () => {
   useEffect(() => {
     if (user?.showId) {
       dispatch(getOneShowThunk(user.showId));
+      console.log('showId on user', hasShowId)
     }
   }, [dispatch, user?.showId])
   return (

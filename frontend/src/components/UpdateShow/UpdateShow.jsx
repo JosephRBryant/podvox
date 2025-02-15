@@ -14,6 +14,10 @@ const UpdateShow = () => {
   let showDescLength = showDesc.length
 
   useEffect(() => {
+    setPreviewShowUrl(show.showImage);
+  }, [show.showImage]);
+
+  useEffect(() => {
     if (user.showId) {
       dispatch(getOneShowThunk(user.showId))
     }
