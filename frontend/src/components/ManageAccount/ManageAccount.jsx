@@ -9,13 +9,14 @@ import { getOneShowThunk } from '../../redux/show';
 
 const ManageAccount = () => {
   const user = useSelector(state => state.session.user);
-  const hasShowId = useSelector(state => state.session.user.showId);
+  const [hasShowId, setHasShowId] = useState(!!user?.showId)
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (user?.showId) {
       dispatch(getOneShowThunk(user.showId));
-      console.log('showId on user', hasShowId)
+      console.log('showId on user', hasShowId);
+      setHasShowId(true);
     }
   }, [dispatch, user?.showId])
   return (
