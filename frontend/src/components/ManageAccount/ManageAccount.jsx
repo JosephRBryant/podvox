@@ -12,10 +12,6 @@ const ManageAccount = () => {
   const hasShowId = useSelector(state => state.session.user.showId);
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   setHasShowId(Boolean(user?.showId));
-  // }, [user?.showId]);
-
   useEffect(() => {
     if (user?.showId) {
       dispatch(getOneShowThunk(user.showId));
