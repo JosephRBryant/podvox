@@ -1,5 +1,4 @@
 import { getAllShowsThunk } from "../../redux/show"
-import './ShowList.css'
 
 const ShowList = () => {
   return (
