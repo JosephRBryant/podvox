@@ -1,8 +1,10 @@
-const ShowCard = (show) => {
+const ShowCard = ({show}) => {
   return (
     <>
-      <h2>Show Title</h2>
+
       <p>{show.showTitle}</p>
+      <img src={show.showImage} alt="" />
+      <p>{show.showDesc}</p>
     </>
   )
 }
