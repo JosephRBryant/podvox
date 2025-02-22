@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux"
 import { getAllShowsThunk } from "../../redux/show"
+import ShowCard from "../ShowCard";
 
 const ShowList = () => {
   let shows = useSelector(state => state.showState.allShows);
@@ -8,8 +9,7 @@ const ShowList = () => {
     <>
       {shows.map((show, idx) => (
         <div key={`${idx}-${show.title}`} className="show-card-container">
-          <h2>Show Title</h2>
-          <p>{show.showTitle}</p>
+          <ShowCard show={show}/>
         </div>
       ))}
     </>
