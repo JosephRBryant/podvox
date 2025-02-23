@@ -7,7 +7,6 @@ import SignupFormModal from "../SignupFormModal";
 import OpenModalMenuItem from "./OpenModalMenuItem";
 import { LuUpload } from "react-icons/lu";
 import AddEpisodeModal from "../AddEpisodeModal/AddEpisodeModal";
-// import { getUserShowsThunk } from "../../redux/show";
 import CreateShowModal from "../CreateShowModal";
 
 function Navigation() {
@@ -23,11 +22,9 @@ function Navigation() {
           About
           <span className='tool-tip-text'>In Development</span>
         </div>
-        <div className="shows-menu-btn">
+        <NavLink className="shows-menu-btn" to="/shows">
           Shows
-          <span className='tool-tip-text'>In Development</span>
-        </div>
-        {/* <button className="sign-up-btn">Create Account</button> */}
+        </NavLink>
         {!user ? (
           <OpenModalMenuItem
             className="sign-up-btn"
