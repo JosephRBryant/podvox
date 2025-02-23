@@ -1,9 +1,32 @@
 import { useSelector } from "react-redux"
 import { getAllShowsThunk } from "../../redux/show"
 import ShowCard from "../ShowCard";
+import { useState, useRef, useEffect } from "react";
 
 const ShowList = () => {
   let shows = useSelector(state => state.showState.allShows);
+  const [showFilters, setShowFilters] = useState(false);
+
+  const ulRef = useRef();
+
+  const toggleFilters = (e) => {
+    e.stopPropagation();
+    setShowFilters(!showFilters);
+  };
+
+  useEffect(() => {
+    if (!showFilters) return;
+
+    const closeFilters = (e) => {
+      if (ulRef.current && !ulRef.current.contains(e.target)) {
+        setShowFilters(false);
+      }
+    };
+
+    document.addEventListener('click', closeFilters);
+
+    return () => document.removeEventListener('click', closeFilters);
+  }, [showFilters]);
 
   return (
     <main>
@@ -18,6 +41,14 @@ const ShowList = () => {
             <option value="recent">Recent Episodes</option>
             <option value="show-count">Episode Count</option>
           </select>
+          <div className="filter-btn" onClick={toggleFilters}>
+            Categories
+          </div>
+          {showFilters && (
+            <div className="filters-dropdown" ref={ulRef}>
+              test buttons
+            </div>
+          )}
         </form>
       </div>
       {shows.map((show, idx) => (
