@@ -8,10 +8,16 @@
 
 .show-sort {
   border-radius: 1rem;
+  padding: 0 .5rem;
+
 }
 
 .filter-btn {
+  display: flex;
+  align-items: center;
   border-radius: 1rem;
+  padding: 0 2rem;
+
 }
 
 .show-sort,
@@ -19,6 +25,7 @@
   height: 2rem;
   border: 1px solid #F15A29;
   cursor: pointer;
+  font-family: sans-serif;
 }
 
 .search-submit {
@@ -36,8 +43,14 @@
   height: 2rem;
   border-radius: 1rem 0 0 1rem;
   border: 1px solid #F15A29;
+  padding: 0 .5rem;
+  font-family: sans-serif;
+
 }
 
 .filters-dropdown {
   position: absolute;
+  display: flex;
+  width: 6rem;
+  flex-wrap: wrap;
 }
