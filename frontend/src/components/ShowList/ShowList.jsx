@@ -55,7 +55,7 @@ const ShowList = () => {
     <main>
       <h1>Podcasts</h1>
       <form className="shows-navbar" action="">
-        <label htmlFor="sort"></label>
+        <label htmlFor="sort" className="hidden"></label>
         <select className='show-sort' name="sort" id="sort" placeholder="sort">
           <option value="" disabled selected hidden>Sort by...</option>
           <option value="name">Podcast Name</option>
@@ -75,8 +75,10 @@ const ShowList = () => {
             </div>
           )}
         </div>
-        <input type="text" className="show-search" placeholder="Search..."/>
-        <button className="search-submit">i</button>
+        <div className="show-search-container">
+          <input type="text" className="show-search" placeholder="Search..."/>
+          <button className="search-submit">i</button>
+        </div>
       </form>
       {shows.map((show, idx) => (
         <div key={`${idx}-${show.title}`} className="show-card-container">
