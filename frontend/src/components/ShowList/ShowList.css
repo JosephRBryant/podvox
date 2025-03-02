@@ -12,16 +12,15 @@
 
 }
 
-.filter-btn {
-  display: flex;
-  align-items: center;
+.filters-btn {
+  background-color: white;
   border-radius: 1rem;
   padding: 0 2rem;
 
 }
 
 .show-sort,
-.filter-btn {
+.filters-btn {
   height: 2rem;
   border: 1px solid #F15A29;
   cursor: pointer;
@@ -50,7 +49,12 @@
 
 .filters-dropdown {
   position: absolute;
+  top: 11.5rem;
   display: flex;
-  width: 6rem;
+  background-color: #F15A29;
+  border-radius: 1rem;
+  padding: 1rem;
+  width: 30rem;
   flex-wrap: wrap;
+  gap: 1.5rem;
 }

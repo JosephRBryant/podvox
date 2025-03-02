@@ -63,8 +63,10 @@ const ShowList = () => {
           <option value="recent">Recent Episodes</option>
           <option value="show-count">Episode Count</option>
         </select>
-        <div className="filter-btn" onClick={toggleFilters}>
-          Categories
+        <div className="filter-container" onClick={toggleFilters}>
+          <button className="filters-btn">
+            Categories
+          </button>
           {showFilters && (
             <div className="filters-dropdown" ref={ulRef}>
               {Object.values(filters).map((filter, idx) => (
