@@ -6,10 +6,32 @@ import { useState, useRef, useEffect } from "react";
 const ShowList = () => {
   let shows = useSelector(state => state.showState.allShows);
   const [showFilters, setShowFilters] = useState(false);
-
+  const [chosenCategories, setChosenCategories] = useState(false);
+  const [filters, setFilters] = useState({
+    arts: {category: 'Arts', active: false},
+    business: {category: 'Business', active: false},
+    comedy: {category: 'Comedy', active: false},
+    education: {category: 'Education', active: false},
+    fiction: {category: 'Fiction', active: false},
+    government: {category: 'Government', active: false},
+    history: {category: 'History', active: false},
+    health: {category: 'Health', active: false},
+    family: {category: 'Kids & Family', active: false},
+    leisure: {category: 'Leisure', active: false},
+    music: {category: 'Music', active: false},
+    news: {category: 'News', active: false},
+    religion: {category: 'Religion', active: false},
+    science: {category: 'Scince', active: false},
+    society: {category: 'Society', active: false},
+    sports: {category: 'Sports', active: false},
+    technology: {category: 'Technology', active: false},
+    trueCrime: {category: 'True Crime', active: false},
+    tvFilm: {category: 'Arts', active: false}
+  })
   const ulRef = useRef();
 
   const toggleFilters = (e) => {
+    e.preventDefault();
     e.stopPropagation();
     setShowFilters(!showFilters);
   };
@@ -43,10 +65,15 @@ const ShowList = () => {
           </select>
           <div className="filter-btn" onClick={toggleFilters}>
             Categories
+
           </div>
           {showFilters && (
             <div className="filters-dropdown" ref={ulRef}>
-              test buttons
+              {Object.values(filters).map((filter, idx) => (
+                <div className="filter-button">
+                  {filter.category}
+                </div>
+              ))}
             </div>
           )}
         </form>
