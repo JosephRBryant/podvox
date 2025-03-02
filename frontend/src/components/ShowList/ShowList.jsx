@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux"
 import { getAllShowsThunk } from "../../redux/show"
 import ShowCard from "../ShowCard";
+import './ShowList.css';
 import { useState, useRef, useEffect } from "react";
 
 const ShowList = () => {
@@ -53,20 +54,17 @@ const ShowList = () => {
   return (
     <main>
       <h1>Podcasts</h1>
-      <div className="shows-navbar">
-        <form action="">
-          <label htmlFor="sort"></label>
-          <select name="sort" id="sort" placeholder="sort">
-            <option value="" disabled selected hidden>Sort by...</option>
-            <option value="name">Podcast Name</option>
-            <option value="popular">Trending</option>
-            <option value="recent">Recent Episodes</option>
-            <option value="show-count">Episode Count</option>
-          </select>
-          <div className="filter-btn" onClick={toggleFilters}>
-            Categories
-
-          </div>
+      <form className="shows-navbar" action="">
+        <label htmlFor="sort"></label>
+        <select className='show-sort' name="sort" id="sort" placeholder="sort">
+          <option value="" disabled selected hidden>Sort by...</option>
+          <option value="name">Podcast Name</option>
+          <option value="popular">Trending</option>
+          <option value="recent">Recent Episodes</option>
+          <option value="show-count">Episode Count</option>
+        </select>
+        <div className="filter-btn" onClick={toggleFilters}>
+          Categories
           {showFilters && (
             <div className="filters-dropdown" ref={ulRef}>
               {Object.values(filters).map((filter, idx) => (
@@ -76,8 +74,10 @@ const ShowList = () => {
               ))}
             </div>
           )}
-        </form>
-      </div>
+        </div>
+        <input type="text" className="show-search" placeholder="Search..."/>
+        <button className="search-submit">i</button>
+      </form>
       {shows.map((show, idx) => (
         <div key={`${idx}-${show.title}`} className="show-card-container">
           <ShowCard show={show}/>
