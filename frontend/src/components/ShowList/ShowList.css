@@ -1,0 +1,32 @@
+.shows-navbar {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.show-sort {
+  cursor: pointer;
+}
+
+.filter-btn {
+  cursor: pointer;
+}
+
+.show-sort,
+.filter-btn,
+.search-submit {
+  height: 2rem;
+  border-radius: 1rem;
+  border: 1px solid #F15A29;
+  cursor: pointer;
+}
+
+.show-search {
+  height: 2rem;
+  border-radius: 1rem;
+  border: 1px solid #F15A29;
+}
+
+.filters-dropdown {
+  position: absolute;
+}
