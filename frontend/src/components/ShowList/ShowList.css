@@ -51,10 +51,21 @@
   position: absolute;
   top: 11.5rem;
   display: flex;
+  justify-content: space-between;
   background-color: #F15A29;
   border-radius: 1rem;
   padding: 1rem;
   width: 30rem;
   flex-wrap: wrap;
   gap: 1.5rem;
+}
+
+.filter-buttons {
+  height: 2rem;
+  border-radius: 1rem;
+  border: none;
+  padding: 0 1rem;
+  font-family: sans-serif;
+  opacity: .9;
+  cursor: pointer;
 }
