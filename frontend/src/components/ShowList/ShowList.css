@@ -7,9 +7,11 @@
 }
 
 .show-sort {
-  border-radius: 1rem;
-  padding: 0 .5rem;
+  padding: 0 .5rem 0 .5rem;
+}
 
+.show-sort option {
+  border: 1px solid #F15A29;
 }
 
 .filters-btn {
@@ -53,7 +55,8 @@
   font-family: sans-serif;
 }
 
-.show-search:focus {
+.show-search:focus,
+.show-sort:focus {
   outline: none;
 }
 
