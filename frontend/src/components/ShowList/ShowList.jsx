@@ -71,7 +71,9 @@ const ShowList = () => {
             <div className="filters-dropdown" ref={ulRef}>
               {Object.values(filters).map((filter, idx) => (
                 <div className="filter-button">
-                  {filter.category}
+                  <button className="filter-buttons" id={filter.category.toLowerCase()}>
+                    + {filter.category}
+                  </button>
                 </div>
               ))}
             </div>
