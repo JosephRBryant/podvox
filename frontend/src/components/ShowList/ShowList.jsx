@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux"
 import { getAllShowsThunk } from "../../redux/show"
 import ShowCard from "../ShowCard";
+import { IoSearch } from "react-icons/io5";
 import './ShowList.css';
 import { useState, useRef, useEffect } from "react";
 
@@ -81,7 +82,9 @@ const ShowList = () => {
         </div>
         <div className="show-search-container">
           <input type="text" className="show-search" placeholder="Search..."/>
-          <button className="search-submit">i</button>
+          <button className="search-submit">
+            <IoSearch />
+          </button>
         </div>
       </form>
       {shows.map((show, idx) => (
