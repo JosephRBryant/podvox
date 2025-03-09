@@ -27,24 +27,32 @@
   font-family: sans-serif;
 }
 
+.show-search-container {
+  display: flex;
+}
+
 .search-submit {
   position: relative;
-  left: -1rem;
-  border: 1px solid #F15A29;
-  background-color: white;
+  left: -2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* border: 1px solid #F15A29;
+  background-color: white; */
+  border: none;
+  background-color: transparent;
   height: 2rem;
   width: 2rem;
   border-radius: 1rem;
-
+  cursor: pointer;
 }
 
 .show-search {
   height: 2rem;
-  border-radius: 1rem 0 0 1rem;
+  border-radius: 1rem;
   border: 1px solid #F15A29;
   padding: 0 .5rem;
   font-family: sans-serif;
-
 }
 
 .filters-dropdown {
