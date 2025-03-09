@@ -37,8 +37,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  /* border: 1px solid #F15A29;
-  background-color: white; */
   border: none;
   background-color: transparent;
   height: 2rem;
@@ -53,6 +51,10 @@
   border: 1px solid #F15A29;
   padding: 0 .5rem;
   font-family: sans-serif;
+}
+
+.show-search:focus {
+  outline: none;
 }
 
 .filters-dropdown {
