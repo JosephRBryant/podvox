@@ -87,11 +87,13 @@ const ShowList = () => {
           </button>
         </div>
       </form>
-      {shows.map((show, idx) => (
-        <div key={`${idx}-${show.title}`} className="show-card-container">
-          <ShowCard show={show}/>
-        </div>
-      ))}
+      <div className="show-list-container">
+        {shows.map((show, idx) => (
+          <div key={`${idx}-${show.title}`} className="show-card-container">
+            <ShowCard show={show}/>
+          </div>
+        ))}
+      </div>
     </main>
   )
 

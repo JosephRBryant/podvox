@@ -1,9 +1,11 @@
+import './ShowCard.css'
+
 const ShowCard = ({show}) => {
   return (
     <>
 
       <p>{show.showTitle}</p>
-      <img src={show.showImage} alt="" />
+      <img className="show-card-img" src={show.showImage} alt="" />
       <p>{show.showDesc}</p>
     </>
   )
