@@ -1,4 +1,5 @@
 const express = require('express');
+const ffmpeg = require('fluent-ffmpeg');
 const { check } = require('express-validator');
 const { Show, User, Episode } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
@@ -6,6 +7,19 @@ const { handleValidationErrors } = require('../../utils/validation');
 const { singleMulterUpload, singlePublicFileUpload, multipleMulterUpload, multiplePublicFileUpload } = require('../../awsS3');
 
 const router = express.Router();
+
+// Capture episode duration
+const getAudioDuration = (audioUrl) => {
+  return new Promise ((resolve, reject) => {
+    ffmpeg.ffprobe(audioUrl, (err, metadata) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(metadata.format.duration);
+      }
+    });
+  });
+};
 
 // File Upload utility function
 async function handleFileUploads(files) {
@@ -228,9 +242,10 @@ router.delete('/:showId', requireAuth, handleValidationErrors, async (req, res, 
 
 // Create an Episode
 router.post('/:showId/episodes',
-  multipleMulterUpload(['img_url', 'audio_url']),
   requireAuth,
   handleValidationErrors,
+  multipleMulterUpload(['img_url', 'audio_url']),
+
   async (req, res, next) => {
     try {
       const { user } = req;
@@ -239,7 +254,7 @@ router.post('/:showId/episodes',
         episodeTitle,
         episodeDesc,
         guestInfo,
-        duration,
+        // duration,
         size,
         tags,
         explicit,
@@ -251,7 +266,15 @@ router.post('/:showId/episodes',
         return res.status(401).json({ message: 'You must be logged in to create an Episode.' })
       }
 
+      // Get episode audio and image URLs
+
       const { imgUrl, audioUrl } = await handleFileUploads(req.files);
+
+      // Extract MP3 Duration
+
+      let duration = await getAudioDuration(audioUrl);
+      duration = Math.floor(duration)
+      // Get max episode number
 
       const maxEpisodeNumber = await Episode.max('episodeNumber', {
         where: {showId}
