@@ -46,10 +46,12 @@ router.get('/', async (_req, res, next) => {
         },
         {
           model: Episode,
-          attributes: ['id', 'downloads']
+          attributes: ['id', 'duration', 'downloads', 'pubDate']
         }
       ]
     });
+
+    console.log('shows from get all shows api', shows)
 
     let showsWithDownloads = await Promise.all(shows.map(async show => {
       let totalDownloads = await Episode.sum('downloads', { where: { showId: show.id}});
@@ -267,15 +269,13 @@ router.post('/:showId/episodes',
       }
 
       // Get episode audio and image URLs
-
       const { imgUrl, audioUrl } = await handleFileUploads(req.files);
 
       // Extract MP3 Duration
-
       let duration = await getAudioDuration(audioUrl);
       duration = Math.floor(duration)
-      // Get max episode number
 
+      // Get max episode number
       const maxEpisodeNumber = await Episode.max('episodeNumber', {
         where: {showId}
       }) || 0;
@@ -342,29 +342,6 @@ router.put('/:showId/episodes/:episodeId',
 
     if (imgUrl) episode.episodeImage = imgUrl;
     if (audioUrl) episode.episodeUrl = audioUrl;
-
-    // if (req.files && req.files.img_url) {
-    //   const imgUrls = await multiplePublicFileUpload(req.files.img_url);
-    //   imgUrl = imgUrls.length > 0 ? imgUrls[0] : null;
-    // }
-
-    // if (req.files && req.files.audio_url) {
-    //   const audioUrls = await multiplePublicFileUpload(req.files.audio_url);
-    //   episodeUrl = audioUrls.length > 0 ? audioUrls[0] : null;
-    // }
-
-    // if (episodeTitle) episode.episodeTitle = episodeTitle;
-    // if (episodeDesc) episode.episodeDesc = episodeDesc;
-    // if (guestInfo) episode.guestInfo = guestInfo;
-    // if (duration) episode.duration = duration;
-    // if (size) episode.size = size;
-    // if (tags) episode.tags = tags;
-    // if (explicit || explicit === false) episode.explicit = explicit;
-    // if (published) episode.published = published;
-    // if (downloads) episode.downloads = downloads;
-
-    // await episode.save();
-    // const updatedEpisode = episode.toJSON();
 
     Object.assign(episode, {
       episodeTitle,
