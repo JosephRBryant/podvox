@@ -1,3 +1,20 @@
 .show-card-img {
   width: 15rem;
+  height: 15rem;
+}
+
+.show-card-stats {
+  display: flex;
+  justify-content: space-between;
+}
+
+.show-card-container {
+  display: flex;
+  margin: 2rem 0;
+}
+
+.show-card-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }

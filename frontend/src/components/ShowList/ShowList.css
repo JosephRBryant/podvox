@@ -83,6 +83,10 @@
   cursor: pointer;
 }
 
+.show-list-container {
+  gap: 3rem;
+}
+
 .show-card-container {
-  height: 23rem;
+  height: 15rem;
 }
