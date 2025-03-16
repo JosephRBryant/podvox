@@ -1,20 +1,26 @@
 import './ShowCard.css'
 import getAvgLength from '../../helpers/get-avg-length';
+import formatDate from '../../helpers/format-date';
 
 const ShowCard = ({show}) => {
   const episodes = show.Episodes;
-  let hasEpisodes = true;
-  if (episodes.length === 0) {
-    hasEpisodes = false;
-  }
-  console.log('episode lengths', episodes.length, show.showTitle, episodes)
-  if (episodes.length === undefined) {
-    console.log('the following episode has no duration: ', show.showTitle)
-  }
 
   let pubEpisodes = [];
   for (let episode of episodes) {
     episode.pubDate !== null ? pubEpisodes.push(episode) : null;
+  }
+
+  let hasEpisodes = true;
+  if (pubEpisodes.length === 0) {
+    hasEpisodes = false;
+  }
+
+  const getNewestEpisodeDate = () => {
+    let newestDate = "0000-01-01T00:00:00.000Z";
+    for (let episode of pubEpisodes) {
+      episode.pubDate > newestDate ? newestDate = episode.pubDate : null;
+    }
+    return newestDate;
   }
 
   return (
@@ -40,9 +46,14 @@ const ShowCard = ({show}) => {
           {!hasEpisodes ? (
             null
           ) : (
-            <div className="show-card-avg-length">
-              {`Average Length ${getAvgLength(episodes)}`}
-            </div>
+            <>
+              <div className="show-card-avg-length">
+                {`Average Length ${getAvgLength(pubEpisodes)}`}
+              </div>
+              <div className="show-card-newest-date">
+                {`Latest episode ${formatDate(getNewestEpisodeDate())}`}
+              </div>
+            </>
           )}
         </div>
       </div>
