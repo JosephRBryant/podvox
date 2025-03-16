@@ -16,6 +16,8 @@ const ShowPage = () => {
   const show = useSelector(state => state.showState.showDetails);
   const showDesc = show.showDesc;
 
+  console.log('show ep from show page', show.Episodes)
+
   useEffect(() => {
     window.scrollTo(0, 0);
     if (!live) {
