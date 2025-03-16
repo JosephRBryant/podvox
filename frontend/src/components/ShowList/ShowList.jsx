@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { getAllShowsThunk } from "../../redux/show"
 import ShowCard from "../ShowCard";
 import { IoSearch } from "react-icons/io5";
@@ -6,6 +6,7 @@ import './ShowList.css';
 import { useState, useRef, useEffect } from "react";
 
 const ShowList = () => {
+  const dispatch = useDispatch();
   let shows = useSelector(state => state.showState.allShows);
   const [showFilters, setShowFilters] = useState(false);
   const [chosenCategories, setChosenCategories] = useState(false);
@@ -37,6 +38,10 @@ const ShowList = () => {
     e.stopPropagation();
     setShowFilters(!showFilters);
   };
+
+  useEffect(() => {
+    dispatch(getAllShowsThunk());
+  }, [dispatch])
 
   useEffect(() => {
     if (!showFilters) return;

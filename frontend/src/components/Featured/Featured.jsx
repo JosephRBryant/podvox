@@ -6,19 +6,22 @@ import ShowTile from "../ShowTile";
 
 const Featured = () => {
   const dispatch = useDispatch();
-  const [loaded, setLoaded] = useState(false);
+  // const [loaded, setLoaded] = useState(false);
   let shows = useSelector(state => state.showState.allShows);
 
+  // useEffect(() => {
+  //   const getData = async () => {
+  //     await dispatch(getAllShowsThunk());
+  //     // await dispatch(clearAndRefetchAllShowsThunk());
+  //     setLoaded(true)
+  //   }
+  //   if (!loaded && !shows.length) {
+  //     getData()
+  //   }
+  // }, [dispatch, loaded, shows])
   useEffect(() => {
-    const getData = async () => {
-      await dispatch(getAllShowsThunk());
-      await dispatch(clearAndRefetchAllShowsThunk());
-      setLoaded(true)
-    }
-    if (!loaded && !shows.length) {
-      getData()
-    }
-  }, [dispatch, loaded, shows])
+    dispatch(getAllShowsThunk());
+  }, [dispatch]);
 
   if (!shows) {
     return <h1>Loading</h1>
