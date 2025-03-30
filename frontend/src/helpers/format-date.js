@@ -1,6 +1,6 @@
 export const formatDate = (dateString) => {
   const date = new Date(dateString);
-  const options = { day: "numeric", month: "long", year: "numeric"};
+  const options = { day: "numeric", month: "short", year: "numeric"};
   const formattedDate = new Intl.DateTimeFormat("en-us", options).format(date);
 
   const day = date.getDate();
