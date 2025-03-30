@@ -68,11 +68,11 @@ const ShowCard = ({show}) => {
               <>
                 |
                 <div className="show-card-avg-length">
-                  {`Avg Length: ${getAvgLength(pubEpisodes)}`}
+                  {`Average Length: ${getAvgLength(pubEpisodes)}`}
                 </div>
                 |
                 <div className="show-card-newest-date">
-                  {`Last: ${formatDate(getNewestEpisodeDate())}`}
+                  {`Last Episode: ${formatDate(getNewestEpisodeDate())}`}
                 </div>
               </>
             )}
