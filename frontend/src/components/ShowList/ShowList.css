@@ -71,6 +71,7 @@
   width: 30rem;
   flex-wrap: wrap;
   gap: 1.5rem;
+  z-index: 2;
 }
 
 .filter-buttons {
@@ -85,8 +86,16 @@
 
 .show-list-container {
   gap: 3rem;
+  width: 100%;
 }
 
 .show-card-container {
-  height: 15rem;
+  display: flex;
+  margin: 2rem 0;
+  gap: 2rem;
+  height: 12rem;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #d1d5db;
+  background-color: #f3f4f6;
 }
