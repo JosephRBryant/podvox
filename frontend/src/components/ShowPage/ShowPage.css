@@ -76,8 +76,9 @@
   box-sizing: border-box;
   padding: 2rem 0 1rem 0;
   color: white;
-  font-size: 1.25rem;
+  font-size: 1rem;
   letter-spacing: .2rem;
+  line-height: 1.4;
 }
 
 .show-page-banner-description-live-btn {

@@ -1,4 +1,4 @@
-import './ShowCard.css'
+import './ShowCard.css';
 import getAvgLength from '../../helpers/get-avg-length';
 import formatDate from '../../helpers/format-date';
 import { IoPlayOutline } from "react-icons/io5";
