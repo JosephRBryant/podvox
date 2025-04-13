@@ -106,7 +106,7 @@
 .desc-editor-closed {
   padding: 0 1rem;
   height: 108px;
-  overflow: hidden;
+  
   text-overflow: ellipsis;
 }
 
@@ -153,9 +153,8 @@
 .episode-count-guests {
   display: flex;
   align-items: center;
-  height: 4rem;
-  margin-left: 1rem;
-  padding: 0 !important;
+  height: 3rem;
+  font-size: 1rem;
 }
 
 .episode-count-guests h2 {
