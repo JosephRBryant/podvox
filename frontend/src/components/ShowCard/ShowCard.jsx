@@ -2,10 +2,35 @@ import './ShowCard.css';
 import getAvgLength from '../../helpers/get-avg-length';
 import formatDate from '../../helpers/format-date';
 import { IoPlayOutline } from "react-icons/io5";
+import { getOneEpisodeThunk } from '../../redux/episode';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
 
 const ShowCard = ({show}) => {
+  const dispatch = useDispatch();
+  const [loaded, setLoaded] = useState(false);
   const episodes = show.Episodes;
+  let newestEpisodeId;
+  let newestEpisode = useSelector(state => state.episodeT)
 
+  useEffect(() => {
+    const fetchEpisodeDetails = async () => {
+      setLoaded(true);
+      await dispatch(getOneEpisodeThunk(newestEpisodeId));
+      setLoaded(false);
+    }
+
+    if (!newestEpisode || newestEpisode.id !== newestEpisodeId) {
+      fetchEpisodeDetails();
+    } else {
+      setLoaded(false);
+    }
+
+  }, [dispatch, loaded, newestEpisode, newestEpisodeId]);
+  console.log('newest Episode title:', newestEpisode)
+
+  // Get published Episodes
   let pubEpisodes = [];
   for (let episode of episodes) {
     episode.pubDate !== null ? pubEpisodes.push(episode) : null;
@@ -16,13 +41,20 @@ const ShowCard = ({show}) => {
     hasEpisodes = false;
   }
 
+  // Get Newest Episode Date and Id
   const getNewestEpisodeDate = () => {
     let newestDate = "0000-01-01T00:00:00.000Z";
+
     for (let episode of pubEpisodes) {
-      episode.pubDate > newestDate ? newestDate = episode.pubDate : null;
+      if (episode.pubDate > newestDate) {
+        newestDate = episode.pubDate;
+        newestEpisodeId = episode.id;
+      }
     }
+    console.log('newest Episode for ', show.showTitle, ' is: ', newestEpisodeId)
     return newestDate;
   }
+  console.log('newest Episode title:', newestEpisode)
 
   return (
     <>
