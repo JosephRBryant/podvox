@@ -51,8 +51,6 @@ router.get('/', async (_req, res, next) => {
       ]
     });
 
-    console.log('shows from get all shows api', shows)
-
     let showsWithDownloads = await Promise.all(shows.map(async show => {
       let totalDownloads = await Episode.sum('downloads', { where: { showId: show.id}});
 

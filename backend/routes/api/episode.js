@@ -5,6 +5,24 @@ const { handleValidationErrors } = require('../../utils/validation');
 
 const router = express.Router();
 
+// Get one Episode by Id
+
+router.get('/:episodeId', async (req, res, next) => {
+  try {
+    let { episodeId } = req.params;
+    let episode = await Episode.findByPk(episodeId);
+
+    if (!episode) {
+      return res.status(404).json({ message: "Episode could not be found"})
+    }
+    let response = {
+      ...episode.toJSON()
+    };
+    return res.json(response);
+  } catch(error) {
+    next(error)
+  }
+})
 
 // Delete an Episode
 router.delete('/:episodeId', requireAuth, handleValidationErrors, async (req, res, next) => {

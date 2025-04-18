@@ -2,6 +2,7 @@ import { csrfFetch } from "./csrf";
 
 const CREATE_EPISODE = 'episodes/createEpisode';
 const GET_SHOW_EPISODES = 'episodes/getShowEpisodes';
+const GET_ONE_EPISODE = 'episodes/getEpisode';
 const UPDATE_EPISODE = 'episodes/updateEpisode';
 const DELETE_EPISODE = 'episodes/deleteEpisode';
 
@@ -18,6 +19,13 @@ const getShowEpisodes = (episodes) => {
     payload: episodes
   }
 }
+
+const getEpisode = (episodes) => {
+  return {
+    type: GET_ONE_EPISODE,
+    payload: episodes
+  }
+};
 
 const updateEpisode = (episode) => {
   return {
@@ -66,6 +74,19 @@ export const getShowEpisodesThunk = (showId) => async (dispatch) => {
     }
   } catch(error) {
     return error;
+  }
+}
+
+export const getOneEpisodeThunk = (episodeId) => async (dispatch) => {
+  try {
+    const res = await csrfFetch(`/api/episodes/${episodeId}`);
+    const data = await res.json();
+    await dispatch(getEpisode(data));
+    console.log('==================================episode from getEp thunk end', data)
+    return data;
+  } catch(error) {
+    console.error('Error fetching episode:', error);
+    return undefined;
   }
 }
 
@@ -164,7 +185,8 @@ export const deleteEpisodeThunk = (episode) => async (dispatch) => {
 const initialState = {
   showEpisodes: [],
   byId: {},
-}
+  episodeDetails: {}
+};
 
 const episodesReducer = (state = initialState, action) => {
   let newState;
@@ -175,6 +197,14 @@ const episodesReducer = (state = initialState, action) => {
 
       for (let episode in action.payload) {
         newState.byId[episode.id] = episode
+      }
+      return newState;
+    case GET_ONE_EPISODE:
+      newState = {...state};
+      newState.episodeDetails = action.payload;
+
+      for (let episode in action.payload) {
+        newState.byId[episode.id] = episode;
       }
       return newState;
     case CREATE_EPISODE:
