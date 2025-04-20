@@ -12,7 +12,7 @@ const ShowCard = ({show}) => {
   const [loaded, setLoaded] = useState(false);
   const episodes = show.Episodes;
   let newestEpisodeId;
-  let newestEpisode = useSelector(state => state.episodeT)
+  let newestEpisode = useSelector(state => state.episodeState.episodeDetails)
 
   useEffect(() => {
     const fetchEpisodeDetails = async () => {
@@ -54,7 +54,7 @@ const ShowCard = ({show}) => {
     console.log('newest Episode for ', show.showTitle, ' is: ', newestEpisodeId)
     return newestDate;
   }
-  console.log('newest Episode title:', newestEpisode)
+  console.log('newest Episode title:', newestEpisode.episodeTitle)
 
   return (
     <>
