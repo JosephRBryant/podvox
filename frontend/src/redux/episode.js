@@ -82,7 +82,6 @@ export const getOneEpisodeThunk = (episodeId) => async (dispatch) => {
     const res = await csrfFetch(`/api/episodes/${episodeId}`);
     const data = await res.json();
     await dispatch(getEpisode(data));
-    console.log('==================================episode from getEp thunk end', data)
     return data;
   } catch(error) {
     console.error('Error fetching episode:', error);
