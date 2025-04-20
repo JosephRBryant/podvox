@@ -51,10 +51,8 @@ const ShowCard = ({show}) => {
         newestEpisodeId = episode.id;
       }
     }
-    console.log('newest Episode for ', show.showTitle, ' is: ', newestEpisodeId)
     return newestDate;
   }
-  console.log('newest Episode title:', newestEpisode.episodeTitle)
 
   return (
     <>
