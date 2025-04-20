@@ -28,7 +28,6 @@ const ShowCard = ({show}) => {
     }
 
   }, [dispatch, loaded, newestEpisode, newestEpisodeId]);
-  console.log('newest Episode title:', newestEpisode)
 
   // Get published Episodes
   let pubEpisodes = [];
