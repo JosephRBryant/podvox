@@ -26,7 +26,42 @@
   background-color: transparent !important;
 }
 
+.image-update-icon {
+  position: absolute;
+  width: 250px;
+  height: 250px;
+  padding: 3rem;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #555;
+  border-radius: 0.5rem;
+  background-color: rgba(255, 255, 255, .6);
+  /* opacity: .8; */
+  cursor: pointer;
 
+}
+
+.episode-text-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin: 1rem 0 1rem 2rem;
+  height: 250px;
+  width: 100%;
+}
+
+.episode-play-guest {
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding-bottom: .75rem;
+  font-size: 2rem;
+  font-family: sans-serif;
+  border-bottom: 2px solid #F15A29;
+}
 
 .episode-play-title {
   display: flex;
