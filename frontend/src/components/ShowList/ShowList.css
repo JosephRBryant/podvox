@@ -87,6 +87,7 @@
 .show-list-container {
   gap: 3rem;
   width: 100%;
+  cursor: pointer;
 }
 
 .show-card-container {
